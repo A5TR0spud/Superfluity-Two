@@ -1,0 +1,3 @@
+Currently adds:
+Accessories made from or at "buff stations." These include but are not limited to: campfire, star in a bottle, ammo box, slice of cake.
+Some QoL to shops e.g. Merchant sells Recall and Wormhole Potions, Goblin Tinkerer can sell Depth Meter

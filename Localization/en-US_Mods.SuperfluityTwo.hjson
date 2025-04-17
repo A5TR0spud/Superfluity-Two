@@ -1,0 +1,123 @@
+# This file will automatically update with entries for new content after a build and reload.
+
+Items: {
+	LoverLocket: {
+		DisplayName: Lover's Locket
+		Tooltip: Life regen is increased
+	}
+
+	SunflowerHairpin: {
+		Tooltip: Movement speed increased and monster spawns reduced
+		DisplayName: Sunflower Hairpin
+	}
+
+	LuckyClover: {
+		DisplayName: Lucky Clover
+		Tooltip: "'Said to bring good fortune and keep evil spirits at bay'"
+	}
+
+	BastetBlessing: {
+		DisplayName: Bastet's Blessing
+		Tooltip: Increases defense by 5
+	}
+
+	MeteorMantle: {
+		DisplayName: Meteor Mantle
+		Tooltip: Increases life regeneration
+	}
+
+	StarpowerBandolier: {
+		DisplayName: Starpower Bandolier
+		Tooltip: Increases mana regeneration
+	}
+
+	Solace: {
+		DisplayName: Solace
+		Tooltip: Increases movement speed, health and mana regeneration, defense, and luck
+	}
+
+	ShamanMask: {
+		DisplayName: Shaman Mask
+		Tooltip: Increases your max number of minions by 1
+	}
+
+	Whetstone: {
+		DisplayName: Whetstone
+		Tooltip: Increases armor penetration for melee weapons by 12
+	}
+
+	Bandolier: {
+		DisplayName: Bandolier
+		Tooltip: 20% chance to save ammo
+	}
+
+	Stratagem: {
+		DisplayName: Stratagem
+		Tooltip: Increases your max number of sentries by 1
+	}
+
+	FocusCrystal: {
+		DisplayName: Focus Crystal
+		Tooltip:
+			'''
+			Increases maximum mana by 20
+			5% increased magic damage
+			2% increased magic critical strike chance
+			2% reduced mana cost
+			'''
+	}
+
+	SweetToothNecklace: {
+		DisplayName: Sweet Tooth Necklace
+		Tooltip:
+			'''
+			Increases armor penetration by 5
+			Douses the user in honey when damaged
+			20% increased movement and mining speed
+			'''
+	}
+
+	Balance: {
+		DisplayName: Balance
+		Tooltip:
+			'''
+			Increases armor penetration for melee weapons by 12
+			20% chance to save ammo
+			Magic powers are increased
+			Increases your max number of minions and sentries by 1
+			Increases armor penetration by 5
+			Douses the user in honey when damaged
+			20% increased movement and mining speed
+			'''
+	}
+
+	Harmony: {
+		DisplayName: Harmony
+		Tooltip:
+			'''
+			Increases armor penetration for melee weapons by 12
+			20% chance to save ammo
+			Magic powers are increased
+			Increases your max number of minions and sentries by 1
+			40% increased movement speed
+			20% increased mining speed
+			Increases health and mana regeneration, defense, and luck
+			'''
+	}
+
+	Medkit: {
+		DisplayName: Medkit
+		Tooltip:
+		'''
+		Restores 10% of your max life 5 seconds after taking damage
+		Immunity to Poison and Bleeding
+		'''
+	}
+}
+
+Buffs: {
+	Medicated: {
+		DisplayName: Medicated
+		Description: The doctor will see you shortly
+	}
+}
