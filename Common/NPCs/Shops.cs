@@ -10,7 +10,9 @@ namespace SuperfluityTwo.NPCs
         {
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.Dryad, "Shop"))
             {
-                shop.Add(ItemID.AnkletoftheWind, Condition.InJungle, Condition.MoonPhasesEven);
+                shop.Add(new Item(ItemID.AnkletoftheWind) {
+					shopCustomPrice = Item.buyPrice(gold: 6)
+				}, Condition.InJungle, Condition.MoonPhasesEven);
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.ArmsDealer, "Shop"))
             {
@@ -38,7 +40,9 @@ namespace SuperfluityTwo.NPCs
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.BestiaryGirl, "Shop"))
             {
-                shop.Add(ItemID.CreativeWings, Condition.BestiaryFilledPercent(25));
+                shop.Add(new Item(ItemID.CreativeWings) {
+					shopCustomPrice = Item.buyPrice(gold: 30)
+				}, Condition.BestiaryFilledPercent(30));
                 return;
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.Clothier, "Shop"))

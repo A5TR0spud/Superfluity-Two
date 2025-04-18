@@ -108,10 +108,15 @@ Items: {
 	Medkit: {
 		DisplayName: Medkit
 		Tooltip:
-		'''
-		Restores 10% of your max life 5 seconds after taking damage
-		Immunity to Poison and Bleeding
-		'''
+			'''
+			Restores 10% of your max life 5 seconds after taking damage
+			Immunity to Poison and Bleeding
+			'''
+	}
+
+	RedAlert: {
+		DisplayName: Red Alert
+		Tooltip: Every 25 seconds, blocks the next source of damage
 	}
 }
 
@@ -119,5 +124,10 @@ Buffs: {
 	Medicated: {
 		DisplayName: Medicated
 		Description: The doctor will see you shortly
+	}
+
+	Alert: {
+		DisplayName: Alerted
+		Description: Red Alert's dodge is on cooldown!
 	}
 }
