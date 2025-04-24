@@ -6,10 +6,10 @@ using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Other
+namespace SuperfluityTwo.Content.Items.Mayday
 {
     //[AutoloadEquip(EquipType.Face)]
-	public class RedAlert : ModItem
+	public class RedAlert : GlowItem
 	{
         public override void SetDefaults()
 		{
@@ -47,7 +47,7 @@ namespace SuperfluityTwo.Content.Items.Other
             modded.visibleRedAlert = !hideVisual;
         }
 
-        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float  scale, int whoAmI) 	
+        /*public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float  scale, int whoAmI) 	
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Glow", AssetRequestMode.ImmediateLoad).Value;
             spriteBatch.Draw
@@ -66,6 +66,6 @@ namespace SuperfluityTwo.Content.Items.Other
                 SpriteEffects.None, 
                 0f
             );
-        }
+        }*/
     }
 }

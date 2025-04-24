@@ -10,14 +10,17 @@ namespace SuperfluityTwo.Common.Players
         public bool isMedicatedForBuff = false;
         public override void ResetEffects()
         {
-            isMedicatedForBuff = isMedicated;
             isMedicated = false;
+        }
+        public override void PostUpdateEquips()
+        {
+            isMedicatedForBuff = isMedicated;
         }
 
         public override void PostHurt(Player.HurtInfo info)
         {
             if (isMedicated)
-                Player.AddBuff(ModContent.BuffType<Medicated>(), 5 * 60);
+                Player.AddBuff(ModContent.BuffType<Medicated>(), 8 * 60);
         }
     }
 }

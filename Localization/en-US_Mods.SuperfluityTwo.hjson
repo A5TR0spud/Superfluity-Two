@@ -109,7 +109,7 @@ Items: {
 		DisplayName: Medkit
 		Tooltip:
 			'''
-			Restores 10% of your max life 5 seconds after taking damage
+			Restores 10% of your max life 8 seconds after taking damage
 			Immunity to Poison and Bleeding
 			'''
 	}
@@ -117,6 +117,15 @@ Items: {
 	RedAlert: {
 		DisplayName: Red Alert
 		Tooltip: Every 25 seconds, blocks the next source of damage
+	}
+
+	BloodMold: {
+		DisplayName: Blood Mold
+		Tooltip:
+			'''
+			All damage taken is over 8 seconds
+			You cannot die for the first 6 seconds
+			'''
 	}
 }
 
@@ -129,5 +138,15 @@ Buffs: {
 	Alert: {
 		DisplayName: Alerted
 		Description: Red Alert's dodge is on cooldown!
+	}
+
+	BloodMold: {
+		DisplayName: Bleeding Mold
+		Description: Taking damage from your frivolity
+	}
+
+	BloodSprout: {
+		DisplayName: Blood Sprout
+		Description: You cannot kill me in any way that matters
 	}
 }

@@ -1,7 +1,7 @@
 using SuperfluityTwo.Content.Buffs;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Common.Players
@@ -36,7 +36,25 @@ namespace SuperfluityTwo.Common.Players
                 graceTime--;
         }
 
-        public override bool ConsumableDodge(Player.HurtInfo info)
+        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
+        {
+            if (Player == Main.LocalPlayer && hasRedAlert && !Player.HasBuff(ModContent.BuffType<Alert>()))
+            {
+                Player.AddBuff(ModContent.BuffType<Alert>(), 25 * 60);
+                Player.SetImmuneTimeForAllTypes(Player.longInvince ? 90 : 60);
+                SoundStyle alarmSound = new SoundStyle($"{nameof(SuperfluityTwo)}/Assets/Sounds/KlaxonAlarm")
+                    {
+                        Volume = 1.45f,
+                        PitchVariance = 0.005f
+                    };
+                    SoundEngine.PlaySound(alarmSound);
+                return true;
+            } 
+
+            return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
+        }
+
+        /*public override bool ConsumableDodge(Player.HurtInfo info)
         {
             if (hasRedAlert && !Player.HasBuff(ModContent.BuffType<Alert>()))
             {
@@ -51,6 +69,6 @@ namespace SuperfluityTwo.Common.Players
                 return true;
             } 
             return base.ConsumableDodge(info);
-        }
+        }*/
     }
 }
