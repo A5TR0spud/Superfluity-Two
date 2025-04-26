@@ -14,6 +14,7 @@ namespace SuperfluityTwo.Common.Players
         public float damageLeft = -1;
         static readonly public int TimeForHit = 8 * 60;
         static readonly public int TimeForInv = 6 * 60;
+        static readonly public int InvHitPenalty = 1 * 60;
         PlayerDeathReason heldDamageSource;
         public override void ResetEffects()
         {
@@ -45,13 +46,15 @@ namespace SuperfluityTwo.Common.Players
         public override void OnHurt(Player.HurtInfo info)
         {
             if (hasBloodMold) {
-                if (!Player.HasBuff(ModContent.BuffType<BloodMold>())) {
+                if (Player.HasBuff(ModContent.BuffType<BloodSprout>()))
+                    Player.buffTime[Player.FindBuffIndex(ModContent.BuffType<BloodSprout>())] -= InvHitPenalty;
+
+                if (!Player.HasBuff(ModContent.BuffType<BloodMold>()))
                     Player.AddBuff(ModContent.BuffType<BloodSprout>(), TimeForInv);
-                }
+                
                 Player.AddBuff(ModContent.BuffType<BloodMold>(), TimeForHit);
                 heldDamageSource = info.DamageSource;
                 damageLeft = Math.Max(damageLeft, 0) + ((Player.endurance > 1 ? 0 : 1 - Player.endurance) * m.GetDamage(info.SourceDamage, Player.statDefense, Player.DefenseEffectiveness.Value));
-                Player.SetImmuneTimeForAllTypes(10);
                 return;
             }
         }

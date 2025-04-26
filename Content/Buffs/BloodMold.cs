@@ -12,6 +12,13 @@ namespace SuperfluityTwo.Content.Buffs
             BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
         }
 
+        public override void Update(Player player, ref int buffIndex)
+        {
+            if (player.buffTime[buffIndex] % 12 == 0) {
+                Dust.NewDust(player.position, player.width, player.height, DustID.RedMoss, Alpha: 128);
+            }
+        }
+
         public override bool RightClick(int buffIndex)
         {
             return false;

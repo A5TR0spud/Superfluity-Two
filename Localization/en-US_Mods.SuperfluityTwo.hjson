@@ -125,7 +125,22 @@ Items: {
 			'''
 			All damage taken is over 8 seconds
 			You cannot die for the first 6 seconds
+			Taking further damage reduces unkillable duration by 1 second
 			'''
+	}
+
+	HeartOfDecay: {
+		DisplayName: Heart of Decay
+		Tooltip:
+			'''
+			placeholder
+			'You cannot kill me in any way that matters'
+			'''
+	}
+
+	Corpsebloom: {
+		DisplayName: Corpsebloom
+		Tooltip: Taking and dealing damage applies a regeneration buff
 	}
 }
 
@@ -146,7 +161,12 @@ Buffs: {
 	}
 
 	BloodSprout: {
-		DisplayName: Blood Sprout
-		Description: You cannot kill me in any way that matters
+		DisplayName: Blossoming Blood
+		Description: Holding you together
+	}
+
+	CorpseBuff: {
+		DisplayName: Corpseblossom
+		Description: Increased life regeneration
 	}
 }

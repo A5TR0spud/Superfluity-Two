@@ -14,8 +14,8 @@ namespace SuperfluityTwo.Content.Items.Mayday
 		{
 			Item.width = 14;
 			Item.height = 28;
-			Item.value = Item.sellPrice(gold: 1, silver: 15);
-			Item.rare = ItemRarityID.LightRed;
+			Item.value = Item.sellPrice(silver: 10);
+			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
         }
 
