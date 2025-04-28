@@ -1,4 +1,5 @@
 using SuperfluityTwo.Common.Players;
+using SuperfluityTwo.Content.Items.Other;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -14,7 +15,7 @@ namespace SuperfluityTwo.Content.Buffs
 
 		public override void Update(Player player, ref int buffIndex) {
             if (player.buffTime[buffIndex] == 1) {
-                player.Heal((int)(player.statLifeMax2 * 0.10f));
+                player.Heal((int)(player.GetModPlayer<MedkitPlayer>().health * 0.10f));
                 player.DelBuff(buffIndex);
             }
             if (!player.GetModPlayer<MedkitPlayer>().isMedicatedForBuff) {

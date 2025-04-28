@@ -19,18 +19,16 @@ namespace SuperfluityTwo.Common.Players
         PlayerDeathReason heldDamageSource;
         public override void ResetEffects()
         {
-            //base.ResetEffects();
             rawHasBloodMold = false;
         }
 
         public override void PostUpdateEquips()
         {
-            //base.PostUpdateEquips();
             hasBloodMold = rawHasBloodMold;
-            if (!hasBloodMold) {
+            /*if (!hasBloodMold) {
                 Player.ClearBuff(ModContent.BuffType<BloodMold>());
                 Player.ClearBuff(ModContent.BuffType<BloodSprout>());
-            }
+            }*/
         }
 
         Player.HurtModifiers m;
@@ -77,10 +75,10 @@ namespace SuperfluityTwo.Common.Players
                 if (damageLeft <= 0.01) damageLeft = 0.0001f;
             }
             //case: buff removed early
-            if (decayTime <= 0 && damageLeft > 0) {
+            /*if (decayTime <= 0 && damageLeft > 0) {
                 Player.lifeRegen -= (int)(damageLeft * 120);
                 damageLeft = 0;
-            }
+            }*/
         }
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)

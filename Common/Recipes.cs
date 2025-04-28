@@ -272,6 +272,9 @@ namespace SuperfluousSummoning.Content
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.PhilosophersStone, ItemID.LifeCrystal);
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.TitanGlove, ItemID.FeralClaws);
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.CrossNecklace, ItemID.Chain);
+
+            RegisterShimmerCraft(ItemID.NaturesGift, ItemID.JungleRose, ItemID.LifeCrystal);
+            RegisterShimmerCraft(ItemID.JungleRose, ItemID.NaturesGift, ItemID.ManaCrystal);
         }
 
         private void RegisterMutualShimmerCraft(int[] items, int resultItem, int itemID) {
@@ -284,6 +287,17 @@ namespace SuperfluousSummoning.Content
                     .DisableDecraft()
                     .Register();
             }
+        }
+
+        private void RegisterShimmerCraft(int inItem, int outItem, int transformItem = -1) {
+            Recipe r = Recipe.Create(outItem)
+                    .AddIngredient(inItem);
+            if (transformItem != -1) {
+                r.AddIngredient(transformItem);
+            }
+            r.AddCondition(Condition.NearShimmer)
+                .DisableDecraft()
+                .Register();
         }
     }
 }

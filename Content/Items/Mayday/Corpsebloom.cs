@@ -21,12 +21,7 @@ namespace SuperfluityTwo.Content.Items.Mayday
         {
             CreateRecipe()
                 .AddIngredient(ItemID.JungleRose)
-                .AddIngredient(ItemID.RottenChunk, 13)
-                .AddTile(TileID.DemonAltar)
-                .Register();
-            CreateRecipe()
-                .AddIngredient(ItemID.JungleRose)
-                .AddIngredient(ItemID.Vertebrae, 13)
+                .AddIngredient(ItemID.JungleSpores, 13)
                 .AddTile(TileID.DemonAltar)
                 .Register();
         }
