@@ -140,7 +140,7 @@ Items: {
 
 	Corpsebloom: {
 		DisplayName: Corpsebloom
-		Tooltip: Taking and dealing damage applies a regeneration buff
+		Tooltip: Killing enemies heals you over time
 	}
 }
 

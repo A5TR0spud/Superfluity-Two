@@ -48,8 +48,6 @@ namespace SuperfluityTwo.Common.Players
             }
             if (bastDefense)
                 Player.statDefense += 5;
-            if (gnomed)
-                Player.equipmentBasedLuckBonus += 0.2f;
             if (focused) {
                 Player.GetCritChance(DamageClass.Magic) += 2;
                 Player.GetDamage(DamageClass.Magic) += 0.05f;
@@ -67,6 +65,12 @@ namespace SuperfluityTwo.Common.Players
             if (stoned) {
                 Player.GetArmorPenetration(DamageClass.Melee) += 12;
             }
+        }
+
+        public override void ModifyLuck(ref float luck)
+        {
+            if (gnomed)
+                luck += 0.2f;
         }
 
         public override void UpdateLifeRegen()

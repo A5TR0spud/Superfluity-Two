@@ -13,21 +13,17 @@ namespace SuperfluityTwo.Content.Buffs
             BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
         }
 
-        public override bool RightClick(int buffIndex)
-        {
-            return false;
-        }
-        
         public override void Update(Player player, ref int buffIndex)
         {
             if (player.buffTime[buffIndex] % 40 == 0) {
                 Dust.NewDust(player.position, player.width, player.height, DustID.JungleSpore, Alpha: 128);
             }
+            player.lifeRegen += CorpseBloomPlayer.HPT;
         }
 
         public override bool ReApply(Player player, int time, int buffIndex)
         {
-            player.buffTime[buffIndex] = Math.Clamp(player.buffTime[buffIndex] + time, CorpseBloomPlayer.MinCorpseFrames, CorpseBloomPlayer.MaxCorpseFrames);
+            player.buffTime[buffIndex] = Math.Min(player.buffTime[buffIndex] + time, CorpseBloomPlayer.MaxCorpseFrames);
             return true;
         }
     }

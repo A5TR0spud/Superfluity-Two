@@ -5,6 +5,7 @@ using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Mayday
 {
+    [AutoloadEquip(EquipType.Face)]
 	public class Corpsebloom : ModItem
 	{
         public override void SetDefaults()

@@ -5,48 +5,35 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Core;
 
 namespace SuperfluityTwo.Common.Players
 {
     public class CorpseBloomPlayer : ModPlayer {
         public bool hasCorpseBloom = false;
         public bool rawHasCorpseBloom = false;
-        static readonly public int DoubleRegenPerSecond = 11;
-        static readonly public float InflictMultiplier = 2; //ticks per damage dealt
-        static readonly public float SufferMultiplier = 10; //ticks per damage taken
-        static readonly public int MaxCorpseFrames = 10 * 60;
-        static readonly public int MinCorpseFrames = 60;
+        public static readonly int FramesPerKill = 4 * 60;
+        public static readonly int MaxCorpseFrames = 20 * 60;
+        public static readonly int HealthPerKill = 20;
+        static readonly public int HPT = HealthPerKill * 120 / FramesPerKill;
+
         public override void ResetEffects()
         {
-            //base.ResetEffects();
             rawHasCorpseBloom = false;
         }
 
         public override void PostUpdateEquips()
         {
-            //base.PostUpdateEquips();
             hasCorpseBloom = rawHasCorpseBloom;
-        }
-
-        public override void UpdateLifeRegen()
-        {
-            if (Player.HasBuff<CorpseBuff>()) {
-                Player.lifeRegen += DoubleRegenPerSecond;
+            if (!hasCorpseBloom) {
+                Player.ClearBuff(ModContent.BuffType<CorpseBuff>());
             }
         }
 
-        public void ApplyCorpseBuff(int frames) {
-            if (!Player.HasBuff(ModContent.BuffType<CorpseBuff>())) {
-                frames = Math.Max(frames, MinCorpseFrames);
-            }
-            frames = Math.Min(frames, MaxCorpseFrames);
-            Player.AddBuff(ModContent.BuffType<CorpseBuff>(), frames);
-        }
-
-        public override void OnHurt(Player.HurtInfo info)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (hasCorpseBloom) {
-                ApplyCorpseBuff((int)(info.SourceDamage * SufferMultiplier));
+            if ((target.life <= 0 || hit.InstantKill) && hasCorpseBloom) {
+                Player.AddBuff(ModContent.BuffType<CorpseBuff>(), FramesPerKill);
             }
         }
     }

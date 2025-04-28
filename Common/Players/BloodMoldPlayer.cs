@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using SuperfluityTwo.Content.Buffs;
 using Terraria;
 using Terraria.Audio;
@@ -54,8 +55,11 @@ namespace SuperfluityTwo.Common.Players
                 
                 Player.AddBuff(ModContent.BuffType<BloodMold>(), TimeForHit);
                 heldDamageSource = info.DamageSource;
-                damageLeft = Math.Max(damageLeft, 0) + ((Player.endurance > 1 ? 0 : 1 - Player.endurance) * m.GetDamage(info.SourceDamage, Player.statDefense, Player.DefenseEffectiveness.Value));
-                return;
+                float dmg = (Player.endurance > 1 ? 0 : 1 - Player.endurance) * m.GetDamage(info.SourceDamage, Player.statDefense, Player.DefenseEffectiveness.Value);
+                CombatText.NewText(new Rectangle((int)Player.Center.X - 5, (int)Player.Center.Y, 10, 10),
+                Colors.RarityPurple, (int)dmg,
+                dramatic: false, dot: false);
+                damageLeft = Math.Max(damageLeft, 0) + dmg;
             }
         }
 
