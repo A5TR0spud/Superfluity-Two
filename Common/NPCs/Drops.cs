@@ -19,6 +19,10 @@ namespace SuperfluityTwo.NPCs
             /*if (npc.type == NPCID.SporeBat) {
                 npcLoot.Add(ItemDropRule.ByCondition(new SuperfluousConditions.DownedEowOrBoc(), ModContent.ItemType<BloodMold>(), 1, 30, 90));
             }*/
+            if (npc.type == NPCID.AnomuraFungus || npc.type == NPCID.MushiLadybug || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieMushroomHat) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aranearum>(), 33));
+                return;
+            }
         }
     }
 }

@@ -142,6 +142,15 @@ Items: {
 		DisplayName: Corpsebloom
 		Tooltip: Killing enemies heals you over time
 	}
+
+	Aranearum: {
+		DisplayName: Aranearum
+		Tooltip:
+			'''
+			Taking damage fumigates the area with spores
+			Enemies that contact you become confused
+			'''
+	}
 }
 
 Buffs: {
@@ -170,3 +179,5 @@ Buffs: {
 		Description: Increased life regeneration
 	}
 }
+
+Projectiles.ShroomFume.DisplayName: Shroom Fume
