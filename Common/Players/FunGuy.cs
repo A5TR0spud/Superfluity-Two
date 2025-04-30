@@ -14,15 +14,19 @@ namespace SuperfluityTwo.Common.Players
     public class FunGuy : ModPlayer {
         public bool hasAra = false;
         public bool rawHasAra = false;
+        public bool rawHasHeart = false;
+        public bool hasHeart = false;
 
         public override void ResetEffects()
         {
             rawHasAra = false;
+            rawHasHeart = false;
         }
 
         public override void PostUpdateEquips()
         {
-            hasAra = rawHasAra;
+            hasAra = rawHasAra || rawHasHeart;
+            hasHeart = rawHasHeart;
         }
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
@@ -43,12 +47,13 @@ namespace SuperfluityTwo.Common.Players
                 dir += Math.Tau / projCount;
                 float j = (int)(i / projCount + 1);
                 float ji = (float)Math.PI * j / projCount;
-                Projectile.NewProjectile(
+                int proj = Projectile.NewProjectile(
                     Player.GetSource_FromThis(),
                     Player.Center,
                     j * vel * new Vector2((float)Math.Cos(dir + ji), (float)Math.Sin(dir + ji)),
                     ModContent.ProjectileType<ShroomFume>(),
                     5, 0, Player.whoAmI);
+                ((ShroomFume)Main.projectile[proj].ModProjectile).isHeart = hasHeart;
             }
         }
     }

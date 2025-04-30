@@ -129,15 +129,6 @@ Items: {
 			'''
 	}
 
-	HeartOfDecay: {
-		DisplayName: Heart of Decay
-		Tooltip:
-			'''
-			placeholder
-			'You cannot kill me in any way that matters'
-			'''
-	}
-
 	Corpsebloom: {
 		DisplayName: Corpsebloom
 		Tooltip: Killing enemies heals you over time
@@ -149,6 +140,18 @@ Items: {
 			'''
 			Taking damage fumigates the area with spores
 			Enemies that contact you become confused
+			'''
+	}
+
+	HeartOfDecay: {
+		DisplayName: Heart of Decay
+		Tooltip:
+			'''
+			All damage taken is over time
+			You are given grace time
+			Killing enemies heals you over time
+			Taking damage contaminates the area with spores
+			'You cannot kill me in any way that matters'
 			'''
 	}
 }

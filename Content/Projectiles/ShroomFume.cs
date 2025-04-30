@@ -11,9 +11,11 @@ namespace SuperfluityTwo.Content.Projectiles
 {
 	public class ShroomFume : ModProjectile
 	{
-        /*public override void SetStaticDefaults() {
-			Main.projFrames[Type] = 3;
-		}*/
+		public bool isHeart = false;
+
+        public override void SetStaticDefaults() {
+			Main.projFrames[Type] = 2;
+		}
 
 		public override void SetDefaults()
         {
@@ -27,21 +29,18 @@ namespace SuperfluityTwo.Content.Projectiles
 			Projectile.timeLeft = 600;
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = true;
+			isHeart = false;
+			//Projectile.frame = 2;
 			//Projectile.extraUpdates = 1;
             Projectile.usesIDStaticNPCImmunity = true;
 			Projectile.stopsDealingDamageAfterPenetrateHits = true;
 			Projectile.ArmorPenetration = 24;
 		}
 
-        //float animTimer = 0;
-        /*public override bool PreAI()
+        public override bool PreAI()
         {
-            if (Projectile.timeLeft < 255) Projectile.alpha = 255 - Projectile.timeLeft;
-            Projectile.rotation = Projectile.velocity.ToRotation();// - MathHelper.ToRadians(90);
-			//Projectile.spriteDirection = Projectile.direction;
-            //animTimer+=1f/20f;
-            //Projectile.frame = (int)animTimer % 3;
-            return false;
-        }*/
+			Projectile.frame = isHeart ? 1 : 0;
+			return true;
+        }
     }
 }

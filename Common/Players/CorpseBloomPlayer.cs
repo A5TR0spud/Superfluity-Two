@@ -16,15 +16,19 @@ namespace SuperfluityTwo.Common.Players
         public static readonly int MaxCorpseFrames = 20 * 60;
         public static readonly int HealthPerKill = 20;
         static readonly public int HPT = HealthPerKill * 120 / FramesPerKill;
+        public bool rawHasHeart = false;
+        public bool hasHeart = false;
 
         public override void ResetEffects()
         {
             rawHasCorpseBloom = false;
+            rawHasHeart = false;
         }
 
         public override void PostUpdateEquips()
         {
-            hasCorpseBloom = rawHasCorpseBloom;
+            hasCorpseBloom = rawHasCorpseBloom || rawHasHeart;
+            hasHeart = rawHasHeart;
             if (!hasCorpseBloom) {
                 Player.ClearBuff(ModContent.BuffType<CorpseBuff>());
             }
