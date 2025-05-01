@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SuperfluityTwo.Content.Items.Solace
+namespace SuperfluityTwo.Content.Items.Accessories.Solace
 {
     [AutoloadEquip(EquipType.Neck)]
 	public class StarpowerBandolier : GlowItem

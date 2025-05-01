@@ -1,18 +1,18 @@
+using SuperfluityTwo.Common.Players;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Mayday
+namespace SuperfluityTwo.Content.Items.Accessories.Balance
 {
     [AutoloadEquip(EquipType.Face)]
-	public class Corpsebloom : ModItem
+	public class ShamanMask : ModItem
 	{
         public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 36;
-			Item.value = Item.sellPrice(copper: 50);
+			Item.width = 18;
+			Item.height = 18;
+			Item.value = Item.sellPrice(silver: 2);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
         }
@@ -20,15 +20,15 @@ namespace SuperfluityTwo.Content.Items.Mayday
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.JungleRose)
-                .AddIngredient(ItemID.JungleSpores, 13)
-                .AddTile(TileID.DemonAltar)
+                .AddRecipeGroup("Wood", 50)
+                .AddIngredient(ItemID.FallenStar)
+                .AddTile(TileID.BewitchingTable)
                 .Register();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CorpseBloomPlayer>().rawHasCorpseBloom = true;
+            player.GetModPlayer<AtaraxiaPlayer>().shaman = true;
         }
     }
 }

@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items
+namespace SuperfluityTwo.Content.Items.Accessories
 {
 	public class Harmony : ModItem
 	{

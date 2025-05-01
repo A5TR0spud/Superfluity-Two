@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Other
+namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 {
     [AutoloadEquip(EquipType.Waist)]
 	public class Medkit : ModItem

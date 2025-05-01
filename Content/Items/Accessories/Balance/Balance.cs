@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Balance
+namespace SuperfluityTwo.Content.Items.Accessories.Balance
 {
     [AutoloadEquip(EquipType.Face)]
 	public class Balance : ModItem

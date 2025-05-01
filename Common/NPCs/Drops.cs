@@ -1,6 +1,6 @@
 using SuperfluityTwo.Common;
-using SuperfluityTwo.Content.Items.Mayday;
-using SuperfluityTwo.Content.Items.Solace;
+using SuperfluityTwo.Content.Items.Accessories.Mayday;
+using SuperfluityTwo.Content.Items.Accessories.Solace;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

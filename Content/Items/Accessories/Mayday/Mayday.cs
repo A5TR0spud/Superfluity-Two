@@ -3,9 +3,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using SuperfluityTwo.Common.Players;
 using SuperfluityTwo.Content.Buffs;
-using SuperfluityTwo.Content.Items.Other;
+using SuperfluityTwo.Content.Items.Accessories.Mayday;
 
-namespace SuperfluityTwo.Content.Items.Mayday
+namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 {
 	public class Mayday : GlowItem
 	{
@@ -49,6 +49,7 @@ namespace SuperfluityTwo.Content.Items.Mayday
             //player.GetModPlayer<MaydayPlayer>().HasMayday = true;
 
             player.GetModPlayer<ATGPlayer>().MissilesPerLaunch += 1;
+            player.GetModPlayer<ATGPlayer>().MissileCooldown += 30;
             //player.longInvince = true;
         }
 

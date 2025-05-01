@@ -37,6 +37,16 @@ namespace SuperfluityTwo.Common.Players
         {
             if (hasAra || HasMayday)
                 npc.AddBuff(BuffID.Confused, 3 * 60);
+            if (HasMayday) {
+                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(4, ATGPlayer.damage / 3);
+            }
+        }
+
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
+        {
+            if (HasMayday) {
+                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(2, ATGPlayer.damage / 2);
+            }
         }
 
         public override void OnHurt(Player.HurtInfo info)
@@ -60,9 +70,6 @@ namespace SuperfluityTwo.Common.Players
                         Damage: 5, KnockBack: 0, Player.whoAmI);
                     ((ShroomFume)Main.projectile[proj].ModProjectile).isHeart = hasHeart;
                 }
-            }
-            if (HasMayday) {
-                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(5, ATGPlayer.damage / 2);
             }
         }
     }

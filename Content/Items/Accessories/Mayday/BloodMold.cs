@@ -6,7 +6,7 @@ using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Mayday
+namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 {
 	public class BloodMold : ModItem
 	{

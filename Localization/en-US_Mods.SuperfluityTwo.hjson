@@ -181,6 +181,11 @@ Items: {
 			Immunity to Poison and Bleeding
 			'''
 	}
+
+	GrowthSpurt: {
+		DisplayName: Growth Spurt
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -247,4 +252,5 @@ Buffs: {
 Projectiles: {
 	ShroomFume.DisplayName: Shroom Fume
 	ATGMissile.DisplayName: Guided Missile
+	Growth.DisplayName: Growth
 }

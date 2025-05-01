@@ -14,7 +14,7 @@ namespace SuperfluityTwo.Common.Players
     public class ATGPlayer : ModPlayer {
         public static readonly int damage = 30;
         public static readonly int knockback = 1;
-        public static readonly int cooldown = 290;
+        public int MissileCooldown = 290;
         public int MissilesPerLaunch = 0;
         public int MissilesBonus = 1;
 
@@ -22,6 +22,7 @@ namespace SuperfluityTwo.Common.Players
         {
             MissilesPerLaunch = 0;
             MissilesBonus = 1;
+            MissileCooldown = 290;
         }
 
         int timer = 0;
@@ -31,7 +32,7 @@ namespace SuperfluityTwo.Common.Players
                 return;
             bool client = Player == Main.LocalPlayer;
             if (!client) return;
-            if (timer < cooldown)
+            if (timer < MissileCooldown)
             {
                 timer++;
                 return;
@@ -54,6 +55,7 @@ namespace SuperfluityTwo.Common.Players
 
         public void LaunchMissiles(int count, int damage = -1) {
             if (damage == -1) damage = ATGPlayer.damage;
+            if (damage < 1) damage = 1;
             for (int j = 0; j < count; j++) {
                 double ang = (j - (count / 2.0f) + 0.5f) * 0.2 - Math.PI * 0.5;
                 Vector2 dir = 10f * new Vector2((float)Math.Cos(ang), (float)Math.Sin(ang));

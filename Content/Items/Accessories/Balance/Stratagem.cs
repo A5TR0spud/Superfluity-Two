@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Balance
+namespace SuperfluityTwo.Content.Items.Accessories.Balance
 {
 	public class Stratagem : ModItem
 	{

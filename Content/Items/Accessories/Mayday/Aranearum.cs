@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Mayday
+namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 {
 	public class Aranearum : GlowItem
 	{

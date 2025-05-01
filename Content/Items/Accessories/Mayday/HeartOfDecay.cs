@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using SuperfluityTwo.Common.Players;
 using SuperfluityTwo.Content.Buffs;
 
-namespace SuperfluityTwo.Content.Items.Mayday
+namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 {
 	public class HeartOfDecay : ModItem
 	{

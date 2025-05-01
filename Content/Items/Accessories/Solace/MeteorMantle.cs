@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Solace
+namespace SuperfluityTwo.Content.Items.Accessories.Solace
 {
     [AutoloadEquip(EquipType.Back, EquipType.Front)]
 	public class MeteorMantle : ModItem

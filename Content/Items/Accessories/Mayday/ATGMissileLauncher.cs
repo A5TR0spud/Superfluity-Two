@@ -6,7 +6,7 @@ using SuperfluityTwo.Content.Projectiles;
 using System;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Mayday
+namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 {
     //[AutoloadEquip(EquipType.Face)]
 	public class ATGMissileLauncher : ModItem

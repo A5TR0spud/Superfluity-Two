@@ -1,5 +1,5 @@
 using SuperfluityTwo.Common.Players;
-using SuperfluityTwo.Content.Items.Other;
+using SuperfluityTwo.Content.Items.Accessories.Mayday;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;

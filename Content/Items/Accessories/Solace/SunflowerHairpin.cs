@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Solace
+namespace SuperfluityTwo.Content.Items.Accessories.Solace
 {
     [AutoloadEquip(EquipType.Face)]
 	public class SunflowerHairpin : ModItem

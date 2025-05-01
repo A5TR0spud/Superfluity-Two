@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Balance
+namespace SuperfluityTwo.Content.Items.Accessories.Balance
 {
 	public class FocusCrystal : ModItem
 	{
