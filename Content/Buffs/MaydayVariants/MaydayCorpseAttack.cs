@@ -20,7 +20,7 @@ namespace SuperfluityTwo.Content.Buffs.MaydayVariants
             }
             player.GetDamage(DamageClass.Generic) += 0.05f;
             player.GetAttackSpeed(DamageClass.Generic) += 0.10f;
-            player.moveSpeed += 1.0f;
+            //player.moveSpeed += 1.0f;
         }
     }
 }

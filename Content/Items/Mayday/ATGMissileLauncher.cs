@@ -34,6 +34,10 @@ namespace SuperfluityTwo.Content.Items.Mayday
                 .Register();
         }
 
+        public override bool RangedPrefix()
+        {
+            return false;
+        }
         
         public override void UpdateAccessory(Player player, bool hideVisual)
         {

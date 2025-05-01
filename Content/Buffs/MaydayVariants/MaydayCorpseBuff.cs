@@ -19,7 +19,7 @@ namespace SuperfluityTwo.Content.Buffs.MaydayVariants
                 Dust.NewDust(player.position, player.width, player.height, DustID.JungleSpore, Alpha: 128);
             }
             player.lifeRegen += CorpseBloomPlayer.HPT;
-            player.statDefense += 4;
+            //player.statDefense += 4;
         }
 
         public override bool ReApply(Player player, int time, int buffIndex)

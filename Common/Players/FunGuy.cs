@@ -62,7 +62,7 @@ namespace SuperfluityTwo.Common.Players
                 }
             }
             if (HasMayday) {
-                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(5, ATGPlayer.damage - 10);
+                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(5, ATGPlayer.damage / 2);
             }
         }
     }

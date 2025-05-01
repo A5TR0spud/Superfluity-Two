@@ -116,8 +116,8 @@ namespace SuperfluityTwo.Common.Players
 
             //base case (tick)
             if (decayTime > 0 && damageLeft > 0) {
-                if (Player.lifeRegen > 0)
-                    Player.lifeRegen /= 2;
+                /*if (Player.lifeRegen > 0)
+                    Player.lifeRegen /= 2;*/
 
                 int damageToDeal = (int)(60.0f * damageLeft / decayTime);
                 Player.lifeRegen -= damageToDeal * 2;

@@ -52,7 +52,7 @@ namespace SuperfluityTwo.Common.Players
         {
             int buffToCheck = HasMayday ? ModContent.BuffType<MaydayCorpseAttack>() : ModContent.BuffType<CorpseAttack>();
             if (hasCorpseBloom) {
-                Player.AddBuff(buffToCheck, HasMayday ? 8 * 60 : 5 * 60);
+                Player.AddBuff(buffToCheck, 5 * 60);//HasMayday ? 8 * 60 : 5 * 60);
             }
         }
     }

@@ -174,12 +174,11 @@ Items: {
 			'''
 			Every 25 seconds, blocks the next instance of damage
 			Periodically fires homing missiles at nearby enemies
-			Taking damage launches several missiles and increases attack power and movement speed
-			Increases length of invincibility after taking damage
+			Taking damage launches several missiles and increases attack power
 			All damage taken is over time; you are given grace time
-			Killing enemies heals you over time and increases defense
+			Heal some time after taking damage
+			Killing enemies heals you over time
 			Immunity to Poison and Bleeding
-			Puts a barrier around the owner when below 50% life that reduces damage by 25%
 			'''
 	}
 }
@@ -217,22 +216,26 @@ Buffs: {
 
 	MaydayBloodMold: {
 		DisplayName: Reprimands
-		Description: Losing health to poor discipline
+		Description:
+			'''
+			Losing health to poor discipline
+			You will heal when it's over
+			'''
 	}
 
 	MaydayBloodSprout: {
-		DisplayName: M'aider
+		DisplayName: Mayday Mayday Mayday
 		Description: Unkillable
 	}
 
 	MaydayCorpseAttack: {
 		DisplayName: The Best Defense
-		Description: Increased attack speed, damage, and movement speed
+		Description: Increased attack speed and damage
 	}
 
 	MaydayCorpseBuff: {
 		DisplayName: The Best Offense
-		Description: Increased life regeneration and defense
+		Description: Increased life regeneration
 	}
 
 	MatrixBarrier: {
