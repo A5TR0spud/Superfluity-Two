@@ -14,16 +14,18 @@ namespace SuperfluityTwo.Common.Players
         private int ticksRedAlertEquipped = 0;
         public bool RedAlertEquipped = false;
         public int graceTime = 5;
+
+        public bool visibleMayday = false;
+        public bool forceVisibleMayday = false;
         public override void ResetEffects()
         {
-            base.ResetEffects();
             forceVisibleRedAlert = false;
             hasRedAlert = false;
+            forceVisibleMayday = false;
         }
 
         public override void UpdateEquips()
         {
-            base.UpdateEquips();
             if (hasRedAlert)
                 ticksRedAlertEquipped++;
             else
@@ -42,33 +44,21 @@ namespace SuperfluityTwo.Common.Players
             {
                 Player.AddBuff(ModContent.BuffType<Alert>(), 25 * 60);
                 Player.SetImmuneTimeForAllTypes(Player.longInvince ? 90 : 60);
-                SoundStyle alarmSound = new SoundStyle($"{nameof(SuperfluityTwo)}/Assets/Sounds/KlaxonAlarm")
-                    {
-                        Volume = 1.45f,
-                        PitchVariance = 0.005f
-                    };
-                    SoundEngine.PlaySound(alarmSound);
+                bool useSound = forceVisibleMayday || forceVisibleRedAlert || visibleMayday || visibleRedAlert;
+                if (useSound) {
+                    bool useMaydaySound = forceVisibleMayday || (visibleMayday && !forceVisibleRedAlert);
+                    string soundID = useMaydaySound ? "DEFCONAlarm" : "KlaxonAlarm";
+                    SoundStyle alarmSound = new SoundStyle($"{nameof(SuperfluityTwo)}/Assets/Sounds/" + soundID)
+                        {
+                            Volume = 1.45f,
+                            PitchVariance = 0.005f
+                        };
+                        SoundEngine.PlaySound(alarmSound);
+                }
                 return true;
             } 
 
             return base.ImmuneTo(damageSource, cooldownCounter, dodgeable);
         }
-
-        /*public override bool ConsumableDodge(Player.HurtInfo info)
-        {
-            if (hasRedAlert && !Player.HasBuff(ModContent.BuffType<Alert>()))
-            {
-                Player.AddBuff(ModContent.BuffType<Alert>(), 25 * 60);
-                Player.SetImmuneTimeForAllTypes(Player.longInvince ? 90 : 60);
-                SoundStyle alarmSound = new SoundStyle($"{nameof(SuperfluityTwo)}/Assets/Sounds/KlaxonAlarm")
-                    {
-                        Volume = 1.45f,
-                        PitchVariance = 0.005f
-                    };
-                    SoundEngine.PlaySound(alarmSound);
-                return true;
-            } 
-            return base.ConsumableDodge(info);
-        }*/
     }
 }

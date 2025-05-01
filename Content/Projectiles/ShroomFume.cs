@@ -33,8 +33,9 @@ namespace SuperfluityTwo.Content.Projectiles
 			//Projectile.frame = 2;
 			//Projectile.extraUpdates = 1;
             Projectile.usesIDStaticNPCImmunity = true;
+			Projectile.idStaticNPCHitCooldown = 20;
 			Projectile.stopsDealingDamageAfterPenetrateHits = true;
-			Projectile.ArmorPenetration = 24;
+			Projectile.ArmorPenetration = 18;
 		}
 
         public override bool PreAI()

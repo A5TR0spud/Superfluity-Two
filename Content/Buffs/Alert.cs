@@ -31,8 +31,7 @@ namespace SuperfluityTwo.Content.Buffs
                 player.DelBuff(buffIndex);
                 return;
             }
-            if (player.buffTime[buffIndex] == 1
-                && player.GetModPlayer<RedAlertPlayer>().visibleRedAlert)
+            if (player.buffTime[buffIndex] == 1 && (modded.visibleRedAlert || modded.forceVisibleRedAlert || modded.visibleMayday || modded.forceVisibleMayday))
             {
                 SoundStyle alarmSound = new SoundStyle($"{nameof(SuperfluityTwo)}/Assets/Sounds/RedAlertOffCooldown")
                     {
@@ -53,9 +52,10 @@ namespace SuperfluityTwo.Content.Buffs
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
             if (drawInfo.shadow != 0)
                 return false;
-            if (drawInfo.drawPlayer.GetModPlayer<RedAlertPlayer>().forceVisibleRedAlert)
+            RedAlertPlayer modded = drawInfo.drawPlayer.GetModPlayer<RedAlertPlayer>();
+            if (modded.forceVisibleRedAlert || modded.forceVisibleMayday)
                 return true;
-            if (drawInfo.drawPlayer.HasBuff(ModContent.BuffType<Alert>()) && drawInfo.drawPlayer.GetModPlayer<RedAlertPlayer>().visibleRedAlert)
+            if (drawInfo.drawPlayer.HasBuff(ModContent.BuffType<Alert>()) && (modded.visibleRedAlert || modded.visibleMayday))
                 return true;
             return false;
 		}

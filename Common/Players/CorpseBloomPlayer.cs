@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
+using SuperfluityTwo.Content.Buffs.MaydayVariants;
 
 namespace SuperfluityTwo.Common.Players
 {
@@ -18,26 +19,40 @@ namespace SuperfluityTwo.Common.Players
         static readonly public int HPT = HealthPerKill * 120 / FramesPerKill;
         public bool rawHasHeart = false;
         public bool hasHeart = false;
+        public bool rawHasMayday = false;
+        public bool HasMayday = false;
 
         public override void ResetEffects()
         {
             rawHasCorpseBloom = false;
             rawHasHeart = false;
+            rawHasMayday = false;
         }
 
         public override void PostUpdateEquips()
         {
-            hasCorpseBloom = rawHasCorpseBloom || rawHasHeart;
+            hasCorpseBloom = rawHasCorpseBloom || rawHasHeart || rawHasMayday;
             hasHeart = rawHasHeart;
+            HasMayday = rawHasMayday;
             if (!hasCorpseBloom) {
-                Player.ClearBuff(ModContent.BuffType<CorpseBuff>());
+                int buffToCheck = HasMayday ? ModContent.BuffType<MaydayCorpseBuff>() : ModContent.BuffType<CorpseBuff>();
+                Player.ClearBuff(buffToCheck);
             }
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if ((target.life <= 0 || hit.InstantKill) && hasCorpseBloom) {
-                Player.AddBuff(ModContent.BuffType<CorpseBuff>(), FramesPerKill);
+                int buffToCheck = HasMayday ? ModContent.BuffType<MaydayCorpseBuff>() : ModContent.BuffType<CorpseBuff>();
+                Player.AddBuff(buffToCheck, FramesPerKill);
+            }
+        }
+
+        public override void OnHurt(Player.HurtInfo info)
+        {
+            int buffToCheck = HasMayday ? ModContent.BuffType<MaydayCorpseAttack>() : ModContent.BuffType<CorpseAttack>();
+            if (hasCorpseBloom) {
+                Player.AddBuff(buffToCheck, HasMayday ? 8 * 60 : 5 * 60);
             }
         }
     }

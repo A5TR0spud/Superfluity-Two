@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using SuperfluityTwo.Content.Buffs;
+using SuperfluityTwo.Content.Buffs.MaydayVariants;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -18,6 +19,8 @@ namespace SuperfluityTwo.Common.Players
         public bool rawHasBloodMold = false;
         public bool hasHeart = false;
         public bool rawHasHeart = false;
+        public bool rawHasMayday = false;
+        public bool HasMayday = false;
         public double damageLeft = -1;
         static readonly public int TimeForHit = 8 * 60;
         static readonly public int TimeForInv = 6 * 60;
@@ -64,13 +67,15 @@ namespace SuperfluityTwo.Common.Players
                 {
                     BloodMoldPlayer moldPlayer = player.GetModPlayer<BloodMoldPlayer>();
                     if (moldPlayer.hasBloodMold) {
-                        if (player.HasBuff(ModContent.BuffType<BloodSprout>()))
-                            player.buffTime[player.FindBuffIndex(ModContent.BuffType<BloodSprout>())] -= InvHitPenalty;
+                        int buffToCheck = moldPlayer.HasMayday ? ModContent.BuffType<MaydayBloodSprout>() : ModContent.BuffType<BloodSprout>();
+                        int debuffToCheck = moldPlayer.HasMayday ? ModContent.BuffType<MaydayBloodMold>() : ModContent.BuffType<BloodMold>();
+                        if (player.HasBuff(buffToCheck))
+                            player.buffTime[player.FindBuffIndex(buffToCheck)] -= InvHitPenalty;
 
-                        if (!player.HasBuff(ModContent.BuffType<BloodMold>()))
-                            player.AddBuff(ModContent.BuffType<BloodSprout>(), TimeForInv);
+                        if (!player.HasBuff(debuffToCheck))
+                            player.AddBuff(buffToCheck, TimeForInv);
                         
-                        player.AddBuff(ModContent.BuffType<BloodMold>(), TimeForHit);
+                        player.AddBuff(debuffToCheck, TimeForHit);
                         moldPlayer.heldDamageSource = damageSource;
                         moldPlayer.damageLeft = Math.Max(moldPlayer.damageLeft, 0) + returnValue;
                         return 0;
@@ -92,25 +97,33 @@ namespace SuperfluityTwo.Common.Players
         {
             rawHasBloodMold = false;
             rawHasHeart = false;
+            rawHasMayday = false;
         }
 
         public override void PostUpdateEquips()
         {
-            hasBloodMold = rawHasBloodMold || rawHasHeart;
+            hasBloodMold = rawHasBloodMold || rawHasHeart || rawHasMayday;
             hasHeart = rawHasHeart;
+            HasMayday = rawHasMayday;
         }
 
         public override void UpdateBadLifeRegen()
         {
             if (damageLeft <= 0.01) damageLeft = -1;
 
-            int decayTime = Player.HasBuff(ModContent.BuffType<BloodMold>()) ? Player.buffTime[Player.FindBuffIndex(ModContent.BuffType<BloodMold>())] : 0;
+            int buffToCheck = HasMayday ? ModContent.BuffType<MaydayBloodMold>() : ModContent.BuffType<BloodMold>();
+            int decayTime = Player.HasBuff(buffToCheck) ? Player.buffTime[Player.FindBuffIndex(buffToCheck)] : 0;
 
             //base case (tick)
             if (decayTime > 0 && damageLeft > 0) {
+                if (Player.lifeRegen > 0)
+                    Player.lifeRegen /= 2;
+
                 int damageToDeal = (int)(60.0f * damageLeft / decayTime);
                 Player.lifeRegen -= damageToDeal * 2;
                 damageLeft -= damageToDeal / 60.0f;
+                //if (Player.lifeRegen > 0)
+                //    Player.lifeRegen = 0;
                 if (damageLeft <= 0.01) damageLeft = 0.0001f;
             }
             //case: buff removed early
@@ -122,7 +135,8 @@ namespace SuperfluityTwo.Common.Players
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
         {
-            if (Player.HasBuff(ModContent.BuffType<BloodSprout>())) {
+            int buffToCheck = HasMayday ? ModContent.BuffType<MaydayBloodSprout>() : ModContent.BuffType<BloodSprout>();
+            if (Player.HasBuff(buffToCheck)) {
                 Player.statLife = 1;
                 return false;
             }
