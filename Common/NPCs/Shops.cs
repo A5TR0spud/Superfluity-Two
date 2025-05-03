@@ -23,7 +23,7 @@ namespace SuperfluityTwo.NPCs
                 
                 shop.InsertAfter(shop.GetEntry(ItemID.FlintlockPistol), new Item(ItemID.Handgun), Condition.DownedSkeletron);
                 shop.InsertAfter(shop.GetEntry(ItemID.Minishark), new Item(ItemID.ClockworkAssaultRifle), Condition.Hardmode);
-                shop.InsertAfter(shop.GetEntry(ItemID.Minishark), new Item(ItemID.Gatligator), Condition.Hardmode, Condition.MoonPhasesEvenQuarters);
+                shop.InsertAfter(shop.GetEntry(ItemID.Minishark), new Item(ItemID.Gatligator), Condition.Hardmode, Condition.MoonPhasesNearNew, Condition.NightOrEclipse);
                 return;
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.Merchant, "Shop"))

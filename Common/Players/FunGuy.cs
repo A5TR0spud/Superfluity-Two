@@ -38,14 +38,14 @@ namespace SuperfluityTwo.Common.Players
             if (hasAra || HasMayday)
                 npc.AddBuff(BuffID.Confused, 3 * 60);
             if (HasMayday) {
-                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(4, ATGPlayer.damage / 3);
+                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(4, 10); //4 * 10 = 40, normal firing is 30, still 60
             }
         }
 
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
             if (HasMayday) {
-                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(2, ATGPlayer.damage / 2);
+                Player.GetModPlayer<ATGPlayer>().LaunchMissiles(2, 17); //2 * 17 = 34, normal firing is 30, still 60
             }
         }
 

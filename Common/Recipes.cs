@@ -16,6 +16,14 @@ namespace SuperfluousSummoning.Content
                 .DisableDecraft()
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
+            
+            //Band of Regen
+            Recipe.Create(ItemID.BandofRegeneration)
+                .AddIngredient(ItemID.TissueSample, 5)
+                .AddIngredient(ItemID.LifeCrystal)
+                .DisableDecraft()
+                .AddTile(TileID.TinkerersWorkbench)
+                .Register();
 
             //Panic Necklace
             Recipe.Create(ItemID.PanicNecklace)
@@ -24,14 +32,6 @@ namespace SuperfluousSummoning.Content
                 .DisableDecraft()
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
-
-			/*//ExtendoGrip
-            Recipe.Create(ItemID.ExtendoGrip)
-                .AddIngredient(ItemID.ZombieArm)
-				.AddRecipeGroup(RecipeGroupID.IronBar, 5)
-                .DisableDecraft()
-                .AddTile(TileID.Anvils)
-                .Register();*/
 
 			//PiranhaGun
             Recipe.Create(ItemID.PiranhaGun)
@@ -87,13 +87,13 @@ namespace SuperfluousSummoning.Content
                 .AddTile(TileID.Anvils)
                 .Register();
 
-            /*//HoneyComb
+            //HoneyComb
             Recipe.Create(ItemID.HoneyComb)
                 .AddIngredient(ItemID.BeeWax, 10)
 				.AddIngredient(ItemID.Hive, 5)
                 .DisableDecraft()
                 .AddTile(TileID.WorkBenches)
-                .Register();*/
+                .Register();
 
             //Leather
             Recipe.Create(ItemID.Leather)
@@ -101,22 +101,6 @@ namespace SuperfluousSummoning.Content
                 .DisableDecraft()
                 .AddTile(TileID.WorkBenches)
                 .Register();
-
-            /*//WaterWalkingBoots
-            Recipe.Create(ItemID.WaterWalkingBoots)
-                .AddIngredient(ItemID.Leather, 5)
-                .AddIngredient(ItemID.WaterWalkingPotion, 3)
-                .DisableDecraft()
-                .AddTile(TileID.WorkBenches)
-                .Register();
-
-            //HermesBoots
-            Recipe.Create(ItemID.HermesBoots)
-                .AddIngredient(ItemID.Leather, 5)
-                .AddIngredient(ItemID.SwiftnessPotion, 3)
-                .DisableDecraft()
-                .AddTile(TileID.WorkBenches)
-                .Register();*/
 
             //IceSkates
             Recipe.Create(ItemID.IceSkates)
@@ -130,7 +114,6 @@ namespace SuperfluousSummoning.Content
             Recipe.Create(ItemID.IceMachine)
                 .AddIngredient(ItemID.IceChest)
                 .AddIngredient(ItemID.IceBlock, 100)
-                .AddIngredient(ItemID.SnowBlock, 50)
                 .DisableDecraft()
                 .Register();
 
@@ -141,131 +124,38 @@ namespace SuperfluousSummoning.Content
                 .DisableDecraft()
                 .Register();
 
-            /*//NimbusRod
-            Recipe.Create(ItemID.NimbusRod)
-                .AddIngredient(ItemID.RainCloud, 100)
-                .AddTile(TileID.CrystalBall)
-                .DisableDecraft()
-                .Register();*/
+            RegisterMutualLifeManaCraft(ItemID.Musket, ItemID.TheUndertaker);
+            RegisterMutualLifeManaCraft(ItemID.ShadowOrb, ItemID.CrimsonHeart);
+            RegisterMutualLifeManaCraft(ItemID.Vilethorn, ItemID.CrimsonRod);
+            RegisterMutualLifeManaCraft(ItemID.BallOHurt, ItemID.TheRottedFork);
 
-            /*//FrozenTurtleShell
-            Recipe.Create(ItemID.FrozenTurtleShell)
-                .AddIngredient(ItemID.TurtleShell)
-                .AddIngredient(ItemID.IceBlock, 100)
-                .AddTile(TileID.IceMachine)
-                .DisableDecraft()
-                .Register();*/
+            RegisterMutualLifeManaCraft(ItemID.ClingerStaff, ItemID.SoulDrain);
+            RegisterMutualLifeManaCraft(ItemID.DartRifle, ItemID.DartPistol);
+            RegisterMutualLifeManaCraft(ItemID.ChainGuillotines, ItemID.FetidBaghnakhs);
+            RegisterMutualLifeManaCraft(ItemID.PutridScent, ItemID.FleshKnuckles);
+            RegisterMutualLifeManaCraft(ItemID.WormHook, ItemID.TendonHook);
 
-            //PutridScent
-            Recipe.Create(ItemID.PutridScent)
-                .AddIngredient(ItemID.FleshKnuckles)
-                .AddIngredient(ItemID.ManaCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
+            int[] corruptMimicMootShimCraft = [ItemID.ClingerStaff, ItemID.DartRifle, ItemID.ChainGuillotines, ItemID.PutridScent, ItemID.WormHook];
+            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.ClingerStaff, ItemID.ManaCrystal);
+            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.DartRifle, ItemID.Blowgun);
+            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.ChainGuillotines, ItemID.Chain);
+            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.PutridScent, ItemID.JungleRose);
+            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.WormHook, ItemID.Hook);
 
-            //FleshKnuckles
-            Recipe.Create(ItemID.FleshKnuckles)
-                .AddIngredient(ItemID.PutridScent)
-                .AddIngredient(ItemID.LifeCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
+            int[] crimsonMimicMootShimCraft = [ItemID.SoulDrain, ItemID.DartPistol, ItemID.FetidBaghnakhs, ItemID.FleshKnuckles, ItemID.TendonHook];
+            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.SoulDrain, ItemID.ManaCrystal);
+            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.DartPistol, ItemID.Blowgun);
+            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.FetidBaghnakhs, ItemID.FeralClaws);
+            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.FleshKnuckles, ItemID.LifeCrystal);
+            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.TendonHook, ItemID.Hook);
 
-            //WormHook
-            Recipe.Create(ItemID.WormHook)
-                .AddIngredient(ItemID.TendonHook)
-                .AddIngredient(ItemID.ManaCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-                
-            //TendonHook
-            Recipe.Create(ItemID.TendonHook)
-                .AddIngredient(ItemID.WormHook)
-                .AddIngredient(ItemID.LifeCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
+            int[] hallowMimicMootShimCraft = [ItemID.DaedalusStormbow, ItemID.FlyingKnife, ItemID.CrystalVileShard, ItemID.IlluminantHook];
+            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.DaedalusStormbow, ItemID.PearlwoodBow);
+            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.FlyingKnife, ItemID.ThrowingKnife);
+            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.CrystalVileShard, ItemID.Vilethorn);
+            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.IlluminantHook, ItemID.Hook);
 
-            //ChainGuillotines
-            Recipe.Create(ItemID.ChainGuillotines)
-                .AddIngredient(ItemID.FetidBaghnakhs)
-                .AddIngredient(ItemID.ManaCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-
-            //FetidBaghnakhs
-            Recipe.Create(ItemID.FetidBaghnakhs)
-                .AddIngredient(ItemID.ChainGuillotines)
-                .AddIngredient(ItemID.LifeCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-
-            //ClingerStaff
-            Recipe.Create(ItemID.ClingerStaff)
-                .AddIngredient(ItemID.SoulDrain)
-                .AddIngredient(ItemID.ManaCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-
-            //SoulDrain
-            Recipe.Create(ItemID.SoulDrain)
-                .AddIngredient(ItemID.ClingerStaff)
-                .AddIngredient(ItemID.LifeCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-
-            //PutridScent
-            Recipe.Create(ItemID.PutridScent)
-                .AddIngredient(ItemID.FleshKnuckles)
-                .AddIngredient(ItemID.ManaCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-
-            //FleshKnuckles
-            Recipe.Create(ItemID.FleshKnuckles)
-                .AddIngredient(ItemID.PutridScent)
-                .AddIngredient(ItemID.LifeCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-
-            //DartRifle
-            Recipe.Create(ItemID.DartRifle)
-                .AddIngredient(ItemID.DartPistol)
-                .AddIngredient(ItemID.ManaCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-
-            //DartPistol
-            Recipe.Create(ItemID.DartPistol)
-                .AddIngredient(ItemID.DartRifle)
-                .AddIngredient(ItemID.LifeCrystal)
-                .AddCondition(Condition.InGraveyard)
-                .AddTile(TileID.TinkerersWorkbench)
-                .DisableDecraft()
-                .Register();
-            
-
-            int[] mimicMootShimCraft = {ItemID.DualHook, ItemID.StarCloak, ItemID.MagicDagger, ItemID.PhilosophersStone, ItemID.TitanGlove, ItemID.CrossNecklace};
+            int[] mimicMootShimCraft = [ItemID.DualHook, ItemID.StarCloak, ItemID.MagicDagger, ItemID.PhilosophersStone, ItemID.TitanGlove, ItemID.CrossNecklace];
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.DualHook, ItemID.Hook);
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.StarCloak, ItemID.FallenStar);
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.MagicDagger, ItemID.ThrowingKnife);
@@ -273,8 +163,30 @@ namespace SuperfluousSummoning.Content
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.TitanGlove, ItemID.FeralClaws);
             RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.CrossNecklace, ItemID.Chain);
 
+            int[] iceMimicMootShimCraft = [ItemID.Frostbrand, ItemID.IceBow, ItemID.FlowerofFrost];
+            RegisterMutualShimmerCraft(iceMimicMootShimCraft, ItemID.Frostbrand, ItemID.IceBlade);
+            RegisterMutualShimmerCraft(iceMimicMootShimCraft, ItemID.IceBow, ItemID.BorealWoodBow);
+            RegisterMutualShimmerCraft(iceMimicMootShimCraft, ItemID.FlowerofFrost, ItemID.FlowerofFire);
+
             RegisterShimmerCraft(ItemID.NaturesGift, ItemID.JungleRose, ItemID.LifeCrystal);
             RegisterShimmerCraft(ItemID.JungleRose, ItemID.NaturesGift, ItemID.ManaCrystal);
+        }
+
+        private void RegisterMutualLifeManaCraft(int CorruptItem, int CrimsonItem) {
+            Recipe.Create(CorruptItem)
+                .AddIngredient(CrimsonItem)
+                .AddIngredient(ItemID.ManaCrystal)
+                .AddTile(TileID.TinkerersWorkbench)
+                .AddCondition(Condition.InGraveyard)
+                .DisableDecraft()
+                .Register();
+            Recipe.Create(CrimsonItem)
+                .AddIngredient(CorruptItem)
+                .AddIngredient(ItemID.LifeCrystal)
+                .AddTile(TileID.TinkerersWorkbench)
+                .AddCondition(Condition.InGraveyard)
+                .DisableDecraft()
+                .Register();
         }
 
         private void RegisterMutualShimmerCraft(int[] items, int resultItem, int itemID) {

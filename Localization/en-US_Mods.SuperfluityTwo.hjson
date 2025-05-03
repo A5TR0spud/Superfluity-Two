@@ -186,6 +186,21 @@ Items: {
 		DisplayName: Growth Spurt
 		Tooltip: ""
 	}
+
+	FloeCrystal: {
+		DisplayName: Floe Crystal
+		Tooltip: Ranged attacks inflict frostburn
+	}
+
+	HandheldMissileLauncher: {
+		DisplayName: INDEV Handheld Missile Launcher
+		Tooltip:
+			'''
+			Uses grenades as ammo
+			50% chance to save ammo
+			Unobtainable: What have you done?!
+			'''
+	}
 }
 
 Buffs: {
