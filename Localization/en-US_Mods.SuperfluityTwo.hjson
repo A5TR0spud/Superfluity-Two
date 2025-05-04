@@ -201,6 +201,35 @@ Items: {
 			Unobtainable: What have you done?!
 			'''
 	}
+
+	GunCrank: {
+		DisplayName: Rickety Crank
+		Tooltip:
+			'''
+			12% increased ranged attack speed
+			Enables full-auto for all ranged weapons
+			'''
+	}
+
+	MuzzleExtension: {
+		DisplayName: Muzzle Extension
+		Tooltip:
+			'''
+			50% increased ranged knockback
+			Increases the velocity of projectiles
+			'''
+	}
+
+	CrankMuzzle: {
+		DisplayName: Additional Gun Parts
+		Tooltip:
+			'''
+			50% increased ranged knockback
+			12% increased ranged attack speed
+			Enables full-auto for all ranged weapons
+			Increases the velocity of projectiles
+			'''
+	}
 }
 
 Buffs: {

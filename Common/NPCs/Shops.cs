@@ -1,3 +1,4 @@
+using SuperfluityTwo.Content.Items.Accessories.Ranger;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,9 +14,18 @@ namespace SuperfluityTwo.NPCs
                 shop.Add(new Item(ItemID.AnkletoftheWind) {
 					shopCustomPrice = Item.buyPrice(gold: 6)
 				}, Condition.InJungle, Condition.MoonPhasesEven);
+
+                shop.Add(ItemID.Daybloom, Condition.TimeDay);
+                shop.Add(ItemID.Moonglow, Condition.TimeNight);
+                shop.Add(ItemID.Blinkroot, Condition.MoonPhases37);
+                shop.Add(ItemID.Deathweed, Condition.BloodMoon);
+                shop.Add(ItemID.Waterleaf, Condition.InRain);
+                shop.Add(ItemID.Fireblossom, Condition.TimeDay);
+                shop.Add(ItemID.Shiverthorn, Condition.MoonPhases26);
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.ArmsDealer, "Shop"))
             {
+                shop.InsertAfter(shop.GetEntry(ItemID.IllegalGunParts), new Item(ModContent.ItemType<GunCrank>()), Condition.TimeDay);
                 shop.InsertAfter(shop.GetEntry(ItemID.MusketBall), new Item(ItemID.MeteorShot), Condition.DownedEowOrBoc);
                 shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.CrystalBullet), Condition.DownedQueenSlime);
                 shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.ChlorophyteBullet), Condition.DownedPlantera);

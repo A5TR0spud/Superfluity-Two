@@ -6,20 +6,20 @@ using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 {
-	public class FloeCrystal : ModItem
+	public class MuzzleExtension : ModItem
 	{
         public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 30;
-			Item.value = Item.sellPrice(gold: 1);
-			Item.rare = ItemRarityID.Blue;
+			Item.width = 36;
+			Item.height = 26;
+			Item.value = Item.sellPrice(gold: 3, silver: 50);
+			Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<RangerPlayer>().HasFloe = true;
+            player.GetModPlayer<RangerPlayer>().HasMuzzle = true;
         }
     }
 }

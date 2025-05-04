@@ -89,7 +89,7 @@ namespace SuperfluityTwo.Content.Projectiles
             Projectile.rotation = ((Projectile.velocity + accelerator)/2).ToRotation();
             Vector2 offset = Vector2.UnitX.RotatedBy(Projectile.rotation);
             offset *= -1;
-            int dustID = Dust.NewDust(Projectile.Center + offset, 0, 0, DustID.GoldFlame, -accelerator.X, -accelerator.Y);
+            int dustID = Dust.NewDust(Projectile.Center + offset, 0, 0, DustID.GoldFlame, -Projectile.velocity.X, -Projectile.velocity.Y);
             Main.dust[dustID].noLight = true;
 
             accelerator = Projectile.velocity;

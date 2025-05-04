@@ -2,22 +2,33 @@ using System;
 using Microsoft.Xna.Framework;
 using SuperfluityTwo.Content.Buffs;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Common.Players
 {
     public class RangerPlayer : ModPlayer {
-        public bool rawHasFloe = false;
         public bool HasFloe = false;
+        public bool HasCrank = false;
+        public bool HasMuzzle = false;
         public override void ResetEffects()
         {
-            rawHasFloe = false;
+            HasFloe = false;
+            HasCrank = false;
+            HasMuzzle = false;
         }
 
-        public override void PostUpdate()
+        public override void PostUpdateEquips()
         {
-            HasFloe = rawHasFloe;
+            if (HasCrank) Player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
+            if (HasMuzzle) Player.GetKnockback(DamageClass.Ranged) += 0.50f;
+        }
+
+        public override bool? CanAutoReuseItem(Item item)
+        {
+            if (item.DamageType == DamageClass.Ranged && HasCrank) return true;
+            return null;
         }
 
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
@@ -65,6 +76,17 @@ namespace SuperfluityTwo.Common.Players
                 {
                     target.AddBuff(BuffID.Frostburn, 120);
                 }
+            }
+        }
+    }
+
+    public class RangerProj : GlobalProjectile {
+
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            if (projectile.TryGetOwner(out Player player) && player.GetModPlayer<RangerPlayer>().HasMuzzle) {
+                if (projectile.velocity.Length() > 16 * 5 && projectile.extraUpdates < 1) projectile.extraUpdates = 1;
+                else projectile.velocity *= 1.33f;
             }
         }
     }
