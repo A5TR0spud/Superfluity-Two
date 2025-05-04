@@ -221,10 +221,10 @@ Items: {
 	}
 
 	CrankMuzzle: {
-		DisplayName: Additional Gun Parts
+		DisplayName: AR 'Archer' F15H
 		Tooltip:
 			'''
-			50% increased ranged knockback
+			50% increased ranged knockback and ranged attack inflict frostburn
 			12% increased ranged attack speed
 			Enables full-auto for all ranged weapons
 			Increases the velocity of projectiles

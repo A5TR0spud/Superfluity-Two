@@ -11,9 +11,9 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
         public override void SetDefaults()
 		{
 			Item.width = 36;
-			Item.height = 36;
+			Item.height = 26;
 			Item.value = Item.sellPrice(gold: 5);
-			Item.rare = ItemRarityID.LightRed;
+			Item.rare = ItemRarityID.Pink;
             Item.accessory = true;
         }
 
@@ -22,6 +22,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
             CreateRecipe()
                 .AddIngredient(ModContent.ItemType<GunCrank>())
                 .AddIngredient(ModContent.ItemType<MuzzleExtension>())
+                .AddIngredient(ModContent.ItemType<FloeCrystal>())
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
         }
@@ -30,6 +31,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
         {
             player.GetModPlayer<RangerPlayer>().HasMuzzle = true;
             player.GetModPlayer<RangerPlayer>().HasCrank = true;
+            player.GetModPlayer<RangerPlayer>().HasFloe = true;
         }
     }
 }
