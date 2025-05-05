@@ -12,16 +12,16 @@ namespace SuperfluityTwo.Content.Projectiles
 	public class Growth : ModProjectile
 	{
         public override void SetStaticDefaults() {
-			Main.projFrames[Type] = 4;
+			Main.projFrames[Type] = 6;
 		}
 
 		public override void SetDefaults()
         {
-			Projectile.width = 32;
-			Projectile.height = 32;
+			Projectile.width = 16;
+			Projectile.height = 16;
 			Projectile.friendly = true;
 			Projectile.hostile = false;
-			Projectile.penetrate = -1;
+			Projectile.penetrate = 3;
 			Projectile.timeLeft = 26;
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = false;
@@ -42,8 +42,6 @@ namespace SuperfluityTwo.Content.Projectiles
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
 			Projectile.ai[2] = Projectile.rotation;
-			//Projectile.spriteDirection = Projectile.direction;
-			//Projectile.knockBack *= Projectile.direction;
 			offset = Projectile.velocity;
 			offset.Normalize();
 			Projectile.ai[0] = offset.X;
@@ -51,7 +49,6 @@ namespace SuperfluityTwo.Content.Projectiles
 			Projectile.velocity *= 0.001f;
         }
 
-		float scaler = 0;
 		float animTimer = 0;
         public override bool PreAI()
         {
@@ -59,14 +56,10 @@ namespace SuperfluityTwo.Content.Projectiles
 			offset = new Vector2(Projectile.ai[0], Projectile.ai[1]);
 
 			Player owner = Main.player[Projectile.owner];
-			Projectile.position = owner.Center + offset + offset * offsetPower + new Vector2(2.375f * -owner.width, -0.4f * owner.height);
-			Projectile.scale = scaler;
-			scaler += 1f/26f * 2f;
-			offsetPower += 1.5f * 2f;
-			scaler = Math.Min(scaler, 1);
-			offsetPower = Math.Min(offsetPower, 39);
+			Projectile.position = owner.Center + offset * (offsetPower + 38) + new Vector2(2.375f * -owner.width, -0.3f * owner.height);
 			Projectile.frame = (int)animTimer;
-			animTimer += 4.5f/26f;
+			animTimer += 6f/26f;
+			offsetPower = animTimer % 1 * 16;
 			
             return false;
         }
@@ -74,13 +67,23 @@ namespace SuperfluityTwo.Content.Projectiles
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
 			Player owner = Main.player[Projectile.owner];
-			hitbox.X += (int)(2.375f * owner.width);
-			hitbox.X -= hitbox.Width / 2;
-			hitbox.Y += (int)(0.4f * owner.height);
-			hitbox.Y -= hitbox.Height / 2;
+			hitbox.X = (int)owner.Center.X;
+			hitbox.Y = (int)owner.Center.Y;
 
-			hitbox.X += (int)(offset.X * offsetPower * 1.25f);
-			hitbox.Y += (int)(offset.Y * offsetPower * 1.25f);
+			//hitbox.X += (int)(-2.375f * owner.width);
+			hitbox.X -= hitbox.Width / 2;
+			hitbox.Y -= (int)(0.3f * owner.height);
+			//hitbox.Y -= hitbox.Height / 2;
+
+			hitbox.X += (int)(offset.X * animTimer * 16f);
+			hitbox.Y += (int)(offset.Y * animTimer * 16f);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+			Player owner = Main.player[Projectile.owner];
+			for (int i = 0; i < 12; i++) 
+            	Dust.NewDust(owner.Center + new Vector2(0, -0.3f * owner.height) + offset * i * 8, 16, 16, DustID.JunglePlants);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

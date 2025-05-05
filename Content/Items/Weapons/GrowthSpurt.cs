@@ -12,6 +12,8 @@ namespace SuperfluityTwo.Content.Items.Weapons
         // The Display Name and Tooltip of this item can be edited in the Localization/en-US_Mods.SuperfluousSummoning.hjson file.
         public override void SetDefaults()
 		{
+			Item.width = 28;
+			Item.height = 28;
 			Item.mana = 2;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 7f;
@@ -20,10 +22,8 @@ namespace SuperfluityTwo.Content.Items.Weapons
 			Item.useTime = 26;
 			Item.noMelee = true;
 			Item.crit = 0;
-			Item.damage = 7;
+			Item.damage = 8;
 			Item.DamageType = DamageClass.SummonMeleeSpeed;
-			Item.width = 32;
-			Item.height = 32;
 			Item.knockBack = 3;
 			Item.value = Item.sellPrice(copper: 30);
 			Item.rare = ItemRarityID.White;
@@ -35,8 +35,8 @@ namespace SuperfluityTwo.Content.Items.Weapons
         public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddRecipeGroup("Wood", 25)
-				.AddIngredient(ItemID.Acorn, 5)
+				.AddIngredient(ItemID.BambooBlock, 7)
+				.AddIngredient(ItemID.FallenStar)
 				.AddTile(TileID.WorkBenches)
 				.Register();
 		}
