@@ -30,7 +30,15 @@ namespace SuperfluityTwo.NPCs
                 return;
             }
             if (npc.type == NPCID.AngryTrapper) {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<MuzzleExtension>(), 50));
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TrapperLash>(), 50));
+                return;
+            }
+            if (npc.type == NPCID.WalkingAntlion || npc.type == NPCID.GiantWalkingAntlion) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AntlionLeg>(), 50));
+                return;
+            }
+            if (npc.type == NPCID.Antlion) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AntlionLeg>(), 30));
                 return;
             }
         }

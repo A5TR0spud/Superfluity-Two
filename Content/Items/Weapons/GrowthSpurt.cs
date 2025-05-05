@@ -22,7 +22,7 @@ namespace SuperfluityTwo.Content.Items.Weapons
 			Item.useTime = 26;
 			Item.noMelee = true;
 			Item.crit = 0;
-			Item.damage = 8;
+			Item.damage = 7;
 			Item.DamageType = DamageClass.SummonMeleeSpeed;
 			Item.knockBack = 3;
 			Item.value = Item.sellPrice(copper: 30);

@@ -25,7 +25,6 @@ namespace SuperfluityTwo.NPCs
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.ArmsDealer, "Shop"))
             {
-                shop.InsertAfter(shop.GetEntry(ItemID.IllegalGunParts), new Item(ModContent.ItemType<GunCrank>()), Condition.TimeDay);
                 shop.InsertAfter(shop.GetEntry(ItemID.MusketBall), new Item(ItemID.MeteorShot), Condition.DownedEowOrBoc);
                 shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.CrystalBullet), Condition.DownedQueenSlime);
                 shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.ChlorophyteBullet), Condition.DownedPlantera);

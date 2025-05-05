@@ -202,17 +202,18 @@ Items: {
 			'''
 	}
 
-	GunCrank: {
-		DisplayName: Rickety Crank
+	AntlionLeg: {
+		DisplayName: Antlion Leg
 		Tooltip:
 			'''
 			12% increased ranged attack speed
-			Enables full-auto for all ranged weapons
+			Enables auto fire for all ranged weapons
+			12% increased movement speed
 			'''
 	}
 
-	MuzzleExtension: {
-		DisplayName: Muzzle Extension
+	TrapperLash: {
+		DisplayName: Trapper Lash
 		Tooltip:
 			'''
 			50% increased ranged knockback
@@ -224,7 +225,7 @@ Items: {
 		DisplayName: AR 'Archer' F15H
 		Tooltip:
 			'''
-			50% increased ranged knockback and ranged attack inflict frostburn
+			50% increased ranged knockback and ranged attacks inflict frostburn
 			12% increased ranged attack speed
 			Enables full-auto for all ranged weapons
 			Increases the velocity of projectiles

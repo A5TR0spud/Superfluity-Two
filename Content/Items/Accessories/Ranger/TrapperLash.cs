@@ -6,11 +6,11 @@ using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 {
-	public class MuzzleExtension : ModItem
+	public class TrapperLash : ModItem
 	{
         public override void SetDefaults()
 		{
-			Item.width = 36;
+			Item.width = 24;
 			Item.height = 26;
 			Item.value = Item.sellPrice(gold: 3, silver: 50);
 			Item.rare = ItemRarityID.LightRed;

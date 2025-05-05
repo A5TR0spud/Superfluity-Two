@@ -6,13 +6,13 @@ using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 {
-	public class GunCrank : ModItem
+	public class AntlionLeg : ModItem
 	{
         public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 26;
-			Item.value = Item.buyPrice(gold: 5);
+			Item.width = 18;
+			Item.height = 24;
+			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ItemRarityID.Green;
             Item.accessory = true;
         }
@@ -20,6 +20,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<RangerPlayer>().HasCrank = true;
+            player.moveSpeed += 0.12f;
         }
     }
 }

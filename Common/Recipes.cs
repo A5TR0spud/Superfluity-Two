@@ -124,6 +124,15 @@ namespace SuperfluousSummoning.Content
                 .DisableDecraft()
                 .Register();
 
+            //Finch Staff
+            Recipe.Create(ItemID.BabyBirdStaff)
+                .AddRecipeGroup(RecipeGroupID.Wood, 50)
+                .AddRecipeGroup(RecipeGroupID.Birds)
+                .AddTile(TileID.LivingLoom)
+                .DisableDecraft()
+                .Register();
+
+
             RegisterMutualLifeManaCraft(ItemID.Musket, ItemID.TheUndertaker);
             RegisterMutualLifeManaCraft(ItemID.ShadowOrb, ItemID.CrimsonHeart);
             RegisterMutualLifeManaCraft(ItemID.Vilethorn, ItemID.CrimsonRod);

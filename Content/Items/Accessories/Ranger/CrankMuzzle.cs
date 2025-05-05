@@ -20,8 +20,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<GunCrank>())
-                .AddIngredient(ModContent.ItemType<MuzzleExtension>())
+                .AddIngredient(ModContent.ItemType<AntlionLeg>())
+                .AddIngredient(ModContent.ItemType<TrapperLash>())
                 .AddIngredient(ModContent.ItemType<FloeCrystal>())
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
