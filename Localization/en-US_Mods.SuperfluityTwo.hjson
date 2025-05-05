@@ -217,18 +217,19 @@ Items: {
 		Tooltip:
 			'''
 			50% increased ranged knockback
-			Increases the velocity of projectiles
+			Increases the velocity of ranged projectiles
+			12% increased whip range
 			'''
 	}
 
-	CrankMuzzle: {
-		DisplayName: AR 'Archer' F15H
+	Archerfish: {
+		DisplayName: Archerfish
 		Tooltip:
 			'''
 			50% increased ranged knockback and ranged attacks inflict frostburn
 			12% increased ranged attack speed
-			Enables full-auto for all ranged weapons
-			Increases the velocity of projectiles
+			Enables auto fire for all ranged weapons
+			Increases the velocity of ranged projectiles
 			'''
 	}
 }

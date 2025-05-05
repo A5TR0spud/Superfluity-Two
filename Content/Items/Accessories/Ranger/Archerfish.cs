@@ -6,12 +6,12 @@ using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 {
-	public class CrankMuzzle : ModItem
+	public class Archerfish : ModItem
 	{
         public override void SetDefaults()
 		{
-			Item.width = 36;
-			Item.height = 26;
+			Item.width = 34;
+			Item.height = 24;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Pink;
             Item.accessory = true;
@@ -29,8 +29,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<RangerPlayer>().HasMuzzle = true;
-            player.GetModPlayer<RangerPlayer>().HasCrank = true;
+            player.GetModPlayer<RangerPlayer>().HasTrapperLash = true;
+            player.GetModPlayer<RangerPlayer>().HasAntlionLeg = true;
             player.GetModPlayer<RangerPlayer>().HasFloe = true;
         }
     }

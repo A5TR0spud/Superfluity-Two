@@ -19,7 +19,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<RangerPlayer>().HasCrank = true;
+            player.GetModPlayer<RangerPlayer>().HasAntlionLeg = true;
             player.moveSpeed += 0.12f;
         }
     }

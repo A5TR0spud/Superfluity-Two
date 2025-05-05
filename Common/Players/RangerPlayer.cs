@@ -10,24 +10,24 @@ namespace SuperfluityTwo.Common.Players
 {
     public class RangerPlayer : ModPlayer {
         public bool HasFloe = false;
-        public bool HasCrank = false;
-        public bool HasMuzzle = false;
+        public bool HasAntlionLeg = false;
+        public bool HasTrapperLash = false;
         public override void ResetEffects()
         {
             HasFloe = false;
-            HasCrank = false;
-            HasMuzzle = false;
+            HasAntlionLeg = false;
+            HasTrapperLash = false;
         }
 
         public override void PostUpdateEquips()
         {
-            if (HasCrank) Player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
-            if (HasMuzzle) Player.GetKnockback(DamageClass.Ranged) += 0.50f;
+            if (HasAntlionLeg) Player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
+            if (HasTrapperLash) Player.GetKnockback(DamageClass.Ranged) += 0.50f;
         }
 
         public override bool? CanAutoReuseItem(Item item)
         {
-            if (item.DamageType == DamageClass.Ranged && HasCrank) return true;
+            if (item.DamageType == DamageClass.Ranged && HasAntlionLeg) return true;
             return null;
         }
 
@@ -84,7 +84,10 @@ namespace SuperfluityTwo.Common.Players
 
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            if (projectile.TryGetOwner(out Player player) && player.GetModPlayer<RangerPlayer>().HasMuzzle) {
+            //if (projectile.noEnchantments) return;
+            //if (projectile.WhipPointsForCollision.Count > 0) return;
+            if (projectile.DamageType != DamageClass.Ranged) return;
+            if (projectile.TryGetOwner(out Player player) && player.GetModPlayer<RangerPlayer>().HasTrapperLash) {
                 if (projectile.velocity.Length() > 16 * 5 && projectile.extraUpdates < 1) projectile.extraUpdates = 1;
                 else projectile.velocity *= 1.33f;
             }

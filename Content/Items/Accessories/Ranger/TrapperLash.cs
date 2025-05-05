@@ -19,7 +19,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<RangerPlayer>().HasMuzzle = true;
+            player.GetModPlayer<RangerPlayer>().HasTrapperLash = true;
+            player.whipRangeMultiplier += 0.12f;
         }
     }
 }
