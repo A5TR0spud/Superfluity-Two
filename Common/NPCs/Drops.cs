@@ -41,6 +41,14 @@ namespace SuperfluityTwo.NPCs
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AntlionLeg>(), 30));
                 return;
             }
+            if (npc.type == NPCID.CreatureFromTheDeep) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SkipjackFin>(), 50));
+                return;
+            }
+            if (npc.type == NPCID.IcyMerman || npc.type == NPCID.ZombieMerman) {
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<SkipjackFin>(), 100));
+                return;
+            }
         }
     }
 }

@@ -12,17 +12,35 @@ namespace SuperfluityTwo.Common.Players
         public bool HasFloe = false;
         public bool HasAntlionLeg = false;
         public bool HasTrapperLash = false;
+        public bool HasSkipjackSpeed = false;
+        public bool HasSkipjackStealth = false;
         public override void ResetEffects()
         {
             HasFloe = false;
             HasAntlionLeg = false;
             HasTrapperLash = false;
+            HasSkipjackSpeed = false;
+            HasSkipjackStealth = false;
         }
 
         public override void PostUpdateEquips()
         {
             if (HasAntlionLeg) Player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
             if (HasTrapperLash) Player.GetKnockback(DamageClass.Ranged) += 0.50f;
+            if (HasSkipjackStealth && Player.IsStandingStillForSpecialEffects) {
+                Player.stealth -= 0.25f;
+                Player.aggro -= 100;
+            }
+        }
+
+        public override void PostUpdateRunSpeeds()
+        {
+            if (HasSkipjackSpeed && Player.wet) {
+                Player.maxRunSpeed *= 1.15f;
+                Player.accRunSpeed *= 1.15f;
+                Player.runAcceleration *= 1.75f;
+                Player.runSlowdown *= 1.75f;
+            }
         }
 
         public override bool? CanAutoReuseItem(Item item)

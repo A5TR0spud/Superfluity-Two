@@ -232,6 +232,15 @@ Items: {
 			Increases the velocity of ranged projectiles
 			'''
 	}
+
+	SkipjackFin: {
+		DisplayName: Skipjack Fin
+		Tooltip:
+			'''
+			Improves water mobility
+			While standing still, enemies are less likely to target you
+			'''
+	}
 }
 
 Buffs: {
