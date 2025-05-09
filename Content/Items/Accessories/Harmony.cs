@@ -15,6 +15,7 @@ namespace SuperfluityTwo.Content.Items.Accessories
 			Item.value = Item.sellPrice(gold: 8);
 			Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
+            Item.defense = 2;
             Item.lifeRegen = 2;
         }
 
@@ -37,9 +38,10 @@ namespace SuperfluityTwo.Content.Items.Accessories
         {
             player.manaRegenDelayBonus += 0.5f;
             player.manaRegenBonus += 10;
-            player.GetModPlayer<AtaraxiaPlayer>().gnomed = true;
+            player.GetModPlayer<SolacePlayer>().hasLuckyClover = true;
+            player.GetCritChance(DamageClass.Generic) += 4;
             player.GetModPlayer<AtaraxiaPlayer>().mantle = true;
-            player.GetModPlayer<AtaraxiaPlayer>().bastDefense = true;
+            player.GetModPlayer<SolacePlayer>().hasBastetBlessing = true;
             player.GetModPlayer<AtaraxiaPlayer>().sunflowerHairpinMoveSpeed = true;
             //Whestone
             player.GetModPlayer<AtaraxiaPlayer>().stoned = true;

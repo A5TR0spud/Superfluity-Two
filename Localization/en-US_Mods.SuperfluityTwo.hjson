@@ -3,7 +3,7 @@
 Items: {
 	LoverLocket: {
 		DisplayName: Lover's Locket
-		Tooltip: Life regen is increased
+		Tooltip: Dealing damage has a chance to create a heart pickup
 	}
 
 	SunflowerHairpin: {
@@ -12,13 +12,17 @@ Items: {
 	}
 
 	LuckyClover: {
-		DisplayName: Lucky Clover
-		Tooltip: "'Said to bring good fortune and keep evil spirits at bay'"
+		DisplayName: 4-Leaf Clover
+		Tooltip:
+			'''
+			4% increased critical strike chance
+			Slightly increases luck
+			'''
 	}
 
 	BastetBlessing: {
 		DisplayName: Bastet's Blessing
-		Tooltip: Increases defense by 5
+		Tooltip: Damage that puts you in danger of dying is reduced by 30%
 	}
 
 	MeteorMantle: {
@@ -33,7 +37,11 @@ Items: {
 
 	Solace: {
 		DisplayName: Solace
-		Tooltip: Increases movement speed, health and mana regeneration, defense, and luck
+		Tooltip:
+			'''
+			Increases movement speed, health and mana regeneration, critical chance, and luck
+			Damage that puts you in danger of dying is reduced by 30%
+			'''
 	}
 
 	ShamanMask: {
@@ -101,7 +109,8 @@ Items: {
 			Increases your max number of minions and sentries by 1
 			40% increased movement speed
 			20% increased mining speed
-			Increases health and mana regeneration, defense, and luck
+			Increases health and mana regeneration, critical chance, and luck
+			Damage that puts you in danger of dying is reduced by 30%
 			'''
 	}
 
@@ -230,16 +239,13 @@ Items: {
 			12% increased ranged attack speed
 			Enables auto fire for all ranged weapons
 			Increases the velocity of ranged projectiles
+			While standing still, enemies are less likely to target you
 			'''
 	}
 
-	SkipjackFin: {
-		DisplayName: Skipjack Fin
-		Tooltip:
-			'''
-			Improves water mobility
-			While standing still, enemies are less likely to target you
-			'''
+	LeafTail: {
+		DisplayName: Leaf Tail
+		Tooltip: While standing still, enemies are less likely to target you, and can miss attacks
 	}
 }
 

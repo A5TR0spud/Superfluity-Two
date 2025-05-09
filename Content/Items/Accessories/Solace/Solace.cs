@@ -21,6 +21,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 			Item.rare = ItemRarityID.Orange;
             Item.accessory = true;
             Item.lifeRegen = 2;
+            Item.defense = 2;
         }
 
         public override void AddRecipes()
@@ -40,9 +41,11 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
         {
             player.manaRegenDelayBonus += 0.5f;
             player.manaRegenBonus += 10;
-            player.GetModPlayer<AtaraxiaPlayer>().gnomed = true;
+            player.GetModPlayer<SolacePlayer>().hasLuckyClover = true;
+            player.GetCritChance(DamageClass.Generic) += 4;
             player.GetModPlayer<AtaraxiaPlayer>().mantle = true;
-            player.GetModPlayer<AtaraxiaPlayer>().bastDefense = true;
+            player.GetModPlayer<SolacePlayer>().hasBastetBlessing = true;
+            player.GetModPlayer<SolacePlayer>().bastetVisible = !hideVisual;
             player.GetModPlayer<AtaraxiaPlayer>().sunflowerHairpinMoveSpeed = true;
         }
 
@@ -50,8 +53,6 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
         {
             player.buffImmune[BuffID.Campfire] = true;
             player.buffImmune[BuffID.HeartLamp] = true;
-            player.buffImmune[BuffID.CatBast] = true;
-            //player.buffImmune[BuffID.Sunflower] = true;
             player.buffImmune[BuffID.StarInBottle] = true;
         }
     }

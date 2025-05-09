@@ -41,12 +41,16 @@ namespace SuperfluityTwo.NPCs
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<AntlionLeg>(), 30));
                 return;
             }
-            if (npc.type == NPCID.CreatureFromTheDeep) {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SkipjackFin>(), 50));
+            if (npc.type == NPCID.SwampThing) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LeafTail>(), 60));
                 return;
             }
-            if (npc.type == NPCID.IcyMerman || npc.type == NPCID.ZombieMerman) {
-                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<SkipjackFin>(), 100));
+            if (npc.type == NPCID.Lihzahrd || npc.type == NPCID.LihzahrdCrawler) {
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<LeafTail>(), 100));
+                return;
+            }
+            if (npc.type == NPCID.Salamander || npc.type == NPCID.Salamander2 || npc.type == NPCID.Salamander3 || npc.type == NPCID.Salamander4 || npc.type == NPCID.Salamander5 || npc.type == NPCID.Salamander6 || npc.type == NPCID.Salamander7 || npc.type == NPCID.Salamander8 || npc.type == NPCID.Salamander9) {
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<LeafTail>(), 100));
                 return;
             }
         }

@@ -1,3 +1,4 @@
+using SuperfluityTwo.Common.Players;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,17 +10,16 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 	{
         public override void SetDefaults()
 		{
-			Item.width = 30;
-			Item.height = 36;
+			Item.width = 26;
+			Item.height = 32;
 			Item.value = Item.sellPrice(gold: 1, silver: 50);
 			Item.rare = ItemRarityID.Green;
             Item.accessory = true;
-            Item.lifeRegen = 2;
         }
 
-        public override void UpdateEquip(Player player)
+        public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.buffImmune[BuffID.HeartLamp] = true;
+            player.GetModPlayer<SolacePlayer>().hasLoverLocket = true;
         }
 
         public override void AddRecipes()

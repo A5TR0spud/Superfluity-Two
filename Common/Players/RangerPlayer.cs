@@ -12,34 +12,48 @@ namespace SuperfluityTwo.Common.Players
         public bool HasFloe = false;
         public bool HasAntlionLeg = false;
         public bool HasTrapperLash = false;
-        public bool HasSkipjackSpeed = false;
-        public bool HasSkipjackStealth = false;
+        public bool HasLeafTailStealth = false;
+        public bool HasLeafTailDodge = false;
+        private bool ShouldLeafTailTimerTick = false;
+        private int LeafTailTimer = 0;
         public override void ResetEffects()
         {
             HasFloe = false;
             HasAntlionLeg = false;
             HasTrapperLash = false;
-            HasSkipjackSpeed = false;
-            HasSkipjackStealth = false;
+            HasLeafTailStealth = false;
+            HasLeafTailDodge = false;
+            ShouldLeafTailTimerTick = false;
         }
 
         public override void PostUpdateEquips()
         {
             if (HasAntlionLeg) Player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
             if (HasTrapperLash) Player.GetKnockback(DamageClass.Ranged) += 0.50f;
-            if (HasSkipjackStealth && Player.IsStandingStillForSpecialEffects) {
-                Player.stealth -= 0.25f;
-                Player.aggro -= 100;
+            ShouldLeafTailTimerTick = HasLeafTailDodge || HasLeafTailStealth;
+            if (ShouldLeafTailTimerTick) {
+                if (LeafTailTimer < 60 && Player.IsStandingStillForSpecialEffects) LeafTailTimer++;
+                if (HasLeafTailStealth) Player.aggro -= (int)(LeafTailTimer * 1.66667f);
+                if (LeafTailTimer > 0 && !Player.IsStandingStillForSpecialEffects) LeafTailTimer--;
             }
+            else LeafTailTimer = 0;
         }
 
-        public override void PostUpdateRunSpeeds()
+        public override bool FreeDodge(Player.HurtInfo info)
         {
-            if (HasSkipjackSpeed && Player.wet) {
-                Player.maxRunSpeed *= 1.15f;
-                Player.accRunSpeed *= 1.15f;
-                Player.runAcceleration *= 1.75f;
-                Player.runSlowdown *= 1.75f;
+            bool tailsafe = /*info.Dodgeable && */HasLeafTailDodge && LeafTailTimer > 0 && Main.rand.NextBool(1200 / LeafTailTimer);
+            if (tailsafe) Player.SetImmuneTimeForAllTypes(Player.longInvince ? 90 : 60);
+            return tailsafe;
+        }
+
+        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        {
+            if (HasLeafTailStealth) {
+                float factor = 1f - (LeafTailTimer * 0.00833333333333f);
+                a *= factor;
+                r *= factor;
+                g *= factor;
+                b *= factor;
             }
         }
 

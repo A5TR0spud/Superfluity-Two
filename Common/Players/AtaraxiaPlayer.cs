@@ -7,12 +7,10 @@ namespace SuperfluityTwo.Common.Players
     public class AtaraxiaPlayer : ModPlayer {
         public bool sunflowerHairpinReducedSpawns = false;
         public bool sunflowerHairpinMoveSpeed = false;
-        public bool bastDefense = false;
         public bool mantle = false;
         public bool bandolier = false;
         public bool focused = false;
         public bool shaman = false;
-        public bool gnomed = false;
         public bool strats = false;
         public bool tooth = false;
         public bool stoned = false;
@@ -24,10 +22,8 @@ namespace SuperfluityTwo.Common.Players
             mantle = false;
             bandolier = false;
             focused = false;
-            bastDefense = false;
             shaman = false;
             honeyOnHitTime = 0;
-            gnomed = false;
             strats = false;
             tooth = false;
             stoned = false;
@@ -46,8 +42,6 @@ namespace SuperfluityTwo.Common.Players
                 Player.moveSpeed += 0.1f;
                 Player.moveSpeed *= 1.1f;
             }
-            if (bastDefense)
-                Player.statDefense += 5;
             if (focused) {
                 Player.GetCritChance(DamageClass.Magic) += 2;
                 Player.GetDamage(DamageClass.Magic) += 0.05f;
@@ -65,12 +59,6 @@ namespace SuperfluityTwo.Common.Players
             if (stoned) {
                 Player.GetArmorPenetration(DamageClass.Melee) += 12;
             }
-        }
-
-        public override void ModifyLuck(ref float luck)
-        {
-            if (gnomed)
-                luck += 0.2f;
         }
 
         public override void UpdateLifeRegen()

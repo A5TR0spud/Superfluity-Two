@@ -15,8 +15,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 
         public override void SetDefaults()
 		{
-			Item.width = 26;
-			Item.height = 30;
+			Item.width = 18;
+			Item.height = 22;
 			Item.value = Item.sellPrice(silver: 20);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
@@ -35,7 +35,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<AtaraxiaPlayer>().gnomed = true;
+            player.GetModPlayer<SolacePlayer>().hasLuckyClover = true;
+            player.GetCritChance(DamageClass.Generic) += 4;
         }
     }
 }

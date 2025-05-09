@@ -23,6 +23,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
                 .AddIngredient(ModContent.ItemType<AntlionLeg>())
                 .AddIngredient(ModContent.ItemType<TrapperLash>())
                 .AddIngredient(ModContent.ItemType<FloeCrystal>())
+                .AddIngredient(ModContent.ItemType<LeafTail>())
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
         }
@@ -32,6 +33,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
             player.GetModPlayer<RangerPlayer>().HasTrapperLash = true;
             player.GetModPlayer<RangerPlayer>().HasAntlionLeg = true;
             player.GetModPlayer<RangerPlayer>().HasFloe = true;
+            player.GetModPlayer<RangerPlayer>().HasLeafTailStealth = true;
         }
     }
 }

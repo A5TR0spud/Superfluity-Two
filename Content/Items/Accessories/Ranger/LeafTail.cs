@@ -6,12 +6,12 @@ using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 {
-	public class SkipjackFin : ModItem
+	public class LeafTail : ModItem
 	{
         public override void SetDefaults()
 		{
 			Item.width = 28;
-			Item.height = 18;
+			Item.height = 22;
 			Item.value = Item.sellPrice(gold: 3, silver: 50);
 			Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
@@ -19,10 +19,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.ignoreWater = true;
-            //player.accFlipper = true;
-            player.GetModPlayer<RangerPlayer>().HasSkipjackSpeed = true;
-            player.GetModPlayer<RangerPlayer>().HasSkipjackStealth = true;
+            player.GetModPlayer<RangerPlayer>().HasLeafTailStealth = true;
+            player.GetModPlayer<RangerPlayer>().HasLeafTailDodge = true;
         }
     }
 }
