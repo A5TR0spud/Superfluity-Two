@@ -10,8 +10,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 	{
         public override void SetDefaults()
 		{
-			Item.width = 27;
-			Item.height = 16;
+			Item.width = 24;
+			Item.height = 24;
 			Item.value = Item.sellPrice(silver: 40);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;

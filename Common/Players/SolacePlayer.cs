@@ -60,20 +60,12 @@ namespace SuperfluityTwo.Common.Players
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.netMode == NetmodeID.SinglePlayer) {
-                if (Main.rand.NextBool(20) && heartPickupCooldown <= 0) {
-                    heartPickupCooldown = 6 * 60;
-                    Item.NewItem(target.GetSource_Loot(), (int)target.position.X, (int)target.position.Y, target.width, target.height, ItemID.Heart);
-                }
-            }
-            else if (Main.netMode == NetmodeID.MultiplayerClient) {
-                if (Main.rand.NextBool(20) && heartPickupCooldown <= 0) {
-                    heartPickupCooldown = 6 * 60;
-                    int index = Item.NewItem(target.GetSource_Loot(), (int)target.position.X, (int)target.position.Y, target.width, target.height, ItemID.Heart);
+            if (Main.rand.NextBool(20) && heartPickupCooldown <= 0) {
+                heartPickupCooldown = 6 * 60;
+                int index = Item.NewItem(target.GetSource_Loot(), (int)target.position.X, (int)target.position.Y, target.width, target.height, ItemID.Heart);
+                if (Main.netMode == NetmodeID.MultiplayerClient)
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f);
-                }
             }
-            
         }
 
         public override void PostUpdate()
