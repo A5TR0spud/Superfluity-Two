@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework;
 using SuperfluityTwo.Common.Players;
 using Terraria;
 using Terraria.ID;
@@ -21,21 +22,19 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.MeteoriteBar, 3)
-                .AddIngredient(ItemID.Silk, 10)
+                .AddIngredient(ItemID.Magiluminescence)
+                .AddIngredient(ItemID.MeteoriteBar, 12)
+                .AddIngredient(ItemID.Silk, 20)
                 .AddTile(TileID.Campfire)
                 .Register();
         }
 
-        public override void UpdateEquip(Player player)
-        {
-            player.buffImmune[BuffID.Campfire] = true;
-        }
-
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<AtaraxiaPlayer>().mantle = true;
+            player.GetModPlayer<SolacePlayer>().hasMeteorMantle = true;
+            player.GetModPlayer<SolacePlayer>().hasMeteorDOTReduce = true;
+            Lighting.AddLight(player.Center, 0.5f * new Vector3(0.9f, 0.8f, 0.5f));
+            player.hasMagiluminescence = true;
         }
     }
 }

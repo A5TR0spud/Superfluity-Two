@@ -3,12 +3,16 @@
 Items: {
 	LoverLocket: {
 		DisplayName: Lover's Locket
-		Tooltip: Dealing damage has a chance to create a heart pickup
+		Tooltip:
+			'''
+			Dealing damage has a chance to create a heart pickup
+			Critical hits improve the rate
+			'''
 	}
 
 	SunflowerHairpin: {
-		Tooltip: Movement speed increased and monster spawns reduced
 		DisplayName: Sunflower Hairpin
+		Tooltip: Movement speed increased and enemy aggression reduced
 	}
 
 	LuckyClover: {
@@ -27,20 +31,32 @@ Items: {
 
 	MeteorMantle: {
 		DisplayName: Meteor Mantle
-		Tooltip: Increases life regeneration
+		Tooltip:
+			'''
+			Reduces the life regen penalty for moving
+			10% reduced damage taken from damage over time
+			Increases movement speed and acceleration
+			'''
 	}
 
 	StarpowerBandolier: {
-		DisplayName: Starpower Bandolier
-		Tooltip: Increases mana regeneration
+		DisplayName: Star in a Canteen
+		Tooltip:
+			'''
+			Reduces the mana regen penalty for moving
+			4% reduced mana usage
+			'''
 	}
 
 	Solace: {
 		DisplayName: Solace
 		Tooltip:
 			'''
-			Increases movement speed, health and mana regeneration, critical chance, and luck
+			Increases movement speed, critical chance, and luck
 			Damage that puts you in danger of dying is reduced by 30%
+			Reduces the life and mana regen penalties for moving
+			Hitting enemies can create a heart or mana pickup, boosted by crits
+			Reduces enemy aggression
 			'''
 	}
 
@@ -107,10 +123,10 @@ Items: {
 			20% chance to save ammo
 			Magic powers are increased
 			Increases your max number of minions and sentries by 1
-			40% increased movement speed
 			20% increased mining speed
-			Increases health and mana regeneration, critical chance, and luck
+			Increases movement speed, critical chance, and luck
 			Damage that puts you in danger of dying is reduced by 30%
+			Reduces the life and mana regen penalties for moving
 			'''
 	}
 

@@ -5,16 +5,17 @@ using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
+using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Solace
 {
-    [AutoloadEquip(EquipType.Neck)]
+    [AutoloadEquip(EquipType.Waist)]
 	public class StarpowerBandolier : GlowItem
 	{
         public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 32;
+			Item.width = 20;
+			Item.height = 22;
 			Item.value = Item.sellPrice(silver: 15);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
@@ -32,41 +33,44 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.manaRegenDelayBonus += 0.5f;
-            player.manaRegenBonus += 10;
-        }
-
-		public override void UpdateEquip(Player player)
-        {
-            player.buffImmune[BuffID.StarInBottle] = true;
+			player.GetModPlayer<SolacePlayer>().hasStarCanteen = true;
         }
     }
     
     internal class StarpowerBandolierLayer : PlayerDrawLayer
 	{
+		private Asset<Texture2D> texWaist;
+		private Asset<Texture2D> texWaistGlow;
+        public override void Load()
+        {
+            StarpowerBandolier acc = ModContent.GetInstance<StarpowerBandolier>();
+            texWaist = ModContent.Request<Texture2D>(acc.Texture + "_Waist", AssetRequestMode.AsyncLoad);
+            texWaistGlow = ModContent.Request<Texture2D>(acc.Texture + "_Waist_Glow", AssetRequestMode.AsyncLoad);
+        }
+
 		public override Position GetDefaultPosition() {
-			return new AfterParent(PlayerDrawLayers.NeckAcc);
+			return new AfterParent(PlayerDrawLayers.WaistAcc);
 		}
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
             var acc = ModContent.GetInstance<StarpowerBandolier>();
-			return drawInfo.drawPlayer.neck == EquipLoader.GetEquipSlot(Mod, acc.Name, EquipType.Neck);
+			return drawInfo.drawPlayer.waist == EquipLoader.GetEquipSlot(Mod, acc.Name, EquipType.Waist);
 		}
 
 		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			if (drawInfo.drawPlayer.dead) {
 				return;
 			}
-            var acc = ModContent.GetInstance<StarpowerBandolier>();
+            StarpowerBandolier acc = ModContent.GetInstance<StarpowerBandolier>();
 			DrawData? viewData = null;
 			foreach (DrawData data in drawInfo.DrawDataCache) {
-				if (data.texture == ModContent.Request<Texture2D>(acc.Texture + "_Neck", AssetRequestMode.ImmediateLoad).Value) {
+				if (data.texture == texWaist.Value) {
 					viewData = data;
 				}
 			}
 			if (viewData.HasValue) {
 				DrawData glow = new DrawData(
-					texture: ModContent.Request<Texture2D>(acc.Texture + "_Neck_Glow", AssetRequestMode.ImmediateLoad).Value,
+					texture: texWaistGlow.Value,
 					color: Color.White * drawInfo.stealth * (1f - drawInfo.shadow),
 					position: viewData.Value.position,
 					sourceRect: viewData.Value.sourceRect,

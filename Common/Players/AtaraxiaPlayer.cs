@@ -5,9 +5,6 @@ using Terraria.ModLoader;
 namespace SuperfluityTwo.Common.Players
 {
     public class AtaraxiaPlayer : ModPlayer {
-        public bool sunflowerHairpinReducedSpawns = false;
-        public bool sunflowerHairpinMoveSpeed = false;
-        public bool mantle = false;
         public bool bandolier = false;
         public bool focused = false;
         public bool shaman = false;
@@ -17,9 +14,6 @@ namespace SuperfluityTwo.Common.Players
         public int honeyOnHitTime = 0;
         public override void ResetEffects()
         {
-            sunflowerHairpinReducedSpawns = false;
-            sunflowerHairpinMoveSpeed = false;
-            mantle = false;
             bandolier = false;
             focused = false;
             shaman = false;
@@ -38,10 +32,6 @@ namespace SuperfluityTwo.Common.Players
 
         public override void UpdateEquips()
         {
-            if (sunflowerHairpinMoveSpeed) {
-                Player.moveSpeed += 0.1f;
-                Player.moveSpeed *= 1.1f;
-            }
             if (focused) {
                 Player.GetCritChance(DamageClass.Magic) += 2;
                 Player.GetDamage(DamageClass.Magic) += 0.05f;
@@ -59,18 +49,6 @@ namespace SuperfluityTwo.Common.Players
             if (stoned) {
                 Player.GetArmorPenetration(DamageClass.Melee) += 12;
             }
-        }
-
-        public override void UpdateLifeRegen()
-        {
-            if (mantle)
-                Player.lifeRegenTime += 2f;
-        }
-
-        public override void NaturalLifeRegen(ref float regen)
-        {
-            if (mantle)
-                regen *= 1.1f;
         }
 
         public override bool CanConsumeAmmo(Item weapon, Item ammo)

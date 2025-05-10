@@ -36,13 +36,14 @@ namespace SuperfluityTwo.Content.Items.Accessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.manaRegenDelayBonus += 0.5f;
-            player.manaRegenBonus += 10;
             player.GetModPlayer<SolacePlayer>().hasLuckyClover = true;
             player.GetCritChance(DamageClass.Generic) += 4;
-            player.GetModPlayer<AtaraxiaPlayer>().mantle = true;
+            player.GetModPlayer<SolacePlayer>().hasMeteorMantle = true;
             player.GetModPlayer<SolacePlayer>().hasBastetBlessing = true;
-            player.GetModPlayer<AtaraxiaPlayer>().sunflowerHairpinMoveSpeed = true;
+            player.GetModPlayer<SolacePlayer>().bastetVisible = !hideVisual;
+            player.GetModPlayer<SolacePlayer>().hasStarCanteen = true;
+			player.GetModPlayer<SolacePlayer>().hasSunflowerSpeed = true;
+			player.GetModPlayer<SolacePlayer>().loverLocketSolaceOverride = true;
             //Whestone
             player.GetModPlayer<AtaraxiaPlayer>().stoned = true;
             //Bandolier
@@ -61,10 +62,6 @@ namespace SuperfluityTwo.Content.Items.Accessories
 
         public override void UpdateEquip(Player player)
         {
-            player.buffImmune[BuffID.Campfire] = true;
-            player.buffImmune[BuffID.HeartLamp] = true;
-            player.buffImmune[BuffID.CatBast] = true;
-            //player.buffImmune[BuffID.Sunflower] = true;
             player.buffImmune[BuffID.StarInBottle] = true;
         }
 

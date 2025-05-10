@@ -15,12 +15,11 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
         
         public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 28;
+			Item.width = 20;
+			Item.height = 20;
 			Item.value = Item.sellPrice(gold: 2);
 			Item.rare = ItemRarityID.Orange;
             Item.accessory = true;
-            Item.lifeRegen = 2;
             Item.defense = 2;
         }
 
@@ -39,20 +38,19 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.manaRegenDelayBonus += 0.5f;
-            player.manaRegenBonus += 10;
             player.GetModPlayer<SolacePlayer>().hasLuckyClover = true;
             player.GetCritChance(DamageClass.Generic) += 4;
-            player.GetModPlayer<AtaraxiaPlayer>().mantle = true;
+            player.GetModPlayer<SolacePlayer>().hasMeteorMantle = true;
             player.GetModPlayer<SolacePlayer>().hasBastetBlessing = true;
             player.GetModPlayer<SolacePlayer>().bastetVisible = !hideVisual;
-            player.GetModPlayer<AtaraxiaPlayer>().sunflowerHairpinMoveSpeed = true;
+            player.GetModPlayer<SolacePlayer>().hasStarCanteen = true;
+			player.GetModPlayer<SolacePlayer>().hasSunflowerAggro = true;
+			player.GetModPlayer<SolacePlayer>().hasSunflowerSpeed = true;
+			player.GetModPlayer<SolacePlayer>().loverLocketSolaceOverride = true;
         }
 
         public override void UpdateEquip(Player player)
         {
-            player.buffImmune[BuffID.Campfire] = true;
-            player.buffImmune[BuffID.HeartLamp] = true;
             player.buffImmune[BuffID.StarInBottle] = true;
         }
     }

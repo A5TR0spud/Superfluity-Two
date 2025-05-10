@@ -40,16 +40,12 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-			player.GetModPlayer<AtaraxiaPlayer>().sunflowerHairpinMoveSpeed = true;
-            player.GetModPlayer<AtaraxiaPlayer>().sunflowerHairpinReducedSpawns = true;
+			player.GetModPlayer<SolacePlayer>().hasSunflowerAggro = true;
+			player.GetModPlayer<SolacePlayer>().hasSunflowerSpeed = true;
             if (!hideVisual)
 			{
-				player.MountedCenter.ToTileCoordinates();
-				DelegateMethods.v3_1 = new Vector3(0.35f, 0.3f, 0f);
-				Utils.PlotTileLine(player.Center, player.Center + player.velocity * 6f, 20f, DelegateMethods.CastLightOpen);
-				Utils.PlotTileLine(player.Left, player.Right, 20f, DelegateMethods.CastLightOpen);
+                Lighting.AddLight(player.position + player.headPosition, new Vector3(0.35f, 0.3f, 0f));
 			}
-			//Lighting.AddLight(player.position + player.headPosition + new Vector2(player.direction, 0), 0.36f, 0.3f, 0);
         }
     }
 }
