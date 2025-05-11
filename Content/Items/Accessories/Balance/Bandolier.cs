@@ -28,7 +28,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<AtaraxiaPlayer>().bandolier = true;
+            player.GetDamage(DamageClass.Ranged) += 0.04f;
+            player.GetModPlayer<BalancePlayer>().bandolierCount += 1;
         }
     }
 }

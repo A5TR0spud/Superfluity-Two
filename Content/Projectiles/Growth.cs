@@ -29,6 +29,7 @@ namespace SuperfluityTwo.Content.Projectiles
 			Projectile.idStaticNPCHitCooldown = 10;
 			Projectile.stopsDealingDamageAfterPenetrateHits = true;
 			Projectile.ownerHitCheck = true;
+			Projectile.DamageType = DamageClass.SummonMeleeSpeed;
 		}
 
         public override bool? CanCutTiles()

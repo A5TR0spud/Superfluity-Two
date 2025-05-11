@@ -50,14 +50,5 @@ namespace SuperfluityTwo.Common.Players
                 Player.GetArmorPenetration(DamageClass.Melee) += 12;
             }
         }
-
-        public override bool CanConsumeAmmo(Item weapon, Item ammo)
-        {
-            bool consume = true;
-            if (bandolier) {
-                consume = consume && !Main.rand.NextBool(5);
-            }
-            return consume;
-        }
     }
 }

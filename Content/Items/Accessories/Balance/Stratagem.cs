@@ -9,8 +9,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 	{
         public override void SetDefaults()
 		{
-			Item.width = 24;
-			Item.height = 26;
+			Item.width = 20;
+			Item.height = 24;
 			Item.value = Item.sellPrice(silver: 25);
 			Item.rare = ItemRarityID.Orange;
             Item.accessory = true;
@@ -27,7 +27,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<AtaraxiaPlayer>().strats = true;
+            player.GetModPlayer<BalancePlayer>().strataSlash = true;
         }
     }
 }

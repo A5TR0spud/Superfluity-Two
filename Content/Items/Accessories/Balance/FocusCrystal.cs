@@ -10,8 +10,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 	{
         public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 32;
+			Item.width = 28;
+			Item.height = 28;
 			Item.value = Item.sellPrice(silver: 80);
 			Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
@@ -28,7 +28,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<AtaraxiaPlayer>().focused = true;
+            player.manaCost *= 0.96f;
+            player.GetCritChance(DamageClass.Magic) += 6;
         }
 
         public override Color? GetAlpha(Color lightColor)

@@ -67,27 +67,33 @@ Items: {
 
 	Whetstone: {
 		DisplayName: Whetstone
-		Tooltip: Increases armor penetration for melee weapons by 12
+		Tooltip:
+			'''
+			Increases armor penetration for melee weapons by 5
+			4% increased melee damage
+			'''
 	}
 
 	Bandolier: {
 		DisplayName: Bandolier
-		Tooltip: 20% chance to save ammo
+		Tooltip:
+			'''
+			10% chance to save ammo
+			4% increased ranged damage
+			'''
 	}
 
 	Stratagem: {
 		DisplayName: Stratagem
-		Tooltip: Increases your max number of sentries by 1
+		Tooltip: 4% chance for summon attacks to also slash the enemy
 	}
 
 	FocusCrystal: {
 		DisplayName: Focus Crystal
 		Tooltip:
 			'''
-			Increases maximum mana by 20
-			5% increased magic damage
-			2% increased magic critical strike chance
-			2% reduced mana cost
+			6% increased magic critical strike chance
+			4% reduced mana cost
 			'''
 	}
 
@@ -330,4 +336,5 @@ Projectiles: {
 	ShroomFume.DisplayName: Shroom Fume
 	ATGMissile.DisplayName: Guided Missile
 	Growth.DisplayName: Growth
+	Strataslash.DisplayName: Strataslash
 }
