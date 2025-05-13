@@ -28,7 +28,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<AtaraxiaPlayer>().shaman = true;
+            player.GetDamage(DamageClass.Summon) += 0.05f;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<RangerPlayer>().HasTrapperLash = true;
+            player.GetModPlayer<RangerPlayer>().HasFishProjVel = true;
             player.GetModPlayer<RangerPlayer>().HasAntlionLeg = true;
             player.GetModPlayer<RangerPlayer>().HasFloe = true;
             player.GetModPlayer<RangerPlayer>().HasLeafTailStealth = true;

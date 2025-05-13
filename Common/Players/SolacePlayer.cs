@@ -138,9 +138,11 @@ namespace SuperfluityTwo.Common.Players
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             bool shouldWork = hasLoverLocket || loverLocketSolaceOverride;
-            bool dropManaInsteadOfHealth = (float)Player.statMana / Player.statManaMax2 < (float)Player.statLife / Player.statLifeMax2;
-            dropManaInsteadOfHealth &= Main.rand.NextBool(2);
-            if (hit.Crit) heartPickupCooldown -= (int)(10 - (10 / (0.1f * damageDone + 1)));
+            bool dropManaInsteadOfHealth =
+                (float)Player.statMana / Player.statManaMax2 < (float)Player.statLife / Player.statLifeMax2
+                && loverLocketSolaceOverride
+                && Main.rand.NextBool(2);
+            //if (hit.Crit) heartPickupCooldown -= (int)(10 - (10 / (0.1f * damageDone + 1)));
             if (shouldWork && (Main.rand.NextBool(20) || hit.Crit) && heartPickupCooldown <= 0) {
                 heartPickupCooldown = 7 * 60;
                 int index = Item.NewItem(target.GetSource_Loot(), (int)target.position.X, (int)target.position.Y, target.width, target.height, dropManaInsteadOfHealth ? ItemID.Star : ItemID.Heart);

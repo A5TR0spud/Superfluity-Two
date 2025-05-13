@@ -6,7 +6,8 @@ Items: {
 		Tooltip:
 			'''
 			Dealing damage has a chance to create a heart pickup
-			Critical hits improve the rate
+			Critical hits always create a heart
+			Has a 7 seond cooldown
 			'''
 	}
 
@@ -62,7 +63,7 @@ Items: {
 
 	ShamanMask: {
 		DisplayName: Shaman Mask
-		Tooltip: Increases your max number of minions by 1
+		Tooltip: 5% increased summon damage
 	}
 
 	Whetstone: {
@@ -85,7 +86,7 @@ Items: {
 
 	Stratagem: {
 		DisplayName: Stratagem
-		Tooltip: 4% chance for summon attacks to also slash the enemy
+		Tooltip: 4% chance for summon attacks to slash
 	}
 
 	FocusCrystal: {
@@ -111,12 +112,13 @@ Items: {
 		DisplayName: Balance
 		Tooltip:
 			'''
-			Increases armor penetration for melee weapons by 12
-			20% chance to save ammo
-			Magic powers are increased
-			Increases your max number of minions and sentries by 1
+			4% increased non-summon damage
+			8% increased summon damage
+			Increases armor penetration for melee weapons by 5
+			10% chance to save ammo
+			5% reduced mana cost
+			4% chance for summon attacks to slash
 			Increases armor penetration by 5
-			Douses the user in honey when damaged
 			20% increased movement and mining speed
 			'''
 	}
@@ -125,12 +127,12 @@ Items: {
 		DisplayName: Harmony
 		Tooltip:
 			'''
-			Increases armor penetration for melee weapons by 12
-			20% chance to save ammo
-			Magic powers are increased
-			Increases your max number of minions and sentries by 1
-			20% increased mining speed
-			Increases movement speed, critical chance, and luck
+			6% increased damage and reduced mana cost
+			Increases armor penetration for melee weapons by 5
+			10% chance to save ammo
+			4% chance for summon attacks to slash
+			Increases armor penetration by 5
+			Increases mining speed, movement speed, critical chance, and luck
 			Damage that puts you in danger of dying is reduced by 30%
 			Reduces the life and mana regen penalties for moving
 			'''
@@ -248,7 +250,7 @@ Items: {
 		Tooltip:
 			'''
 			50% increased ranged knockback
-			Increases the velocity of ranged projectiles
+			Increases the velocity of ranged and magic projectiles
 			12% increased whip range
 			'''
 	}
@@ -268,6 +270,26 @@ Items: {
 	LeafTail: {
 		DisplayName: Leaf Tail
 		Tooltip: While standing still, enemies are less likely to target you, and can miss attacks
+	}
+
+	ReturnAddress: {
+		DisplayName: Return Address
+		Tooltip:
+			'''
+			Teleports you home and creates a portal
+			Use portal to return when you are done
+			Right clicking also teleports you back
+			'''
+	}
+
+	FoggyMirror: {
+		DisplayName: FoGGy M1rr0R INDEV
+		Tooltip:
+			'''
+			Teleports you to a random location
+			?Right click to teleport to your last death
+			INDEV: What hath thou wrought?
+			'''
 	}
 }
 

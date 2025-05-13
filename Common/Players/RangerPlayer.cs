@@ -12,6 +12,7 @@ namespace SuperfluityTwo.Common.Players
         public bool HasFloe = false;
         public bool HasAntlionLeg = false;
         public bool HasTrapperLash = false;
+        public bool HasFishProjVel = false;
         public bool HasLeafTailStealth = false;
         public bool HasLeafTailDodge = false;
         private bool ShouldLeafTailTimerTick = false;
@@ -24,6 +25,7 @@ namespace SuperfluityTwo.Common.Players
             HasLeafTailStealth = false;
             HasLeafTailDodge = false;
             ShouldLeafTailTimerTick = false;
+            HasFishProjVel = false;
         }
 
         public override void PostUpdateEquips()
@@ -118,10 +120,19 @@ namespace SuperfluityTwo.Common.Players
         {
             //if (projectile.noEnchantments) return;
             //if (projectile.WhipPointsForCollision.Count > 0) return;
-            if (projectile.DamageType != DamageClass.Ranged) return;
-            if (projectile.TryGetOwner(out Player player) && player.GetModPlayer<RangerPlayer>().HasTrapperLash) {
-                if (projectile.velocity.Length() > 16 * 5 && projectile.extraUpdates < 1) projectile.extraUpdates = 1;
-                else projectile.velocity *= 1.33f;
+            //if (projectile.DamageType != DamageClass.Ranged) return;
+            Player player;
+            if (!projectile.TryGetOwner(out player) && player.GetModPlayer<RangerPlayer>().HasTrapperLash) return;
+            RangerPlayer modded = player.GetModPlayer<RangerPlayer>();
+
+            bool canTrapperLash = modded.HasTrapperLash && (projectile.DamageType == DamageClass.Ranged ||projectile.DamageType == DamageClass.Magic || projectile.DamageType == DamageClass.MagicSummonHybrid);
+            bool canArcherfish = modded.HasFishProjVel && projectile.DamageType == DamageClass.Ranged;
+
+            if (canTrapperLash || canArcherfish) {
+                if (projectile.velocity.Length() > 16 * 5 && projectile.extraUpdates < 1)
+                    projectile.extraUpdates = 1;
+                else
+                    projectile.velocity *= 1.33f;
             }
         }
     }

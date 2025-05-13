@@ -48,10 +48,5 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 			player.GetModPlayer<SolacePlayer>().hasSunflowerSpeed = true;
 			player.GetModPlayer<SolacePlayer>().loverLocketSolaceOverride = true;
         }
-
-        public override void UpdateEquip(Player player)
-        {
-            player.buffImmune[BuffID.StarInBottle] = true;
-        }
     }
 }

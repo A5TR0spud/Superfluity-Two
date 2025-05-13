@@ -28,9 +28,9 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<AtaraxiaPlayer>().tooth = true;
+            player.GetModPlayer<BalancePlayer>().sweetToothSpeeds = true;
             player.GetArmorPenetration(DamageClass.Generic) += 5;
-            player.GetModPlayer<AtaraxiaPlayer>().honeyOnHitTime += 5 * 60;
+            player.GetModPlayer<BalancePlayer>().honeyOnHitTime += 5 * 60;
         }
     }
 }

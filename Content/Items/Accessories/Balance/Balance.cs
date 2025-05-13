@@ -11,8 +11,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 	{
         public override void SetDefaults()
 		{
-			Item.width = 32;
-			Item.height = 28;
+			Item.width = 26;
+			Item.height = 22;
 			Item.value = Item.sellPrice(gold: 4, silver: 60);
 			Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
@@ -33,20 +33,20 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            //Whestone
-            player.GetModPlayer<AtaraxiaPlayer>().stoned = true;
+            //Balance
+            player.GetDamage(DamageClass.Generic) += 0.04f;
+            //Whetstone
+            player.GetArmorPenetration(DamageClass.Melee) += 5;
             //Bandolier
-            player.GetModPlayer<AtaraxiaPlayer>().bandolier = true;
-            //Shaman Mask
-            player.GetModPlayer<AtaraxiaPlayer>().shaman = true;
+            player.GetModPlayer<BalancePlayer>().bandolierCount += 1;
             //Focus Crystal
-            player.GetModPlayer<AtaraxiaPlayer>().focused = true;
+            player.manaCost *= 0.95f;
+            //Shaman Mask
+            player.GetDamage(DamageClass.Summon) += 0.04f;
             //Sweet Tooth Necklace
-            player.GetModPlayer<AtaraxiaPlayer>().tooth = true;
-            //player.GetArmorPenetration(DamageClass.Generic) += 5;
-            //player.GetModPlayer<AtaraxiaPlayer>().honeyOnHitTime += 5 * 60;
+            player.GetArmorPenetration(DamageClass.Generic) += 5;
             //Stratagem
-            player.GetModPlayer<AtaraxiaPlayer>().strats = true;
+            player.GetModPlayer<BalancePlayer>().strataSlash = true;
         }
 
         public override Color? GetAlpha(Color lightColor)

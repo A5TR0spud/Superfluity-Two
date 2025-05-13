@@ -9,10 +9,29 @@ namespace SuperfluityTwo.Common.Players
     public class BalancePlayer : ModPlayer {
         public int bandolierCount = 0;
         public bool strataSlash = false;
+        public bool sweetToothSpeeds = false;
+        public int honeyOnHitTime = 0;
         public override void ResetEffects()
         {
             bandolierCount = 0;
             strataSlash = false;
+            sweetToothSpeeds = false;
+            honeyOnHitTime = 0;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (sweetToothSpeeds) {
+                Player.pickSpeed -= 0.2f;
+                Player.moveSpeed += 0.2f;
+            }
+        }
+
+        public override void PostHurt(Player.HurtInfo info)
+        {
+            if (honeyOnHitTime > 0) {
+                Player.AddBuff(BuffID.Honey, honeyOnHitTime);
+            }
         }
 
         public override bool CanConsumeAmmo(Item weapon, Item ammo)
