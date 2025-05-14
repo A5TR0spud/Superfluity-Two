@@ -25,10 +25,6 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
                 .AddIngredient(ModContent.ItemType<HeartOfDecay>())
                 .AddIngredient(ModContent.ItemType<Medkit>())
                 .AddIngredient(ModContent.ItemType<ATGMissileLauncher>())
-                /*.AddIngredient(ItemID.SweetheartNecklace)
-                .AddIngredient(ItemID.StarVeil)
-                .AddIngredient(ItemID.FrozenTurtleShell)
-                .AddIngredient(ItemID.Nanites, 25)*/
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
         }
@@ -39,18 +35,14 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
             player.GetModPlayer<BloodMoldPlayer>().rawHasMayday = true;
             player.GetModPlayer<CorpseBloomPlayer>().rawHasMayday = true;
 
-            //player.GetModPlayer<MedkitPlayer>().isMedicated = true;
             player.buffImmune[BuffID.Poisoned] = true;
             player.buffImmune[BuffID.Bleeding] = true;
 
             player.GetModPlayer<RedAlertPlayer>().hasRedAlert = true;
             player.GetModPlayer<RedAlertPlayer>().visibleMayday = !hideVisual;
 
-            //player.GetModPlayer<MaydayPlayer>().HasMayday = true;
-
             player.GetModPlayer<ATGPlayer>().MissilesPerLaunch += 1;
             player.GetModPlayer<ATGPlayer>().MissileCooldown += 30;
-            //player.longInvince = true;
         }
 
         public override void UpdateVanity(Player player)

@@ -61,6 +61,8 @@ namespace SuperfluityTwo.Content.Projectiles
 			Projectile.frame = (int)animTimer;
 			animTimer += 6f/26f;
 			offsetPower = animTimer % 1 * 16;
+
+			Projectile.gfxOffY = owner.gfxOffY; //it's that shrimple
 			
             return false;
         }

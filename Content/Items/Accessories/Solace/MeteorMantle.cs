@@ -16,7 +16,6 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 			Item.value = Item.sellPrice(silver: 40);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
-            Item.lifeRegen = 1;
         }
 
         public override void AddRecipes()

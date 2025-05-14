@@ -1,4 +1,5 @@
 using SuperfluityTwo.Common.Players;
+using SuperfluityTwo.Content.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -20,17 +21,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Solace
 			Item.value = Item.sellPrice(silver: 20);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
-            Item.lifeRegen = 1;
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.GardenGnome)
-                .AddIngredient(ItemID.Vine)
-                .AddTile(TileID.Tables)
-                .AddTile(TileID.Chairs)
-                .Register();
+			//Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.CloverTile>());
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

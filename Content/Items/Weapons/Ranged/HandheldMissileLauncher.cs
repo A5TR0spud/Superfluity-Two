@@ -5,7 +5,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Weapons
+namespace SuperfluityTwo.Content.Items.Weapons.Ranged
 {
 	public class HandheldMissileLauncher : ModItem
 	{

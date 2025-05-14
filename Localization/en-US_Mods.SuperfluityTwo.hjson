@@ -291,6 +291,11 @@ Items: {
 			INDEV: What hath thou wrought?
 			'''
 	}
+
+	HurricaneLantern: {
+		DisplayName: INDEV Hurricane Lantern
+		Tooltip: "'Weatherman says there's a risk of rain' ?????? this is monsoon's tooltip"
+	}
 }
 
 Buffs: {

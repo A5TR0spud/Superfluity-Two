@@ -9,6 +9,11 @@ namespace SuperfluousSummoning.Content
 	{
         public override void AddRecipes()
         {
+            RegisterQoLCrafts();
+            RegisterTransmuteCrafts();
+        }
+
+        private void RegisterQoLCrafts() {
             //Band of Starpower
             Recipe.Create(ItemID.BandofStarpower)
                 .AddIngredient(ItemID.ShadowScale, 5)
@@ -131,8 +136,9 @@ namespace SuperfluousSummoning.Content
                 .AddTile(TileID.LivingLoom)
                 .DisableDecraft()
                 .Register();
+        }
 
-
+        private void RegisterTransmuteCrafts() {
             RegisterMutualLifeManaCraft(ItemID.Musket, ItemID.TheUndertaker);
             RegisterMutualLifeManaCraft(ItemID.ShadowOrb, ItemID.CrimsonHeart);
             RegisterMutualLifeManaCraft(ItemID.Vilethorn, ItemID.CrimsonRod);
@@ -144,53 +150,58 @@ namespace SuperfluousSummoning.Content
             RegisterMutualLifeManaCraft(ItemID.PutridScent, ItemID.FleshKnuckles);
             RegisterMutualLifeManaCraft(ItemID.WormHook, ItemID.TendonHook);
 
-            int[] corruptMimicMootShimCraft = [ItemID.ClingerStaff, ItemID.DartRifle, ItemID.ChainGuillotines, ItemID.PutridScent, ItemID.WormHook];
-            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.ClingerStaff, ItemID.ManaCrystal);
-            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.DartRifle, ItemID.Blowgun);
-            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.ChainGuillotines, ItemID.Chain);
-            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.PutridScent, ItemID.JungleRose);
-            RegisterMutualShimmerCraft(corruptMimicMootShimCraft, ItemID.WormHook, ItemID.Hook);
+            RegisterMutualShimmerCraftList([
+                [ItemID.ClingerStaff, ItemID.ManaCrystal],
+                [ItemID.DartRifle, ItemID.Blowgun],
+                [ItemID.ChainGuillotines, ItemID.Chain],
+                [ItemID.PutridScent, ItemID.JungleRose],
+                [ItemID.WormHook, ItemID.Hook]
+            ]);
+            
+            RegisterMutualShimmerCraftList([
+                [ItemID.SoulDrain, ItemID.ManaCrystal],
+                [ItemID.DartPistol, ItemID.Blowgun],
+                [ItemID.FetidBaghnakhs, ItemID.FeralClaws],
+                [ItemID.FleshKnuckles, ItemID.LifeCrystal],
+                [ItemID.TendonHook, ItemID.Hook]
+            ]);
 
-            int[] crimsonMimicMootShimCraft = [ItemID.SoulDrain, ItemID.DartPistol, ItemID.FetidBaghnakhs, ItemID.FleshKnuckles, ItemID.TendonHook];
-            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.SoulDrain, ItemID.ManaCrystal);
-            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.DartPistol, ItemID.Blowgun);
-            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.FetidBaghnakhs, ItemID.FeralClaws);
-            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.FleshKnuckles, ItemID.LifeCrystal);
-            RegisterMutualShimmerCraft(crimsonMimicMootShimCraft, ItemID.TendonHook, ItemID.Hook);
+            RegisterMutualShimmerCraftList([
+                [ItemID.DaedalusStormbow, ItemID.PearlwoodBow],
+                [ItemID.FlyingKnife, ItemID.ThrowingKnife],
+                [ItemID.CrystalVileShard, ItemID.Vilethorn],
+                [ItemID.IlluminantHook, ItemID.Hook]
+            ]);
 
-            int[] hallowMimicMootShimCraft = [ItemID.DaedalusStormbow, ItemID.FlyingKnife, ItemID.CrystalVileShard, ItemID.IlluminantHook];
-            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.DaedalusStormbow, ItemID.PearlwoodBow);
-            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.FlyingKnife, ItemID.ThrowingKnife);
-            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.CrystalVileShard, ItemID.Vilethorn);
-            RegisterMutualShimmerCraft(hallowMimicMootShimCraft, ItemID.IlluminantHook, ItemID.Hook);
+            RegisterMutualShimmerCraftList([
+                [ItemID.DualHook, ItemID.Hook],
+                [ItemID.StarCloak, ItemID.FallenStar],
+                [ItemID.MagicDagger, ItemID.ThrowingKnife],
+                [ItemID.PhilosophersStone, ItemID.LifeCrystal],
+                [ItemID.TitanGlove, ItemID.FeralClaws],
+                [ItemID.CrossNecklace, ItemID.Chain]
+            ]);
 
-            int[] mimicMootShimCraft = [ItemID.DualHook, ItemID.StarCloak, ItemID.MagicDagger, ItemID.PhilosophersStone, ItemID.TitanGlove, ItemID.CrossNecklace];
-            RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.DualHook, ItemID.Hook);
-            RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.StarCloak, ItemID.FallenStar);
-            RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.MagicDagger, ItemID.ThrowingKnife);
-            RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.PhilosophersStone, ItemID.LifeCrystal);
-            RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.TitanGlove, ItemID.FeralClaws);
-            RegisterMutualShimmerCraft(mimicMootShimCraft, ItemID.CrossNecklace, ItemID.Chain);
+            RegisterMutualShimmerCraftList([
+                [ItemID.Frostbrand, ItemID.IceBlade],
+                [ItemID.IceBow, ItemID.BorealWoodBow],
+                [ItemID.FlowerofFrost, ItemID.FlowerofFire]
+            ]);
 
-            int[] iceMimicMootShimCraft = [ItemID.Frostbrand, ItemID.IceBow, ItemID.FlowerofFrost];
-            RegisterMutualShimmerCraft(iceMimicMootShimCraft, ItemID.Frostbrand, ItemID.IceBlade);
-            RegisterMutualShimmerCraft(iceMimicMootShimCraft, ItemID.IceBow, ItemID.BorealWoodBow);
-            RegisterMutualShimmerCraft(iceMimicMootShimCraft, ItemID.FlowerofFrost, ItemID.FlowerofFire);
-
-            RegisterShimmerCraft(ItemID.NaturesGift, ItemID.JungleRose, ItemID.LifeCrystal);
-            RegisterShimmerCraft(ItemID.JungleRose, ItemID.NaturesGift, ItemID.ManaCrystal);
+            RegisterMutualLifeManaCraft(ItemID.NaturesGift, ItemID.JungleRose);
+            RegisterMutualLightDarkCraft(ItemID.DarkShard, ItemID.LightShard, 10);
         }
 
-        private void RegisterMutualLifeManaCraft(int CorruptItem, int CrimsonItem) {
-            Recipe.Create(CorruptItem)
-                .AddIngredient(CrimsonItem)
+        private void RegisterMutualLifeManaCraft(int CorruptOrManaItem, int CrimsonOrLifeItem) {
+            Recipe.Create(CorruptOrManaItem)
+                .AddIngredient(CrimsonOrLifeItem)
                 .AddIngredient(ItemID.ManaCrystal)
                 .AddTile(TileID.TinkerersWorkbench)
                 .AddCondition(Condition.InGraveyard)
                 .DisableDecraft()
                 .Register();
-            Recipe.Create(CrimsonItem)
-                .AddIngredient(CorruptItem)
+            Recipe.Create(CrimsonOrLifeItem)
+                .AddIngredient(CorruptOrManaItem)
                 .AddIngredient(ItemID.LifeCrystal)
                 .AddTile(TileID.TinkerersWorkbench)
                 .AddCondition(Condition.InGraveyard)
@@ -198,23 +209,31 @@ namespace SuperfluousSummoning.Content
                 .Register();
         }
 
-        private void RegisterMutualShimmerCraft(int[] items, int resultItem, int itemID) {
-            foreach (int i in items) {
-                if (i == resultItem) continue;
-                Recipe.Create(resultItem)
-                    .AddIngredient(i)
-                    .AddIngredient(itemID)
-                    .AddCondition(Condition.NearShimmer)
-                    .DisableDecraft()
-                    .Register();
+        private void RegisterMutualLightDarkCraft(int DarkItem, int LightItem, int SoulCount = 1) {
+            RegisterShimmerCraft(DarkItem, LightItem, ItemID.SoulofLight, SoulCount);
+            RegisterShimmerCraft(LightItem, DarkItem, ItemID.SoulofNight, SoulCount);
+        }
+
+        private void RegisterMutualShimmerCraftList(int[][] itemsAndKeys) {
+            int resultItem;
+            int transformerItemID;
+            int inItem;
+            foreach (int[] keyPair in itemsAndKeys) {
+                resultItem = keyPair[0];
+                transformerItemID = keyPair[1];
+                foreach (int[] inKeyPair in itemsAndKeys) {
+                    inItem = keyPair[0];
+                    if (inItem == resultItem) continue;
+                    RegisterShimmerCraft(inItem, resultItem, transformerItemID);
+                }
             }
         }
 
-        private void RegisterShimmerCraft(int inItem, int outItem, int transformItem = -1) {
+        private void RegisterShimmerCraft(int inItem, int outItem, int transformItem = -1, int transformItemCount = 1) {
             Recipe r = Recipe.Create(outItem)
-                    .AddIngredient(inItem);
+                .AddIngredient(inItem);
             if (transformItem != -1) {
-                r.AddIngredient(transformItem);
+                r.AddIngredient(transformItem, transformItemCount);
             }
             r.AddCondition(Condition.NearShimmer)
                 .DisableDecraft()

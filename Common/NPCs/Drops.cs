@@ -13,10 +13,6 @@ namespace SuperfluityTwo.NPCs
 	{
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            if (npc.type == NPCID.Gnome) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LuckyClover>(), 2));
-                return;
-			}
             if (npc.type == NPCID.AnomuraFungus || npc.type == NPCID.MushiLadybug || npc.type == NPCID.ZombieMushroom || npc.type == NPCID.ZombieMushroomHat) {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Aranearum>(), 20));
                 return;

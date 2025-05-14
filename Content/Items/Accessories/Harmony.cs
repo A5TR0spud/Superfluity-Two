@@ -16,7 +16,6 @@ namespace SuperfluityTwo.Content.Items.Accessories
 			Item.rare = ItemRarityID.LightRed;
             Item.accessory = true;
             Item.defense = 2;
-            Item.lifeRegen = 2;
         }
 
         public override void AddRecipes()
