@@ -45,6 +45,13 @@ namespace SuperfluityTwo.Content.Buffs
 
     internal class AlarmLayer : PlayerDrawLayer
 	{
+        public static Asset<Texture2D> texAsset;
+
+        public override void Load()
+        {
+            texAsset = ModContent.Request<Texture2D>($"{nameof(SuperfluityTwo)}/Content/Buffs/Alert_Alarm", AssetRequestMode.AsyncLoad);
+        }
+
 		public override Position GetDefaultPosition() {
 			return new AfterParent(PlayerDrawLayers.IceBarrier);
 		}
@@ -64,7 +71,7 @@ namespace SuperfluityTwo.Content.Buffs
 			if (drawInfo.drawPlayer.dead) {
 				return;
 			}
-            Texture2D texture2d = ModContent.Request<Texture2D>($"{nameof(SuperfluityTwo)}/Content/Buffs/Alert_Alarm", AssetRequestMode.ImmediateLoad).Value;
+            Texture2D texture2d = texAsset.Value;
             DrawData glow = new DrawData(
                 texture: texture2d,
                 position: new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - drawInfo.drawPlayer.bodyFrame.Width / 2 + drawInfo.drawPlayer.width / 2), (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawInfo.drawPlayer.height - drawInfo.drawPlayer.bodyFrame.Height + 4f)) + drawInfo.drawPlayer.bodyPosition + new Vector2(drawInfo.drawPlayer.bodyFrame.Width / 2, drawInfo.drawPlayer.bodyFrame.Height / 2)

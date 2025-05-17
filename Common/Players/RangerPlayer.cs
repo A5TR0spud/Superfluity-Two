@@ -61,14 +61,14 @@ namespace SuperfluityTwo.Common.Players
 
         public override bool? CanAutoReuseItem(Item item)
         {
-            if (item.DamageType == DamageClass.Ranged && HasAntlionLeg) return true;
+            if (item.DamageType.CountsAsClass(DamageClass.Ranged) && HasAntlionLeg) return true;
             return null;
         }
 
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
             if (projectile.noEnchantmentVisuals || projectile.noEnchantments) return;
-            if (HasFloe && projectile.DamageType == DamageClass.Ranged && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates))) {
+            if (HasFloe && projectile.DamageType.CountsAsClass(DamageClass.Ranged) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates))) {
                 int num = Dust.NewDust(boxPosition, boxWidth, boxHeight, DustID.IceTorch, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default(Color), 2f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].velocity *= 0.7f;
@@ -79,7 +79,7 @@ namespace SuperfluityTwo.Common.Players
         //shouldn't happen but you never know with mods. not even gonna bother with the enchantment visual on the item though.
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (HasFloe && hit.DamageType == DamageClass.Ranged) {
+            if (HasFloe && hit.DamageType.CountsAsClass(DamageClass.Ranged)) {
                 if (Main.rand.NextBool(4))
                 {
                     target.AddBuff(BuffID.Frostburn, 360);
@@ -97,7 +97,7 @@ namespace SuperfluityTwo.Common.Players
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!proj.noEnchantments && HasFloe && hit.DamageType == DamageClass.Ranged) {
+            if (!proj.noEnchantments && HasFloe && hit.DamageType.CountsAsClass(DamageClass.Ranged)) {
                 if (Main.rand.NextBool(4))
                 {
                     target.AddBuff(BuffID.Frostburn, 360);
@@ -125,8 +125,8 @@ namespace SuperfluityTwo.Common.Players
             if (!projectile.TryGetOwner(out player) && player.GetModPlayer<RangerPlayer>().HasTrapperLash) return;
             RangerPlayer modded = player.GetModPlayer<RangerPlayer>();
 
-            bool canTrapperLash = modded.HasTrapperLash && (projectile.DamageType == DamageClass.Ranged ||projectile.DamageType == DamageClass.Magic || projectile.DamageType == DamageClass.MagicSummonHybrid);
-            bool canArcherfish = modded.HasFishProjVel && projectile.DamageType == DamageClass.Ranged;
+            bool canTrapperLash = modded.HasTrapperLash && (projectile.CountsAsClass(DamageClass.Ranged) || projectile.CountsAsClass(DamageClass.Magic));
+            bool canArcherfish = modded.HasFishProjVel && projectile.CountsAsClass(DamageClass.Ranged);
 
             if (canTrapperLash || canArcherfish) {
                 if (projectile.velocity.Length() > 16 * 5 && projectile.extraUpdates < 1)

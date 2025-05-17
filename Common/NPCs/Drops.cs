@@ -1,4 +1,5 @@
 using SuperfluityTwo.Common;
+using SuperfluityTwo.Content.Items.Accessories.Mage;
 using SuperfluityTwo.Content.Items.Accessories.Mayday;
 using SuperfluityTwo.Content.Items.Accessories.Ranger;
 using SuperfluityTwo.Content.Items.Accessories.Solace;
@@ -49,6 +50,14 @@ namespace SuperfluityTwo.NPCs
                 npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<LeafTail>(), 100));
                 return;
             }
+            if (npc.type == NPCID.RaggedCaster || npc.type == NPCID.RaggedCasterOpenCoat) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Zygoma>(), 20));
+                return;
+            }
+            /*if (npc.type == NPCID.DiabolistRed || npc.type == NPCID.DiabolistWhite || npc.type == NPCID.Necromancer || npc.type == NPCID.NecromancerArmored) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Zygoma>(), 100));
+                return;
+            }*/
         }
     }
 }

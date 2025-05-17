@@ -32,8 +32,7 @@ namespace SuperfluityTwo.Content.Tiles
 			TileID.Sets.IgnoredByGrowingSaplings[Type] = true;
 			TileMaterials.SetForTileId(Type, TileMaterials._materialsByName["Plant"]); // Make this tile interact with golf balls in the same way other plants do
 
-			LocalizedText name = Language.GetText("Mods.SuperfluityTwo.Items.LuckyClover");
-			AddMapEntry(new Color(28, 216, 94), name);
+			AddMapEntry(new Color(28, 216, 94), ModContent.GetInstance<LuckyClover>().DisplayName);
 
 			TileObjectData.newTile.CopyFrom(TileObjectData.StyleAlch);
             TileObjectData.newTile.CoordinatePadding = 2;

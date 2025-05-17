@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -11,9 +14,16 @@ namespace SuperfluityTwo.Content.Projectiles
 {
 	public class Growth : ModProjectile
 	{
-        public override void SetStaticDefaults() {
+		public static Asset<Texture2D> texAsset;
+
+        public override void Load()
+        {
+            texAsset = ModContent.Request<Texture2D>($"{nameof(SuperfluityTwo)}/Content/Projectiles/Growth", AssetRequestMode.AsyncLoad);
+        }
+
+        /*public override void SetStaticDefaults() {
 			Main.projFrames[Type] = 6;
-		}
+		}*/
 
 		public override void SetDefaults()
         {
@@ -37,33 +47,102 @@ namespace SuperfluityTwo.Content.Projectiles
             return false;
         }
 
-		Vector2 offset;
-		float offsetPower = 0;
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
+
+		int randomVisualOffset = 0;
+		int randomVisualInterval = 0;
         public override void OnSpawn(IEntitySource source)
         {
-            Projectile.rotation = Projectile.velocity.ToRotation();
-			Projectile.ai[2] = Projectile.rotation;
-			offset = Projectile.velocity;
-			offset.Normalize();
-			Projectile.ai[0] = offset.X;
-			Projectile.ai[1] = offset.Y;
-			Projectile.velocity *= 0.001f;
+			Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
+			randomVisualOffset = Main.rand.Next(10);
+			randomVisualInterval = (Main.rand.Next(3) + 1) * 2 + 1;
         }
 
 		float animTimer = 0;
         public override bool PreAI()
         {
-			Projectile.rotation = Projectile.ai[2];
-			offset = new Vector2(Projectile.ai[0], Projectile.ai[1]);
-
 			Player owner = Main.player[Projectile.owner];
-			Projectile.position = owner.Center + offset * (offsetPower + 38) + new Vector2(2.375f * -owner.width, -0.3f * owner.height);
-			Projectile.frame = (int)animTimer;
-			animTimer += 6f/26f;
-			offsetPower = animTimer % 1 * 16;
+			Projectile.position = owner.Center + new Vector2(-Projectile.Hitbox.Width / 2, -(int)(0.3f * owner.height));// * (offsetPower + 38) + new Vector2(2.375f * -owner.width, -0.3f * owner.height);
+
+			animTimer += 6f/26f * Projectile.scale;
 
 			Projectile.gfxOffY = owner.gfxOffY; //it's that shrimple
+			Projectile.rotation = Projectile.velocity.ToRotation();
 			
+            return false;
+        }
+
+		public override bool PreDraw(ref Color lightColor) {
+            SpriteEffects spriteEffects = SpriteEffects.None;
+            if (Projectile.spriteDirection == -1)
+                spriteEffects = SpriteEffects.FlipHorizontally;
+
+            Color drawColor = Projectile.GetAlpha(lightColor);
+
+			int anim = (int)animTimer;
+			int stage;
+			int variants;
+			for (int i = 0; i <= anim; i++) {
+				int j = anim - i;
+				//bud
+				if (anim == 0) {
+					stage = 0;
+					variants = 1;
+				}
+				//fully grown
+				else if (j == anim) {
+					stage = 3;
+					variants = 5;
+				}
+				//bottom
+				//a moving bottom?
+				/*else if (j == 0) {
+					stage = 1;
+					variants = 4;
+				}*/
+				//stalk
+				else {
+					stage = 2;
+					variants = 10;
+				}
+
+				int frameSize = 16;
+				int padding = 2;
+				int interval = frameSize + padding;
+
+				int variant = (randomVisualOffset + randomVisualInterval * i) % variants;
+				int startX = interval * variant;
+				int startY = interval * stage;
+
+				Rectangle sourceRectangle = new Rectangle(startX, startY, frameSize, frameSize);
+
+				Vector2 origin = sourceRectangle.Size() / 2f;
+
+				Vector2 offset = (j + animTimer % 1) * frameSize * Projectile.velocity;
+
+				Main.EntitySpriteDraw(
+					texture: texAsset.Value,
+					position: Projectile.Center - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY) + offset,
+					sourceRectangle: sourceRectangle,
+					color: drawColor,
+					rotation: Projectile.rotation + MathHelper.PiOver2,
+					origin: origin,
+					scale: 1,
+					effects: spriteEffects,
+					worthless: 0
+				);
+			}
+
+            return false;
+        }
+
+        public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
+        {
+			width = 2;
+			height = 2;
             return false;
         }
 
@@ -73,20 +152,18 @@ namespace SuperfluityTwo.Content.Projectiles
 			hitbox.X = (int)owner.Center.X;
 			hitbox.Y = (int)owner.Center.Y;
 
-			//hitbox.X += (int)(-2.375f * owner.width);
 			hitbox.X -= hitbox.Width / 2;
 			hitbox.Y -= (int)(0.3f * owner.height);
-			//hitbox.Y -= hitbox.Height / 2;
 
-			hitbox.X += (int)(offset.X * animTimer * 16f);
-			hitbox.Y += (int)(offset.Y * animTimer * 16f);
+			hitbox.X += (int)(Projectile.velocity.X * animTimer * 16f);
+			hitbox.Y += (int)(Projectile.velocity.Y * animTimer * 16f);
         }
 
         public override void OnKill(int timeLeft)
         {
 			Player owner = Main.player[Projectile.owner];
 			for (int i = 0; i < 12; i++) 
-            	Dust.NewDust(owner.Center + new Vector2(0, -0.3f * owner.height) + offset * i * 8, 16, 16, DustID.JunglePlants);
+            	Dust.NewDust(owner.Center + new Vector2(0, -0.3f * owner.height) + Projectile.velocity * i * 8, 16, 16, DustID.JunglePlants);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
