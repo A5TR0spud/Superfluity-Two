@@ -40,9 +40,9 @@ namespace SuperfluityTwo.Content.Items.Accessories.Balance
             //Bandolier
             player.GetModPlayer<BalancePlayer>().bandolierCount += 1;
             //Focus Crystal
-            player.manaCost *= 0.95f;
+            player.manaCost *= 0.96f;
             //Shaman Mask
-            player.GetDamage(DamageClass.Summon) += 0.04f;
+            //player.GetDamage(DamageClass.Summon) += 0.04f;
             //Sweet Tooth Necklace
             player.GetArmorPenetration(DamageClass.Generic) += 5;
             //Stratagem

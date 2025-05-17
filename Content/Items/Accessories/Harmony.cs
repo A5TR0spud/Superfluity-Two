@@ -44,13 +44,13 @@ namespace SuperfluityTwo.Content.Items.Accessories
 			player.GetModPlayer<SolacePlayer>().hasSunflowerSpeed = true;
 			player.GetModPlayer<SolacePlayer>().loverLocketSolaceOverride = true;
             //Balance
-            player.GetDamage(DamageClass.Generic) += 0.06f;
+            player.GetDamage(DamageClass.Generic) += 0.04f;
             //Whetstone
             player.GetArmorPenetration(DamageClass.Melee) += 5;
             //Bandolier
             player.GetModPlayer<BalancePlayer>().bandolierCount += 1;
             //Focus Crystal
-            player.manaCost *= 0.94f;
+            player.manaCost *= 0.96f;
             //Shaman Mask
             //player.GetDamage(DamageClass.Summon) += 0.04f;
             //Sweet Tooth Necklace

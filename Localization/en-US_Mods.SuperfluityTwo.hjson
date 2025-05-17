@@ -112,13 +112,12 @@ Items: {
 		DisplayName: Balance
 		Tooltip:
 			'''
-			4% increased non-summon damage
-			8% increased summon damage
-			Increases armor penetration for melee weapons by 5
+			4% increased damage
+			Increases armor penetration for melee weapons by 10
+			Increases armor penetration for non-melee weapons by 5
 			10% chance to save ammo
-			5% reduced mana cost
+			4% reduced mana cost
 			4% chance for summon attacks to slash
-			Increases armor penetration by 5
 			20% increased movement and mining speed
 			'''
 	}
@@ -127,11 +126,11 @@ Items: {
 		DisplayName: Harmony
 		Tooltip:
 			'''
-			6% increased damage and reduced mana cost
-			Increases armor penetration for melee weapons by 5
+			4% increased damage and reduced mana cost
+			Increases armor penetration for melee weapons by 10
+			Increases armor penetration for non-melee weapons by 5
 			10% chance to save ammo
 			4% chance for summon attacks to slash
-			Increases armor penetration by 5
 			Increases mining speed, movement speed, critical chance, and luck
 			Damage that puts you in danger of dying is reduced by 30%
 			Reduces the life and mana regen penalties for moving
