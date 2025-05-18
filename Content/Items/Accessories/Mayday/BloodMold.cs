@@ -12,8 +12,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 	{
         public override void SetDefaults()
 		{
-			Item.width = 14;
-			Item.height = 28;
+			Item.width = 10;
+			Item.height = 24;
 			Item.value = Item.sellPrice(silver: 10);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;

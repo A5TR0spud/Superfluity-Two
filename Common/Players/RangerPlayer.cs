@@ -30,8 +30,6 @@ namespace SuperfluityTwo.Common.Players
 
         public override void PostUpdateEquips()
         {
-            if (HasAntlionLeg) Player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
-            if (HasTrapperLash) Player.GetKnockback(DamageClass.Ranged) += 0.50f;
             ShouldLeafTailTimerTick = HasLeafTailDodge || HasLeafTailStealth;
             if (ShouldLeafTailTimerTick) {
                 if (LeafTailTimer < 60 && Player.IsStandingStillForSpecialEffects) LeafTailTimer++;
@@ -61,7 +59,7 @@ namespace SuperfluityTwo.Common.Players
 
         public override bool? CanAutoReuseItem(Item item)
         {
-            if (item.DamageType.CountsAsClass(DamageClass.Ranged) && HasAntlionLeg) return true;
+            if (HasAntlionLeg && item.DamageType.CountsAsClass(DamageClass.Ranged)) return true;
             return null;
         }
 

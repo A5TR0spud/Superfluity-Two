@@ -54,6 +54,9 @@ namespace SuperfluityTwo.NPCs
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Zygoma>(), 20));
                 return;
             }
+            if (npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera || npc.type == NPCID.EaterofSouls || npc.type == NPCID.BigEater || npc.type == NPCID.LittleEater) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VileStone>(), 75));
+            }
             /*if (npc.type == NPCID.DiabolistRed || npc.type == NPCID.DiabolistWhite || npc.type == NPCID.Necromancer || npc.type == NPCID.NecromancerArmored) {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Zygoma>(), 100));
                 return;

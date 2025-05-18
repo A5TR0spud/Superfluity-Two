@@ -4,24 +4,22 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using SuperfluityTwo.Common.Players;
 
-namespace SuperfluityTwo.Content.Items.Accessories.Ranger
+namespace SuperfluityTwo.Content.Items.Accessories.Mage
 {
-	public class AntlionLeg : ModItem
+	public class VileStone : ModItem
 	{
         public override void SetDefaults()
 		{
-			Item.width = 18;
-			Item.height = 24;
+			Item.width = 26;
+			Item.height = 22;
 			Item.value = Item.sellPrice(gold: 1);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<RangerPlayer>().HasAntlionLeg = true;
-            player.moveSpeed += 0.12f;
-            player.GetAttackSpeed(DamageClass.Ranged) += 0.12f;
+            player.GetModPlayer<MagePlayer>().hasVileStone = true;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
         {
             CreateRecipe()
                 .AddIngredient(ItemID.Mushroom, 15)
-                .AddIngredient(ItemID.HealingPotion, 5)
+                .AddIngredient(ItemID.HealingPotion, 15)
                 .AddIngredient(ItemID.GlowingMushroom, 15)
                 .AddIngredient(ItemID.MedicatedBandage)
                 .AddTile(TileID.Tables)

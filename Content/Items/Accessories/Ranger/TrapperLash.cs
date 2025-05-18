@@ -21,6 +21,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger
         {
             player.GetModPlayer<RangerPlayer>().HasTrapperLash = true;
             player.whipRangeMultiplier += 0.12f;
+            player.GetKnockback(DamageClass.Ranged) += 0.50f;
         }
     }
 }

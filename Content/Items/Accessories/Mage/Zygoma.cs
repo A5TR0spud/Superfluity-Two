@@ -4,11 +4,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Mage;
-public class Zygoma : ModItem {
+public class Zygoma : GlowItem {
     public override void SetDefaults()
     {
-        Item.width = 18;
-        Item.height = 24;
+        Item.width = 22;
+        Item.height = 26;
         Item.accessory = true;
         Item.value = Item.sellPrice(gold: 5);
         Item.rare = ItemRarityID.Yellow;

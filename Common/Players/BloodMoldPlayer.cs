@@ -9,6 +9,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Core;
 
@@ -25,35 +26,23 @@ namespace SuperfluityTwo.Common.Players
         static readonly public int TimeForHit = 8 * 60;
         static readonly public int TimeForInv = 6 * 60;
         static readonly public int InvHitPenalty = 1 * 60;
-        public PlayerDeathReason heldDamageSource;
+        public NetworkText heldDeathReason;
 
         public override void Load()
         {
             IL_Player.Hurt_HurtInfo_bool += HookHurt;
+            IL_Player.UpdateLifeRegen += HookRegen;
         }
+
         public override void Unload()
         {
             IL_Player.Hurt_HurtInfo_bool -= HookHurt;
+            IL_Player.UpdateLifeRegen -= HookRegen;
         }
 
         private void HookHurt(ILContext il)
         {
             try {
-                //Hook 1: Changes damage combat text from orange/red to purple when under the effects of Blood Mold
-                ILCursor c1 = new ILCursor(il);
-                c1.GotoNext(i => i.MatchNewobj<Rectangle>());
-                c1.GotoNext(i => i.MatchLdloc(7));
-                c1.Index++;
-                //^ Locating where color of combat text is loaded for combat text
-                c1.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0); //push Player onto stack
-                c1.EmitDelegate<Func<Color, Player, Color>>((returnValue, player) =>
-                {
-                    BloodMoldPlayer moldPlayer = player.GetModPlayer<BloodMoldPlayer>();
-                    if (moldPlayer.hasBloodMold)
-                        return /*moldPlayer.hasHeart ? Colors.RarityGreen : */Colors.RarityPurple;
-                    return returnValue;
-                });
-
                 //Hook 2: Prevents player from taking direct damage when under the effects of Blood Mold
                 ILCursor c2 = new ILCursor(il);
                 c2.GotoNext(i => i.MatchLdfld<Terraria.Player>("statLife"));
@@ -76,11 +65,91 @@ namespace SuperfluityTwo.Common.Players
                             player.AddBuff(buffToCheck, TimeForInv);
                         
                         player.AddBuff(debuffToCheck, TimeForHit);
-                        moldPlayer.heldDamageSource = damageSource;
+                        moldPlayer.heldDeathReason = damageSource.GetDeathText(player.name);
                         moldPlayer.damageLeft = Math.Max(moldPlayer.damageLeft, 0) + returnValue;
                         return 0;
                     }
                     return returnValue;
+                });
+            }
+            catch (Exception)
+            {
+				// If there are any failures with the IL editing, this method will dump the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
+				MonoModHooks.DumpIL(ModContent.GetInstance<SuperfluityTwo>(), il);
+
+				// If the mod cannot run without the IL hook, throw an exception instead. The exception will call DumpIL internally
+				// throw new ILPatchFailureException(ModContent.GetInstance<ExampleMod>(), il, e);
+			}
+        }
+
+        private void HookRegen(ILContext il)
+        {
+            try {
+                //Hook A: Change -480 life regen from red to purple
+                ILCursor ca = new(il);
+                // if (this.lifeRegenCount <= -480)
+                ca.GotoNext(i => i.MatchLdarg(0));
+                ca.GotoNext(i => i.MatchLdfld<Terraria.Player>("lifeRegenCount"));
+                ca.GotoNext(i => i.MatchLdcI4(-480));
+                //
+                ca.GotoNext(i => i.MatchLdsfld<Terraria.CombatText>("LifeRegen"));
+                ca.Index++;
+                ca.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+                ca.EmitDelegate<Func<Color, Player, Color>>((oldColor, player) =>
+                {
+                    BloodMoldPlayer moldPlayer = player.GetModPlayer<BloodMoldPlayer>();
+                    if (moldPlayer.hasBloodMold) {
+                        return Colors.RarityPurple;
+                    }
+                    return oldColor;
+                });
+                // else if (this.lifeRegenCount <= -360)
+                ca.GotoNext(i => i.MatchLdarg(0));
+                ca.GotoNext(i => i.MatchLdfld<Terraria.Player>("lifeRegenCount"));
+                ca.GotoNext(i => i.MatchLdcI4(-360));
+                //
+                ca.GotoNext(i => i.MatchLdsfld<Terraria.CombatText>("LifeRegen"));
+                ca.Index++;
+                ca.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+                ca.EmitDelegate<Func<Color, Player, Color>>((oldColor, player) =>
+                {
+                    BloodMoldPlayer moldPlayer = player.GetModPlayer<BloodMoldPlayer>();
+                    if (moldPlayer.hasBloodMold) {
+                        return Colors.RarityPurple;
+                    }
+                    return oldColor;
+                });
+                // else if (this.lifeRegenCount <= -240)
+                ca.GotoNext(i => i.MatchLdarg(0));
+                ca.GotoNext(i => i.MatchLdfld<Terraria.Player>("lifeRegenCount"));
+                ca.GotoNext(i => i.MatchLdcI4(-240));
+                //
+                ca.GotoNext(i => i.MatchLdsfld<Terraria.CombatText>("LifeRegen"));
+                ca.Index++;
+                ca.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+                ca.EmitDelegate<Func<Color, Player, Color>>((oldColor, player) =>
+                {
+                    BloodMoldPlayer moldPlayer = player.GetModPlayer<BloodMoldPlayer>();
+                    if (moldPlayer.hasBloodMold) {
+                        return Colors.RarityPurple;
+                    }
+                    return oldColor;
+                });
+                // else
+                /*ca.GotoNext(i => i.MatchLdarg(0));
+                ca.GotoNext(i => i.MatchLdfld<Terraria.Player>("lifeRegenCount"));
+                ca.GotoNext(i => i.MatchLdcI4(-360));*/
+                //
+                ca.GotoNext(i => i.MatchLdsfld<Terraria.CombatText>("LifeRegen"));
+                ca.Index++;
+                ca.Emit(Mono.Cecil.Cil.OpCodes.Ldarg_0);
+                ca.EmitDelegate<Func<Color, Player, Color>>((oldColor, player) =>
+                {
+                    BloodMoldPlayer moldPlayer = player.GetModPlayer<BloodMoldPlayer>();
+                    if (moldPlayer.hasBloodMold) {
+                        return Colors.RarityPurple;
+                    }
+                    return oldColor;
                 });
             }
             catch (Exception)
@@ -111,8 +180,10 @@ namespace SuperfluityTwo.Common.Players
         {
             if (damageLeft <= 0.01) damageLeft = -1;
 
-            int buffToCheck = HasMayday ? ModContent.BuffType<MaydayBloodMold>() : ModContent.BuffType<BloodMold>();
-            int decayTime = Player.HasBuff(buffToCheck) ? Player.buffTime[Player.FindBuffIndex(buffToCheck)] : 0;
+            //int buffToCheck = HasMayday ? ModContent.BuffType<MaydayBloodMold>() : ModContent.BuffType<BloodMold>();
+            int maydayTime = Player.HasBuff(ModContent.BuffType<MaydayBloodMold>()) ? Player.buffTime[Player.FindBuffIndex(ModContent.BuffType<MaydayBloodMold>())] : 0;
+            int bloodTime = Player.HasBuff(ModContent.BuffType<BloodMold>()) ? Player.buffTime[Player.FindBuffIndex(ModContent.BuffType<BloodMold>())] : 0;
+            int decayTime = Math.Max(maydayTime, bloodTime);
 
             //base case (tick)
             if (decayTime > 0 && damageLeft > 0) {
@@ -141,17 +212,18 @@ namespace SuperfluityTwo.Common.Players
                 return false;
             }
 
-            if (hasBloodMold && damageLeft >= 0 && heldDamageSource != null) damageSource = heldDamageSource;
+            if (hasBloodMold && damageLeft >= 0 && heldDeathReason != null)
+                damageSource.CustomReason = heldDeathReason;
+
             return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
         }
+        
         public override void UpdateDead()
         {
-            //base.UpdateDead();
             damageLeft = -1;
         }
         public override void OnRespawn()
         {
-            //base.OnRespawn();
             damageLeft = -1;
         }
     }

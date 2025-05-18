@@ -1,3 +1,4 @@
+using SuperfluityTwo.Content.Items.Accessories.Mage;
 using SuperfluityTwo.Content.Items.Accessories.Solace;
 using Terraria;
 using Terraria.ID;
@@ -24,6 +25,18 @@ public class ChestGen : ModSystem {
                     if (chest.item[inventoryIndex].type == ItemID.None) {
                         chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<LuckyClover>());
                         cloversPlaced++;
+                        break;
+                    }
+                }
+            }
+            //11 is frozen chest
+            if (chestTile.TileType == TileID.Containers && chestTile.TileFrameX == 11 * 36) {
+                // frozen chest
+                if (!WorldGen.genRand.NextBool(20))
+                    continue;
+                for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++) {
+                    if (chest.item[inventoryIndex].type == ItemID.None) {
+                        chest.item[inventoryIndex].SetDefaults(ModContent.ItemType<FlurryScroll>());
                         break;
                     }
                 }

@@ -14,8 +14,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
         public static readonly int missileCount = 1;
         public override void SetDefaults()
 		{
-			Item.width = 28;
-			Item.height = 34;
+			Item.width = 24;
+			Item.height = 30;
 			Item.value = Item.sellPrice(gold: 4);
 			Item.rare = ItemRarityID.Green;
             Item.damage = ATGPlayer.damage;

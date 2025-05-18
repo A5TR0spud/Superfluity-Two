@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -56,7 +52,6 @@ namespace SuperfluityTwo.Content.Projectiles
 		int randomVisualInterval = 0;
         public override void OnSpawn(IEntitySource source)
         {
-			Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
 			randomVisualOffset = Main.rand.Next(10);
 			randomVisualInterval = (Main.rand.Next(3) + 1) * 2 + 1;
         }
@@ -65,12 +60,14 @@ namespace SuperfluityTwo.Content.Projectiles
         public override bool PreAI()
         {
 			Player owner = Main.player[Projectile.owner];
-			Projectile.position = owner.Center + new Vector2(-Projectile.Hitbox.Width / 2, -(int)(0.3f * owner.height));// * (offsetPower + 38) + new Vector2(2.375f * -owner.width, -0.3f * owner.height);
+			Projectile.position = owner.Center + new Vector2(-Projectile.Hitbox.Width / 2, -(int)(0.3f * owner.height));
 
 			animTimer += 6f/26f * Projectile.scale;
 
 			Projectile.gfxOffY = owner.gfxOffY; //it's that shrimple
+			Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.UnitX);
 			Projectile.rotation = Projectile.velocity.ToRotation();
+			Projectile.spriteDirection = Projectile.velocity.X < 0 ? -1 : 1;
 			
             return false;
         }
