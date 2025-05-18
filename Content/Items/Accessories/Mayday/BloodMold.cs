@@ -39,5 +39,10 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
         {
             player.GetModPlayer<BloodMoldPlayer>().rawHasBloodMold = true;
         }
+
+        public override void UpdateVanity(Player player)
+        {
+            player.GetModPlayer<BloodMoldPlayer>().forceBloodMoldVisible = true;
+        }
     }
 }

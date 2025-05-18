@@ -10,17 +10,17 @@ namespace SuperfluityTwo.Common.Players
     public class MagePlayer : ModPlayer {
         public bool hasZygoma = false;
         public bool hasVileStone = false;
-        public bool hasScroll = false;
+        public bool hasFlurryScroll = false;
         public override void ResetEffects()
         {
             hasZygoma = false;
             hasVileStone = false;
-            hasScroll = false;
+            hasFlurryScroll = false;
         }
 
         public override bool? CanAutoReuseItem(Item item)
         {
-            if (hasScroll && item.DamageType.CountsAsClass(DamageClass.Magic)) return true;
+            if (hasFlurryScroll && item.DamageType.CountsAsClass(DamageClass.Magic)) return true;
             return null;
         }
 

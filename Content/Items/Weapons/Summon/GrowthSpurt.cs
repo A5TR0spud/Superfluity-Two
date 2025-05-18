@@ -16,7 +16,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon
 			Item.height = 28;
 			Item.mana = 2;
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.shootSpeed = 7f;
 			Item.UseSound = SoundID.Item8;
 			Item.useAnimation = 26;
 			Item.useTime = 26;
@@ -29,6 +28,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon
 			Item.rare = ItemRarityID.White;
 			Item.useTurn = false;
 			Item.shoot = ModContent.ProjectileType<Growth>();
+			Item.shootSpeed = 1;
 			Item.scale = 0.75f;
 		}
 

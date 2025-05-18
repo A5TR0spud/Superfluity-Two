@@ -19,7 +19,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<MagePlayer>().hasScroll = true;
+            player.GetModPlayer<MagePlayer>().hasFlurryScroll = true;
             player.GetAttackSpeed(DamageClass.Magic) += 0.12f;
         }
     }

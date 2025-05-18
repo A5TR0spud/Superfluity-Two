@@ -22,11 +22,12 @@ namespace SuperfluityTwo.Common.Players
         public bool rawHasHeart = false;
         public bool rawHasMayday = false;
         public bool HasMayday = false;
+        public bool forceBloodMoldVisible = false;
+        public bool forceMaydayVisible = false;
         public double damageLeft = -1;
         static readonly public int TimeForHit = 8 * 60;
         static readonly public int TimeForInv = 6 * 60;
         static readonly public int InvHitPenalty = 1 * 60;
-        public NetworkText heldDeathReason;
 
         public override void Load()
         {
@@ -65,7 +66,6 @@ namespace SuperfluityTwo.Common.Players
                             player.AddBuff(buffToCheck, TimeForInv);
                         
                         player.AddBuff(debuffToCheck, TimeForHit);
-                        moldPlayer.heldDeathReason = damageSource.GetDeathText(player.name);
                         moldPlayer.damageLeft = Math.Max(moldPlayer.damageLeft, 0) + returnValue;
                         return 0;
                     }
@@ -167,6 +167,8 @@ namespace SuperfluityTwo.Common.Players
             rawHasBloodMold = false;
             rawHasHeart = false;
             rawHasMayday = false;
+            forceBloodMoldVisible = false;
+            forceMaydayVisible = false;
         }
 
         public override void PostUpdateEquips()
@@ -206,14 +208,46 @@ namespace SuperfluityTwo.Common.Players
 
         public override bool PreKill(double damage, int hitDirection, bool pvp, ref bool playSound, ref bool genDust, ref PlayerDeathReason damageSource)
         {
-            int buffToCheck = HasMayday ? ModContent.BuffType<MaydayBloodSprout>() : ModContent.BuffType<BloodSprout>();
-            if (Player.HasBuff(buffToCheck)) {
+            if (Player.HasBuff(ModContent.BuffType<MaydayBloodSprout>()) || Player.HasBuff(ModContent.BuffType<BloodSprout>())) {
                 Player.statLife = 1;
                 return false;
             }
 
-            if (hasBloodMold && damageLeft >= 0 && heldDeathReason != null)
-                damageSource.CustomReason = heldDeathReason;
+            if (hasBloodMold) {
+                if ((HasMayday || forceMaydayVisible) && !forceBloodMoldVisible)
+                    HelperMethodsSF2.MaydayDeathMessage(ref damageSource, Player);
+                else {
+                    HelperMethodsSF2.DecayDeathMessage(ref damageSource, Player);
+                    if (genDust) {
+                        genDust = false;
+                        for (int i = 0; i < 9; i++) {
+                            Dust.NewDust(
+                                Player.position,
+                                Player.width,
+                                Player.height,
+                                DustID.GreenBlood,
+                                Player.velocity.X * 0.2f,
+                                Player.velocity.Y * 0.2f,
+                                100,
+                                Color.White,
+                                1.2f
+                            );
+                            Dust.NewDust(
+                                Player.position,
+                                Player.width,
+                                Player.height,
+                                DustID.Blood,
+                                Player.velocity.X * 0.2f,
+                                Player.velocity.Y * 0.2f,
+                                100,
+                                Color.White,
+                                1.2f
+                            );
+                        }
+                    }
+                }
+            }
+
 
             return base.PreKill(damage, hitDirection, pvp, ref playSound, ref genDust, ref damageSource);
         }

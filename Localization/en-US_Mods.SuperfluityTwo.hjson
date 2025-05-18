@@ -305,7 +305,7 @@ Items: {
 		Tooltip:
 			'''
 			Magic attacks inflict poison
-			'A coagulated lump of bile'
+			'A coagulated clump of bile'
 			'''
 	}
 
@@ -316,6 +316,11 @@ Items: {
 			12% increased magic attack speed
 			Enables auto cast for all magic weapons
 			'''
+	}
+
+	ShadowRite: {
+		DisplayName: Shadow Rite
+		Tooltip: Summon attacks inflict shadowflame
 	}
 }
 
@@ -385,4 +390,68 @@ Projectiles: {
 	ATGMissile.DisplayName: Guided Missile
 	Growth.DisplayName: Growth
 	Strataslash.DisplayName: Strataslash
+}
+
+DeathMessages: {
+	Decay: {
+		Hardcore: "{0} was killed in a way that matters"
+		Decay0: "{0} withered away"
+		Decay1: "{0}'s hubris was their downfall"
+		Decay2: "{0} decayed"
+		Decay3: "{0}'s flesh sloughed"
+		Decay4: "{0} became beautiful"
+		Decay5: "{0} blossomed into beautiful spores"
+		Decay6: "{0} succumbed to cordyceps"
+		Decay7: "{0} crawled to a high place"
+		Decay8: "{0}'s innards fell through"
+		Decay9: "{0}'s blood became mould"
+		Decay10: "{0}'s blood ran cold"
+		Decay11: "{0}'s heart became mushy"
+		Decay12: "{0} forgot to dodge"
+		Decay13: "{0}'s flesh became mushy"
+		Decay14: "{0}'s skin was overgrown"
+		Decay15: "{0} coughed up spores"
+		Decay16: "{0} inhaled spores"
+		Decay17: "{0} wanted to climb high"
+		Decay18: "{0} molted"
+		Decay19: "{0} became a mushroom"
+		Decay20: "{0} succumbed to pestilence"
+		Decay21: "{0} speaks for the shrooms"
+		Decay22: "{0} became a pulsing mass"
+		Decay23: "{0} peeped the horror"
+	}
+
+	Mayday: {
+		Hardcore: "{0} was destined for great things"
+		Mayday0: "{0} thought they were immortal"
+		Mayday1: "{0} forgot to dodge"
+		Mayday2: "{0} was relying too hard on their crutches"
+		Mayday3: "{0} saw a red light"
+		Mayday4: "{0} panicked"
+		Mayday5: "{0} didn't panic"
+		Mayday6: "{0} forgot to move"
+		Mayday7: "{0} witnessed a security breach"
+		Mayday8: "{0} didn't have clearance to live"
+		Mayday9: "{0} stayed too calm"
+		Mayday10: "{0} didn't stay calm"
+		Mayday11: "{0} heard a blaring alarm and did nothing"
+		Mayday12: "{0} decided to die"
+		Mayday13: "{0} was not authorized to live"
+		Mayday14: "{0} was unauthorized"
+		Mayday15: "{0} was unauthenticated"
+		Mayday16: "{0} messed around and found out"
+		Mayday17: "{0} tasted blood"
+		Mayday18: "{0}'s material was emancipated"
+		Mayday19: "{0}'s cries for help went unanswered"
+		Mayday20: "{0} went down with the ship"
+		Mayday21: "{0}'s mind evaporated"
+		Mayday22: "{0} broke"
+		Mayday23: "{0}'s signal malfunctioned"
+		Mayday24: "{0} malfunctioned"
+	}
+
+	Ataraxia: {
+		Hardcore: "[c/e1193d:{0} is forced to rest...]"
+		Normal: "{0} is permitted to rest..."
+	}
 }

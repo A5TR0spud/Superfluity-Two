@@ -3,6 +3,7 @@ using SuperfluityTwo.Content.Items.Accessories.Mage;
 using SuperfluityTwo.Content.Items.Accessories.Mayday;
 using SuperfluityTwo.Content.Items.Accessories.Ranger;
 using SuperfluityTwo.Content.Items.Accessories.Solace;
+using SuperfluityTwo.Content.Items.Accessories.Summoner;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -56,11 +57,15 @@ namespace SuperfluityTwo.NPCs
             }
             if (npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera || npc.type == NPCID.EaterofSouls || npc.type == NPCID.BigEater || npc.type == NPCID.LittleEater) {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VileStone>(), 75));
+                return;
             }
             /*if (npc.type == NPCID.DiabolistRed || npc.type == NPCID.DiabolistWhite || npc.type == NPCID.Necromancer || npc.type == NPCID.NecromancerArmored) {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Zygoma>(), 100));
                 return;
             }*/
+            if (npc.type == NPCID.GoblinSummoner) {
+                npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<ShadowRite>(), 6, 3));
+            }
         }
     }
 }

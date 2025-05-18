@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -13,7 +14,7 @@ namespace SuperfluousSummoning.Content
             RegisterTransmuteCrafts();
         }
 
-        private void RegisterQoLCrafts() {
+        private static void RegisterQoLCrafts() {
             //Band of Starpower
             Recipe.Create(ItemID.BandofStarpower)
                 .AddIngredient(ItemID.ShadowScale, 5)
@@ -138,7 +139,7 @@ namespace SuperfluousSummoning.Content
                 .Register();
         }
 
-        private void RegisterTransmuteCrafts() {
+        private static void RegisterTransmuteCrafts() {
             RegisterMutualLifeManaCraft(ItemID.Musket, ItemID.TheUndertaker);
             RegisterMutualLifeManaCraft(ItemID.ShadowOrb, ItemID.CrimsonHeart);
             RegisterMutualLifeManaCraft(ItemID.Vilethorn, ItemID.CrimsonRod);
@@ -192,7 +193,7 @@ namespace SuperfluousSummoning.Content
             RegisterMutualLightDarkCraft(ItemID.DarkShard, ItemID.LightShard, 10);
         }
 
-        private void RegisterMutualLifeManaCraft(int CorruptOrManaItem, int CrimsonOrLifeItem) {
+        private static void RegisterMutualLifeManaCraft(int CorruptOrManaItem, int CrimsonOrLifeItem) {
             Recipe.Create(CorruptOrManaItem)
                 .AddIngredient(CrimsonOrLifeItem)
                 .AddIngredient(ItemID.ManaCrystal)
@@ -209,12 +210,12 @@ namespace SuperfluousSummoning.Content
                 .Register();
         }
 
-        private void RegisterMutualLightDarkCraft(int DarkItem, int LightItem, int SoulCount = 1) {
+        private static void RegisterMutualLightDarkCraft(int DarkItem, int LightItem, int SoulCount = 1) {
             RegisterShimmerCraft(DarkItem, LightItem, ItemID.SoulofLight, SoulCount);
             RegisterShimmerCraft(LightItem, DarkItem, ItemID.SoulofNight, SoulCount);
         }
 
-        private void RegisterMutualShimmerCraftList(int[][] itemsAndKeys) {
+        private static void RegisterMutualShimmerCraftList(int[][] itemsAndKeys) {
             int resultItem;
             int transformerItemID;
             int inItem;
@@ -229,13 +230,13 @@ namespace SuperfluousSummoning.Content
             }
         }
 
-        private void RegisterShimmerCraft(int inItem, int outItem, int transformItem = -1, int transformItemCount = 1) {
+        private static void RegisterShimmerCraft(int inItem, int outItem, int transformItem = -1, int transformItemCount = 1) {
             Recipe r = Recipe.Create(outItem)
                 .AddIngredient(inItem);
             if (transformItem != -1) {
                 r.AddIngredient(transformItem, transformItemCount);
             }
-            r.AddCondition(Condition.NearShimmer)
+            r.AddTile(TileID.ShimmerMonolith)//.AddCondition(Condition.NearShimmer)
                 .DisableDecraft()
                 .Register();
         }

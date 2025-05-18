@@ -1,5 +1,8 @@
+using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Common;
@@ -26,5 +29,31 @@ public class HelperMethodsSF2 {
             return false;
         }
         return true;
+    }
+
+    #nullable enable
+    public static Player? TryGetOwner(Projectile projectile) {
+        if (projectile.friendly) {
+            projectile.TryGetOwner(out Player? player);
+            return player;
+        }
+        return null;
+    }
+    #nullable restore
+
+    public static void DecayDeathMessage(ref PlayerDeathReason deathReason, Player player) {
+        string translation = "Mods.SuperfluityTwo.DeathMessages.Decay.";
+        string suffix;
+        if (player.difficulty == 2) suffix = "Hardcore";
+        else suffix = "Decay9";// + Main.ServerSideCharacter.ran;
+        deathReason = PlayerDeathReason.ByCustomReason(NetworkText.FromKey(translation + suffix, player.name));
+    }
+
+    public static void MaydayDeathMessage(ref PlayerDeathReason deathReason, Player player) {
+        string translation = "Mods.SuperfluityTwo.DeathMessages.Mayday.";
+        string suffix;
+        if (player.difficulty == 2) suffix = "Hardcore";
+        else suffix = "Mayday14";// + Main.rand.Next(25);
+        deathReason = PlayerDeathReason.ByCustomReason(NetworkText.FromKey(translation + suffix, player.name));
     }
 }

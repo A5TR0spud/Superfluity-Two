@@ -48,6 +48,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
         public override void UpdateVanity(Player player)
         {
             player.GetModPlayer<RedAlertPlayer>().forceVisibleMayday = true;
+            player.GetModPlayer<BloodMoldPlayer>().forceMaydayVisible = true;
         }
     }
 }
