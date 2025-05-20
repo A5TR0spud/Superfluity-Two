@@ -323,7 +323,7 @@ Items: {
 		Tooltip:
 			'''
 			Summon attacks inflict shadowflame
-			100% increased damage on the igniting hit
+			10% increased summon damage on shadowburning enemies
 			'''
 	}
 
@@ -333,6 +333,15 @@ Items: {
 			'''
 			Most magic projectiles become guided
 			Magic attacks inflict acidic venom
+			'''
+	}
+
+	CultivatingFlame: {
+		DisplayName: Cultivating Flame
+		Tooltip:
+			'''
+			Increases your max number of minions by 1
+			5% chance for summon attacks to explode
 			'''
 	}
 }

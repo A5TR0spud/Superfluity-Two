@@ -9,7 +9,7 @@ namespace SuperfluityTwo.Common.Players
 {
     public class SummonPlayer : ModPlayer {
         public bool hasShadowRite = false;
-        public bool hasShadowDamage = false;
+        public bool hasCultivatingFlame = false;
         public override void Load()
         {
             On_Player.ItemCheck_EmitUseVisuals += HookUseVisual;
@@ -18,27 +18,54 @@ namespace SuperfluityTwo.Common.Players
         public override void ResetEffects()
         {
             hasShadowRite = false;
-            hasShadowDamage = false;
+            hasCultivatingFlame = false;
         }
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (hit.DamageType.CountsAsClass(DamageClass.Summon)) {
+            if (hit.DamageType.CountsAsClass(DamageClass.Summon))
+            {
                 if (hasShadowRite) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.ShadowFlame);
+                if (hasCultivatingFlame && Main.rand.NextBool(20))
+                {
+                    Main.projectile[Projectile.NewProjectile(
+                        Player.GetSource_FromThis(),
+                        target.Center,
+                        Vector2.Zero,
+                        ProjectileID.InfernoFriendlyBlast,
+                        (int)(damageDone * 0.4f),
+                        0,
+                        Player.whoAmI
+                    )].DamageType = DamageClass.Summon;
+                }
             }
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Summon)) {
+            if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Summon))
+            {
                 if (hasShadowRite) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.ShadowFlame);
+                if (hasCultivatingFlame && Main.rand.NextBool(20) && proj.type != ProjectileID.InfernoFriendlyBlast)
+                {
+                    Main.projectile[Projectile.NewProjectile(
+                        proj.GetSource_FromThis(),
+                        target.Center,
+                        Vector2.Zero,
+                        ProjectileID.InfernoFriendlyBlast,
+                        (int)(damageDone * 0.4f),
+                        0,
+                        proj.owner
+                    )].DamageType = DamageClass.Summon;
+                }
             }
         }
 
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
             if (projectile.noEnchantmentVisuals || projectile.noEnchantments) return;
-            if (hasShadowRite && projectile.DamageType.CountsAsClass(DamageClass.Summon) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates))) {
+            if (hasShadowRite && projectile.DamageType.CountsAsClass(DamageClass.Summon) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
+            {
                 int num = Dust.NewDust(
                     boxPosition,
                     boxWidth,
@@ -86,16 +113,16 @@ namespace SuperfluityTwo.Common.Players
     public class SummonPlayerNPC : GlobalNPC {
         public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
         {
-            if (!npc.HasBuff(BuffID.ShadowFlame) && player.GetModPlayer<SummonPlayer>().hasShadowDamage && item.DamageType.CountsAsClass(DamageClass.Summon))
-                modifiers.ScalingBonusDamage += 0.20f;
+            if (npc.HasBuff(BuffID.ShadowFlame) && player.GetModPlayer<SummonPlayer>().hasShadowRite && item.DamageType.CountsAsClass(DamageClass.Summon))
+                modifiers.ScalingBonusDamage += 0.10f;
         }
 
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
         {
             if (!projectile.friendly || projectile.hostile) return;
             projectile.TryGetOwner(out Player owner);
-            if (!npc.buffImmune[BuffID.ShadowFlame] && !npc.HasBuff(BuffID.ShadowFlame) && owner.GetModPlayer<SummonPlayer>().hasShadowDamage && projectile.CountsAsClass(DamageClass.Summon))
-                modifiers.ScalingBonusDamage += 1f;
+            if (npc.HasBuff(BuffID.ShadowFlame) && owner.GetModPlayer<SummonPlayer>().hasShadowRite && projectile.CountsAsClass(DamageClass.Summon))
+                modifiers.ScalingBonusDamage += 0.10f;
         }
     }
 }

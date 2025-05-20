@@ -59,10 +59,10 @@ namespace SuperfluityTwo.NPCs
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VileStone>(), 75));
                 return;
             }
-            /*if (npc.type == NPCID.DiabolistRed || npc.type == NPCID.DiabolistWhite || npc.type == NPCID.Necromancer || npc.type == NPCID.NecromancerArmored) {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Zygoma>(), 100));
+            if (npc.type == NPCID.DiabolistRed || npc.type == NPCID.DiabolistWhite) {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CultivatingFlame>(), 75));
                 return;
-            }*/
+            }
             if (npc.type == NPCID.GoblinSummoner) {
                 npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<ShadowRite>(), 6, 3));
                 return;
