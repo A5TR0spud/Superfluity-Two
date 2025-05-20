@@ -1,6 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
+using Mono.Cecil;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,11 +13,13 @@ namespace SuperfluityTwo.Common.Players
         public bool hasZygoma = false;
         public bool hasVileStone = false;
         public bool hasFlurryScroll = false;
+        public bool hasVenom = false;
         public override void ResetEffects()
         {
             hasZygoma = false;
             hasVileStone = false;
             hasFlurryScroll = false;
+            hasVenom = false;
         }
 
         public override bool? CanAutoReuseItem(Item item)
@@ -27,21 +31,39 @@ namespace SuperfluityTwo.Common.Players
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
             if (projectile.noEnchantmentVisuals || projectile.noEnchantments) return;
-            if (hasVileStone && projectile.DamageType.CountsAsClass(DamageClass.Magic) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates))) {
-                int num = Dust.NewDust(
-                    boxPosition,
-                    boxWidth,
-                    boxHeight,
-                    DustID.Poisoned,
-                    projectile.velocity.X * 0.2f,// + (float)(projectile.direction * 3),
-                    projectile.velocity.Y * 0.2f,
-                    100,
-                    default(Color),
-                    1f
-                );
-                Main.dust[num].noGravity = true;
-                Main.dust[num].velocity *= 0.7f;
-                Main.dust[num].velocity.Y -= 0.5f;
+            if (projectile.DamageType.CountsAsClass(DamageClass.Magic) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates))) {
+                if (hasVileStone) {
+                    int num = Dust.NewDust(
+                        boxPosition,
+                        boxWidth,
+                        boxHeight,
+                        DustID.Poisoned,
+                        projectile.velocity.X * 0.2f,// + (float)(projectile.direction * 3),
+                        projectile.velocity.Y * 0.2f,
+                        100,
+                        default(Color),
+                        1f
+                    );
+                    Main.dust[num].noGravity = true;
+                    Main.dust[num].velocity *= 0.7f;
+                    Main.dust[num].velocity.Y -= 0.5f;
+                }
+                if (hasVenom) {
+                    int num = Dust.NewDust(
+                        boxPosition,
+                        boxWidth,
+                        boxHeight,
+                        DustID.Venom,
+                        projectile.velocity.X * 0.2f,// + (float)(projectile.direction * 3),
+                        projectile.velocity.Y * 0.2f,
+                        100,
+                        default(Color),
+                        1f
+                    );
+                    Main.dust[num].noGravity = true;
+                    Main.dust[num].velocity *= 0.7f;
+                    Main.dust[num].velocity.Y -= 0.5f;
+                }
             }
         }
 
@@ -49,41 +71,24 @@ namespace SuperfluityTwo.Common.Players
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (hasVileStone && hit.DamageType.CountsAsClass(DamageClass.Magic)) {
-                if (Main.rand.NextBool(4))
-                {
-                    target.AddBuff(BuffID.Poisoned, 360);
-                }
-                else if (Main.rand.NextBool(2))
-                {
-                    target.AddBuff(BuffID.Poisoned, 240);
-                }
-                else
-                {
-                    target.AddBuff(BuffID.Poisoned, 120);
-                }
+                if (hasVileStone) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Poisoned);
+                if (hasVenom) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Venom);
             }
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!proj.noEnchantments && hasVileStone && hit.DamageType.CountsAsClass(DamageClass.Magic)) {
-                if (Main.rand.NextBool(4))
-                {
-                    target.AddBuff(BuffID.Poisoned, 360);
-                }
-                else if (Main.rand.NextBool(2))
-                {
-                    target.AddBuff(BuffID.Poisoned, 240);
-                }
-                else
-                {
-                    target.AddBuff(BuffID.Poisoned, 120);
-                }
+            if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Magic)) {
+                if (hasVileStone) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Poisoned);
+                if (hasVenom) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Venom);
             }
         }
     }
 
     public class ZygomaProjectile : GlobalProjectile {
+        internal const float HOMING_POWER = 50f * (MathHelper.Pi / 180f) * (1f / 60f);
+        internal const float HOMING_THRESHOLD = 45f * (MathHelper.Pi / 360f);
+        //internal const float HOMING_ACCELERATION = 0.1f;
         public override void AI(Projectile projectile)
         {
             if (!HelperMethodsSF2.ShouldProjectileUpdatePosition(projectile)
@@ -99,21 +104,56 @@ namespace SuperfluityTwo.Common.Players
                 || projectile.noEnchantments
                 || projectile.damage <= 0
                 || projectile.hide
+                || !projectile.friendly
+                || projectile.hostile
+                || !projectile.TryGetOwner(out Player player)
+                || player.heldProj == projectile.identity
             )
                 return;
+
             if (projectile.CountsAsClass(DamageClass.Magic)
-            && projectile.TryGetOwner(out Player player)
-            && player.GetModPlayer<MagePlayer>().hasZygoma) {
-                int i = projectile.FindTargetWithLineOfSight();
+            && player.GetModPlayer<MagePlayer>().hasZygoma)
+            {
+                if (!FindZygomaTarget(projectile, out int i, out float absAngleTo)) return;
                 if (i == -1) return;
                 NPC target = Main.npc[i];
-                if (projectile.Center.DistanceSQ(target.Center) + 0.001f < target.Center.DistanceSQ(projectile.Center + projectile.oldVelocity))
-                    return;
-                Vector2 offset = (target.Center - projectile.Center).SafeNormalize(Vector2.Zero) / (projectile.extraUpdates + 1.0f);
-                float targetSpeed = projectile.velocity.Length();
-                Vector2 targetDir = (projectile.velocity + offset).SafeNormalize(offset);
-                projectile.velocity = targetDir * targetSpeed;
+                //Dust.NewDust(target.position, target.width, target.height, DustID.Clentaminator_Green);
+
+                float length = projectile.velocity.Length();
+                float targetAngle = projectile.AngleTo(target.Center);
+                projectile.velocity = projectile.velocity.ToRotation().AngleTowards(targetAngle, HOMING_POWER / (projectile.extraUpdates + 1f)).ToRotationVector2() * length;
+                //projectile.velocity += targetAngle.ToRotationVector2() * HOMING_ACCELERATION;
             }
+        }
+
+        public static bool FindZygomaTarget(Projectile projectile, out int NPCid, out float absAngleTo, float maxRange = 1200)
+        {
+            int heldNPCid = -1;
+            float num = HOMING_THRESHOLD;
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC nPC = Main.npc[i];
+                if (!nPC.CanBeChasedBy(projectile) || projectile.localNPCImmunity[i] != 0)
+                    continue;
+                float distance = nPC.Distance(projectile.position);
+                if (distance > maxRange)
+                    continue;
+                //if (distance > projectile.timeLeft * projectile.velocity.Length() / 100f)
+                //    continue;
+
+                float num2 = (nPC.Center - projectile.Center).ToRotation() - projectile.velocity.ToRotation();
+                if (num2 > MathHelper.Pi) num2 -= MathHelper.TwoPi;
+                if (num2 < -MathHelper.Pi) num2 += MathHelper.TwoPi;
+                num2 = Math.Abs(num2); //projectile.Center.Distance(nPC.Center) - nPC.Center.Distance(projectile.Center + projectile.velocity);
+                if (num2 < num && (!projectile.tileCollide || Collision.CanHit(projectile.position, projectile.width, projectile.height, nPC.position, nPC.width, nPC.height)))
+                {
+                    num = num2;
+                    heldNPCid = i;
+                }
+            }
+            NPCid = heldNPCid;
+            absAngleTo = num;
+            return heldNPCid != -1;
         }
     }
 }

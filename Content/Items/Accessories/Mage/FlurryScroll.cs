@@ -10,8 +10,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
 	{
         public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 28;
+			Item.width = 18;
+			Item.height = 26;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ItemRarityID.Blue;
             Item.accessory = true;

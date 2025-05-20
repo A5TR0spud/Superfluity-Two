@@ -46,14 +46,29 @@ public class HelperMethodsSF2 {
         string suffix;
         if (player.difficulty == 2) suffix = "Hardcore";
         else suffix = "Decay9";// + Main.ServerSideCharacter.ran;
-        deathReason = PlayerDeathReason.ByCustomReason(NetworkText.FromKey(translation + suffix, player.name));
+        deathReason.CustomReason = NetworkText.FromKey(translation + suffix, player.name);
     }
 
     public static void MaydayDeathMessage(ref PlayerDeathReason deathReason, Player player) {
         string translation = "Mods.SuperfluityTwo.DeathMessages.Mayday.";
         string suffix;
         if (player.difficulty == 2) suffix = "Hardcore";
-        else suffix = "Mayday14";// + Main.rand.Next(25);
-        deathReason = PlayerDeathReason.ByCustomReason(NetworkText.FromKey(translation + suffix, player.name));
+        else suffix = "Mayday14";// + Main;//Main.rand.Next(25);
+        deathReason.CustomReason = NetworkText.FromKey(translation + suffix, player.name);
+    }
+
+    public static void OnHitInflictWithVaryingDuration(NPC victim, int buffID) {
+        if (Main.rand.NextBool(4))
+        {
+            victim.AddBuff(buffID, 360);
+        }
+        else if (Main.rand.NextBool(2))
+        {
+            victim.AddBuff(buffID, 240);
+        }
+        else
+        {
+            victim.AddBuff(buffID, 120);
+        }
     }
 }

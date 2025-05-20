@@ -11,7 +11,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Summoner
         public override void SetDefaults()
 		{
 			Item.width = 24;
-			Item.height = 30;
+			Item.height = 26;
 			Item.value = Item.sellPrice(gold: 2);
 			Item.rare = ItemRarityID.Pink;
             Item.accessory = true;
@@ -20,6 +20,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Summoner
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<SummonPlayer>().hasShadowRite = true;
+            player.GetModPlayer<SummonPlayer>().hasShadowDamage = true;
         }
     }
 }

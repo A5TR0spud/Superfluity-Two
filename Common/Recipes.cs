@@ -223,7 +223,7 @@ namespace SuperfluousSummoning.Content
                 resultItem = keyPair[0];
                 transformerItemID = keyPair[1];
                 foreach (int[] inKeyPair in itemsAndKeys) {
-                    inItem = keyPair[0];
+                    inItem = inKeyPair[0];
                     if (inItem == resultItem) continue;
                     RegisterShimmerCraft(inItem, resultItem, transformerItemID);
                 }

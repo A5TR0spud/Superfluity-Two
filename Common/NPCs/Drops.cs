@@ -65,6 +65,7 @@ namespace SuperfluityTwo.NPCs
             }*/
             if (npc.type == NPCID.GoblinSummoner) {
                 npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<ShadowRite>(), 6, 3));
+                return;
             }
         }
     }

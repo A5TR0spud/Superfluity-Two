@@ -9,6 +9,7 @@ namespace SuperfluityTwo.Common.Players
 {
     public class SummonPlayer : ModPlayer {
         public bool hasShadowRite = false;
+        public bool hasShadowDamage = false;
         public override void Load()
         {
             On_Player.ItemCheck_EmitUseVisuals += HookUseVisual;
@@ -17,41 +18,20 @@ namespace SuperfluityTwo.Common.Players
         public override void ResetEffects()
         {
             hasShadowRite = false;
+            hasShadowDamage = false;
         }
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (hasShadowRite && hit.DamageType.CountsAsClass(DamageClass.Summon)) {
-                if (Main.rand.NextBool(4))
-                {
-                    target.AddBuff(BuffID.ShadowFlame, 360);
-                }
-                else if (Main.rand.NextBool(2))
-                {
-                    target.AddBuff(BuffID.ShadowFlame, 240);
-                }
-                else
-                {
-                    target.AddBuff(BuffID.ShadowFlame, 120);
-                }
+            if (hit.DamageType.CountsAsClass(DamageClass.Summon)) {
+                if (hasShadowRite) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.ShadowFlame);
             }
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!proj.noEnchantments && hasShadowRite && hit.DamageType.CountsAsClass(DamageClass.Summon)) {
-                if (Main.rand.NextBool(4))
-                {
-                    target.AddBuff(BuffID.ShadowFlame, 360);
-                }
-                else if (Main.rand.NextBool(2))
-                {
-                    target.AddBuff(BuffID.ShadowFlame, 240);
-                }
-                else
-                {
-                    target.AddBuff(BuffID.ShadowFlame, 120);
-                }
+            if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Summon)) {
+                if (hasShadowRite) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.ShadowFlame);
             }
         }
 
@@ -100,6 +80,22 @@ namespace SuperfluityTwo.Common.Players
                 }
             }
             return itemRectangle;
+        }
+    }
+
+    public class SummonPlayerNPC : GlobalNPC {
+        public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
+        {
+            if (!npc.HasBuff(BuffID.ShadowFlame) && player.GetModPlayer<SummonPlayer>().hasShadowDamage && item.DamageType.CountsAsClass(DamageClass.Summon))
+                modifiers.ScalingBonusDamage += 0.20f;
+        }
+
+        public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref NPC.HitModifiers modifiers)
+        {
+            if (!projectile.friendly || projectile.hostile) return;
+            projectile.TryGetOwner(out Player owner);
+            if (!npc.buffImmune[BuffID.ShadowFlame] && !npc.HasBuff(BuffID.ShadowFlame) && owner.GetModPlayer<SummonPlayer>().hasShadowDamage && projectile.CountsAsClass(DamageClass.Summon))
+                modifiers.ScalingBonusDamage += 1f;
         }
     }
 }

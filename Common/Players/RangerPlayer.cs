@@ -77,37 +77,15 @@ namespace SuperfluityTwo.Common.Players
         //shouldn't happen but you never know with mods. not even gonna bother with the enchantment visual on the item though.
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (HasFloe && hit.DamageType.CountsAsClass(DamageClass.Ranged)) {
-                if (Main.rand.NextBool(4))
-                {
-                    target.AddBuff(BuffID.Frostburn, 360);
-                }
-                else if (Main.rand.NextBool(2))
-                {
-                    target.AddBuff(BuffID.Frostburn, 240);
-                }
-                else
-                {
-                    target.AddBuff(BuffID.Frostburn, 120);
-                }
+            if (hit.DamageType.CountsAsClass(DamageClass.Ranged)) {
+                if (HasFloe) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Frostburn);
             }
         }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!proj.noEnchantments && HasFloe && hit.DamageType.CountsAsClass(DamageClass.Ranged)) {
-                if (Main.rand.NextBool(4))
-                {
-                    target.AddBuff(BuffID.Frostburn, 360);
-                }
-                else if (Main.rand.NextBool(2))
-                {
-                    target.AddBuff(BuffID.Frostburn, 240);
-                }
-                else
-                {
-                    target.AddBuff(BuffID.Frostburn, 120);
-                }
+            if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Ranged)) {
+                if (HasFloe) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Frostburn);
             }
         }
     }
