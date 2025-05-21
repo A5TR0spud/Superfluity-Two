@@ -52,7 +52,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
         }
 
 		public override Position GetDefaultPosition() {
-			return new BeforeParent(PlayerDrawLayers.FaceAcc);
+			return new AfterParent(PlayerDrawLayers.FaceAcc);
 		}
 
 		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {

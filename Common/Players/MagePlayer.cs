@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Mono.Cecil;
+using SuperfluityTwo.Content.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameInput;
@@ -9,17 +10,27 @@ using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Common.Players
 {
-    public class MagePlayer : ModPlayer {
+    public class MagePlayer : ModPlayer
+    {
         public bool hasZygoma = false;
         public bool hasVileStone = false;
         public bool hasFlurryScroll = false;
+        public bool hasThunderScroll = false;
         public bool hasVenom = false;
+        internal int ShockwaveTimer = 0;
+        internal const int SHOCKWAVE_COOLDOWN = (int)(2.5f * 60);
         public override void ResetEffects()
         {
             hasZygoma = false;
             hasVileStone = false;
             hasFlurryScroll = false;
             hasVenom = false;
+            hasThunderScroll = false;
+        }
+
+        public override void PostUpdate()
+        {
+            if (ShockwaveTimer > 0) ShockwaveTimer--;
         }
 
         public override bool? CanAutoReuseItem(Item item)
@@ -31,8 +42,10 @@ namespace SuperfluityTwo.Common.Players
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
             if (projectile.noEnchantmentVisuals || projectile.noEnchantments) return;
-            if (projectile.DamageType.CountsAsClass(DamageClass.Magic) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates))) {
-                if (hasVileStone) {
+            if (projectile.DamageType.CountsAsClass(DamageClass.Magic) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
+            {
+                if (hasVileStone)
+                {
                     int num = Dust.NewDust(
                         boxPosition,
                         boxWidth,
@@ -48,7 +61,8 @@ namespace SuperfluityTwo.Common.Players
                     Main.dust[num].velocity *= 0.7f;
                     Main.dust[num].velocity.Y -= 0.5f;
                 }
-                if (hasVenom) {
+                if (hasVenom)
+                {
                     int num = Dust.NewDust(
                         boxPosition,
                         boxWidth,
@@ -70,7 +84,8 @@ namespace SuperfluityTwo.Common.Players
         //shouldn't happen but you never know with mods. not even gonna bother with the enchantment visual on the item though.
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (hasVileStone && hit.DamageType.CountsAsClass(DamageClass.Magic)) {
+            if (hasVileStone && hit.DamageType.CountsAsClass(DamageClass.Magic))
+            {
                 if (hasVileStone) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Poisoned);
                 if (hasVenom) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Venom);
             }
@@ -78,14 +93,16 @@ namespace SuperfluityTwo.Common.Players
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Magic)) {
+            if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Magic))
+            {
                 if (hasVileStone) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Poisoned);
                 if (hasVenom) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.Venom);
             }
         }
     }
 
-    public class ZygomaProjectile : GlobalProjectile {
+    internal class ZygomaProjectile : GlobalProjectile
+    {
         internal const float HOMING_POWER = 50f * (MathHelper.Pi / 180f) * (1f / 60f);
         internal const float HOMING_THRESHOLD = 45f * (MathHelper.Pi / 360f);
         //internal const float HOMING_ACCELERATION = 0.1f;
@@ -154,6 +171,76 @@ namespace SuperfluityTwo.Common.Players
             NPCid = heldNPCid;
             absAngleTo = num;
             return heldNPCid != -1;
+        }
+    }
+
+    internal class ThunderProjectile : GlobalProjectile
+    {
+        public override void AI(Projectile projectile)
+        {
+            if (ShouldTickShockwave(projectile, out MagePlayer modded))
+            {
+                if (Main.rand.NextBool()) modded.ShockwaveTimer--;
+                CreateShockwave(projectile);
+            }
+        }
+
+        /*public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
+        { // screw spiky balls
+            if (ShouldTickShockwave(projectile, out _) && Main.rand.NextBool(7) && projectile.velocity.LengthSquared() > 16f)
+            {
+                CreateShockwave(projectile, true);
+            }
+            return base.OnTileCollide(projectile, oldVelocity);
+        }*/
+
+        public override void OnKill(Projectile projectile, int timeLeft)
+        {
+            if (timeLeft <= 0 && ShouldTickShockwave(projectile, out _) && Main.rand.NextBool(2))
+            {
+                CreateShockwave(projectile, true);
+            }
+        }
+
+        internal static bool ShouldTickShockwave(Projectile projectile, out MagePlayer moddedPlayer)
+        {
+            if (projectile.friendly
+                && !projectile.hostile
+                && projectile.damage > 0
+                && !projectile.noEnchantments
+                && projectile.type != ModContent.ProjectileType<Shockwave>()
+                && projectile.TryGetOwner(out Player player)
+                && projectile.velocity.LengthSquared() > 0.2f
+                && player.GetModPlayer<MagePlayer>().hasThunderScroll
+                && player.heldProj != projectile.identity
+            )
+            {
+                moddedPlayer = player.GetModPlayer<MagePlayer>();
+                return true;
+            }
+            moddedPlayer = null;
+            return false;
+        }
+
+        internal static bool CreateShockwave(Projectile projectile, bool ignoreTimer = false)
+        {
+            if (!projectile.TryGetOwner(out Player player) || !player.GetModPlayer<MagePlayer>().hasThunderScroll) return false;
+            MagePlayer modded = player.GetModPlayer<MagePlayer>();
+            if (!ignoreTimer)
+            {
+                if (modded.ShockwaveTimer > 0) return false;
+                modded.ShockwaveTimer = MagePlayer.SHOCKWAVE_COOLDOWN;
+            }
+            Projectile.NewProjectile(
+                projectile.GetSource_FromThis(),
+                projectile.Hitbox.Center(),
+                projectile.velocity,
+                ModContent.ProjectileType<Shockwave>(),
+                Damage: Math.Max(projectile.damage / 2, 20),
+                KnockBack: 15,
+                player.whoAmI
+            );
+            return true;
         }
     }
 }

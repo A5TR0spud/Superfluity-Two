@@ -83,7 +83,7 @@ namespace SuperfluityTwo.Content.Buffs
                 scale: 1f,
                 effect: SpriteEffects.None
             );
-            glow.shader = 1;
+            //glow.shader = 1;
             drawInfo.DrawDataCache.Add(glow);
 		}
     }

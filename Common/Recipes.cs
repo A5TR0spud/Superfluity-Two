@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using SuperfluityTwo.Content.Items.Accessories.Mage;
+using SuperfluityTwo.Content.Items.Accessories.Summoner;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -139,7 +141,8 @@ namespace SuperfluousSummoning.Content
                 .Register();
         }
 
-        private static void RegisterTransmuteCrafts() {
+        private static void RegisterTransmuteCrafts()
+        {
             RegisterMutualLifeManaCraft(ItemID.Musket, ItemID.TheUndertaker);
             RegisterMutualLifeManaCraft(ItemID.ShadowOrb, ItemID.CrimsonHeart);
             RegisterMutualLifeManaCraft(ItemID.Vilethorn, ItemID.CrimsonRod);
@@ -158,7 +161,7 @@ namespace SuperfluousSummoning.Content
                 [ItemID.PutridScent, ItemID.JungleRose],
                 [ItemID.WormHook, ItemID.Hook]
             ]);
-            
+
             RegisterMutualShimmerCraftList([
                 [ItemID.SoulDrain, ItemID.ManaCrystal],
                 [ItemID.DartPistol, ItemID.Blowgun],
@@ -191,6 +194,16 @@ namespace SuperfluousSummoning.Content
 
             RegisterMutualLifeManaCraft(ItemID.NaturesGift, ItemID.JungleRose);
             RegisterMutualLightDarkCraft(ItemID.DarkShard, ItemID.LightShard, 10);
+
+            RegisterMutualShimmerCraftList([
+                ModContent.ItemType<Zygoma>(),
+                ModContent.ItemType<CultivatingFlame>()
+            ]);
+
+            RegisterMutualShimmerCraftList([
+                ItemID.NimbusRod,
+                ModContent.ItemType<ThunderScroll>()
+            ]);
         }
 
         private static void RegisterMutualLifeManaCraft(int CorruptOrManaItem, int CrimsonOrLifeItem) {
@@ -229,11 +242,22 @@ namespace SuperfluousSummoning.Content
                 }
             }
         }
+        
+        private static void RegisterMutualShimmerCraftList(int[] items) {
+            foreach (int resultItem in items) {
+                foreach (int inItem in items) {
+                    if (inItem == resultItem) continue;
+                    RegisterShimmerCraft(inItem, resultItem);
+                }
+            }
+        }
 
-        private static void RegisterShimmerCraft(int inItem, int outItem, int transformItem = -1, int transformItemCount = 1) {
+        private static void RegisterShimmerCraft(int inItem, int outItem, int transformItem = -1, int transformItemCount = 1)
+        {
             Recipe r = Recipe.Create(outItem)
                 .AddIngredient(inItem);
-            if (transformItem != -1) {
+            if (transformItem != -1)
+            {
                 r.AddIngredient(transformItem, transformItemCount);
             }
             r.AddTile(TileID.ShimmerMonolith)//.AddCondition(Condition.NearShimmer)

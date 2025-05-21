@@ -33,7 +33,7 @@ namespace SuperfluityTwo.Common.Players
                         target.Center,
                         Vector2.Zero,
                         ProjectileID.InfernoFriendlyBlast,
-                        (int)(damageDone * 0.4f),
+                        (int)(damageDone * 0.65f),
                         0,
                         Player.whoAmI
                     )].DamageType = DamageClass.Summon;
@@ -53,7 +53,7 @@ namespace SuperfluityTwo.Common.Players
                         target.Center,
                         Vector2.Zero,
                         ProjectileID.InfernoFriendlyBlast,
-                        (int)(damageDone * 0.4f),
+                        (int)(damageDone * 0.65f),
                         0,
                         proj.owner
                     )].DamageType = DamageClass.Summon;
