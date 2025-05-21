@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
+using Microsoft.VisualBasic;
+using Humanizer;
 
 namespace SuperfluityTwo.Common.Players
 {
@@ -16,6 +18,7 @@ namespace SuperfluityTwo.Common.Players
         public bool hasThaumaturgy = false;
         public bool hideThaumaturgy = false;
         public bool forceShowThaumaturgy = false;
+        public int thaumaturgeDefense = 0;
         internal bool forceThaumaturgyDraw = false;
         internal int ThaumaturgyCycleTimer = 0;
         internal int ThaumaturgyTimer = 0;
@@ -27,14 +30,17 @@ namespace SuperfluityTwo.Common.Players
         internal const int OFF_TIME = 7 * 60;
         internal const int CYCLE_TIME = ON_TIME + OFF_TIME;
         internal bool reduceAlpha = false;
+        internal int outOfSyncTimer = 0;
+        internal bool wasProtectionUp = false;
         public override void ResetEffects()
         {
             hasThaumaturgy = false;
             forceShowThaumaturgy = false;
             hideThaumaturgy = false;
+            thaumaturgeDefense = 0;
         }
 
-        public override void PostUpdateEquips()
+        public override void UpdateEquips()
         {
             if (hasThaumaturgy) ThaumaturgyCycleTimer++;
             else ThaumaturgyCycleTimer = ON_TIME + 1;
@@ -49,13 +55,30 @@ namespace SuperfluityTwo.Common.Players
             if (IsProtectionUp())
             {
                 TickThaumaturgy();
+                Player.statDefense += thaumaturgeDefense;
+                if (Main.netMode == NetmodeID.MultiplayerClient && !wasProtectionUp && Player.whoAmI == Main.myPlayer)
+                {
+                    outOfSyncTimer++;
+                    if (outOfSyncTimer > 10) //every 10 cycles, assume other clients are out of sync
+                    {
+                        for (int i = 0; i < Main.maxPlayers; i++)
+                        {
+                            //sync only to other players within 100 world coordinates
+                            Player target = Main.player[i];
+                            if (!target.active || target.DistanceSQ(Player.Center) > 100 * 100) continue;
+                            SyncPlayer(i, Player.whoAmI, false);
+                        }
+                        outOfSyncTimer = 0;
+                    }
+                }
             }
+            wasProtectionUp = IsProtectionUp();
             if (shouldShowThaumaturgy) ThaumaturgyRotation++;
         }
 
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
-            if (newPlayer) return;
+            if (toWho == fromWho) return;
             ModPacket myPacket = ModContent.GetInstance<SuperfluityTwo>().GetPacket();
             myPacket.Write((byte)SF2NetworkID.SyncPlayerThaumaturgyCycle_S2C);
             myPacket.Write7BitEncodedInt(fromWho);

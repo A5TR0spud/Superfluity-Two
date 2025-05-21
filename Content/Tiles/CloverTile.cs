@@ -66,8 +66,13 @@ namespace SuperfluityTwo.Content.Tiles
 
 		public override IEnumerable<Item> GetItemDrops(int i, int j) {
 			if (Main.rand.NextBool(7))
+			{
 				yield return new Item(ModContent.ItemType<LuckyClover>(), 1, PrefixID.Lucky);
-			yield return new Item(ModContent.ItemType<LuckyClover>());
+			}
+			else
+			{
+				yield return new Item(ModContent.ItemType<LuckyClover>());
+			}
 		}
 
 		public override bool IsTileSpelunkable(int i, int j) {

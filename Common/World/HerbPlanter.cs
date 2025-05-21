@@ -13,14 +13,16 @@ public class HerbPlanter : GlobalTile {
         bool isJungleGrass = type == TileID.JungleGrass;
         bool isLivingWood = type == TileID.LivingWood;
         bool isSunflower = type == TileID.Sunflower;
+        bool isGnome = type == TileID.GardenGnome;
         bool shouldTryPlantCloverAbove =
-            isGrass && Main.rand.NextBool(777)
-            || isHallowedGrass && Main.rand.NextBool(777)
-            || isJungleGrass && Main.rand.NextBool(777)
+            isGrass && Main.rand.NextBool(1500)
+            || isHallowedGrass && Main.rand.NextBool(1000)
+            || isJungleGrass && Main.rand.NextBool(1000)
         ;
         bool shouldTryPlantCloverNearby =
-            isLivingWood && Main.rand.NextBool(100)
-            || isSunflower && Main.rand.NextBool(40)
+            isLivingWood && Main.rand.NextBool(30)
+            || isGnome && Main.rand.NextBool(70)
+            || isSunflower && Main.rand.NextBool(170)
         ;
         if (shouldTryPlantCloverAbove) {
             TryGrowingCloverAbove(i, j);

@@ -77,7 +77,7 @@ namespace SuperfluityTwo.Content.Buffs
                 position: new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - drawInfo.drawPlayer.bodyFrame.Width / 2 + drawInfo.drawPlayer.width / 2), (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawInfo.drawPlayer.height - drawInfo.drawPlayer.bodyFrame.Height + 4f)) + drawInfo.drawPlayer.bodyPosition + new Vector2(drawInfo.drawPlayer.bodyFrame.Width / 2, drawInfo.drawPlayer.bodyFrame.Height / 2)
                 + new Vector2(0, -16 * 2),
                 sourceRect: new Rectangle(0, 0, texture2d.Width, texture2d.Height),
-                color: Color.White,
+                color: new Color(0.8f, 0.8f, 0.8f, 0.6f),
                 rotation: drawInfo.drawPlayer.GetModPlayer<RedAlertPlayer>().alertRotation,
                 origin: new Vector2(texture2d.Width / 2, texture2d.Height / 2),
                 scale: 1f,
