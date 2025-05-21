@@ -213,6 +213,7 @@ namespace SuperfluityTwo.Common.Players
                 && projectile.velocity.LengthSquared() > 0.2f
                 && player.GetModPlayer<MagePlayer>().hasThunderScroll
                 && player.heldProj != projectile.identity
+                && Main.myPlayer == player.whoAmI
             )
             {
                 moddedPlayer = player.GetModPlayer<MagePlayer>();
@@ -225,6 +226,7 @@ namespace SuperfluityTwo.Common.Players
         internal static bool CreateShockwave(Projectile projectile, bool ignoreTimer = false)
         {
             if (!projectile.TryGetOwner(out Player player) || !player.GetModPlayer<MagePlayer>().hasThunderScroll) return false;
+            if (Main.myPlayer != player.whoAmI) return false;
             MagePlayer modded = player.GetModPlayer<MagePlayer>();
             if (!ignoreTimer)
             {

@@ -6,6 +6,8 @@ using Terraria.ID;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Net;
+using System.IO;
 
 namespace SuperfluityTwo.Common.Players
 {
@@ -24,6 +26,7 @@ namespace SuperfluityTwo.Common.Players
         internal const int ON_TIME = 7 * 60 + 2 * ANIMATION_TIME;
         internal const int OFF_TIME = 7 * 60;
         internal const int CYCLE_TIME = ON_TIME + OFF_TIME;
+        internal bool reduceAlpha = false;
         public override void ResetEffects()
         {
             hasThaumaturgy = false;
@@ -36,12 +39,36 @@ namespace SuperfluityTwo.Common.Players
             if (hasThaumaturgy) ThaumaturgyCycleTimer++;
             else ThaumaturgyCycleTimer = ON_TIME + 1;
             int time = ThaumaturgyCycleTimer % CYCLE_TIME;
+
+            if (time == 0) ThaumaturgyCycleTimer = 0;
+
+            bool cycledOn = time < ON_TIME;
+            reduceAlpha = hideThaumaturgy;
+            shouldShowThaumaturgy = (hasThaumaturgy /*&& !hideThaumaturgy*/ && cycledOn) || forceShowThaumaturgy;
+            forceThaumaturgyDraw = forceShowThaumaturgy;
+            if (IsProtectionUp())
+            {
+                TickThaumaturgy();
+            }
+            if (shouldShowThaumaturgy) ThaumaturgyRotation++;
+        }
+
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            if (newPlayer) return;
+            ModPacket myPacket = ModContent.GetInstance<SuperfluityTwo>().GetPacket();
+            myPacket.Write((byte)SF2NetworkID.SyncPlayerThaumaturgyCycle_S2C);
+            myPacket.Write7BitEncodedInt(fromWho);
+            myPacket.Write7BitEncodedInt(Main.player[fromWho].GetModPlayer<ThaumaturgyPlayer>().ThaumaturgyCycleTimer);
+            myPacket.Send(toClient: toWho, ignoreClient: fromWho);
+        }
+
+        public bool IsProtectionUp()
+        {
+            int time = ThaumaturgyCycleTimer % CYCLE_TIME;
             bool cycledOn = time < ON_TIME;
             bool isPlayingAnimation = time < ANIMATION_TIME / 4 || (ON_TIME - time) < ANIMATION_TIME;
-            shouldShowThaumaturgy = (hasThaumaturgy && !hideThaumaturgy && cycledOn) || forceShowThaumaturgy;
-            forceThaumaturgyDraw = forceShowThaumaturgy;
-            if (hasThaumaturgy && cycledOn && !isPlayingAnimation) TickThaumaturgy();
-            if (shouldShowThaumaturgy) ThaumaturgyRotation++;
+            return hasThaumaturgy && cycledOn && !isPlayingAnimation;
         }
 
         public override void OnRespawn()
@@ -54,6 +81,7 @@ namespace SuperfluityTwo.Common.Players
             ThaumaturgyTimer++;
             float range = 90f;
             bool shouldTick = ThaumaturgyTimer % 20 == 0;
+            if (shouldTick) ThaumaturgyTimer = 0;
             int damage = 30;
             float kb = 9f; //only applied against npcs, not pvp players
 
@@ -191,8 +219,8 @@ namespace SuperfluityTwo.Common.Players
                 texture: texture2d,
                 position: new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - drawInfo.drawPlayer.bodyFrame.Width / 2 + drawInfo.drawPlayer.width / 2), (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawInfo.drawPlayer.height - drawInfo.drawPlayer.bodyFrame.Height + 4f)) + drawInfo.drawPlayer.bodyPosition + new Vector2(drawInfo.drawPlayer.bodyFrame.Width / 2, drawInfo.drawPlayer.bodyFrame.Height / 2),
                 sourceRect: new Rectangle(0, 0, texture2d.Width, texture2d.Height),
-                color: new Color(0.8f, 0.8f, 0.8f, 0.6f) * alpha,
-                rotation: modded.ThaumaturgyRotation * 0.002f,
+                color: new Color(0.8f, 0.8f, 0.8f, 0.6f) * alpha * (modded.reduceAlpha ? 0.3f : 1f),
+                rotation: modded.ThaumaturgyRotation * 0.002f - drawInfo.rotation,
                 origin: new Vector2(texture2d.Width / 2, texture2d.Height / 2),
                 scale: 0.25f + 0.75f * alpha,
                 effect: SpriteEffects.None

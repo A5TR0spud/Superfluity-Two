@@ -364,6 +364,18 @@ Items: {
 			Periodically casts a protective circle around the user
 			'''
 	}
+
+	MagisLostLore: {
+		DisplayName: Ancient Magi's Lost Lore
+		Tooltip:
+			'''
+			12% increased magic attack speed
+			6% increased magic damage
+			Enables auto cast for all magic weapons
+			Most magic projectiles become guided
+			Periodically casts a protective circle around the user
+			'''
+	}
 }
 
 Buffs: {

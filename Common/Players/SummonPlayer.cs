@@ -26,7 +26,7 @@ namespace SuperfluityTwo.Common.Players
             if (hit.DamageType.CountsAsClass(DamageClass.Summon))
             {
                 if (hasShadowRite) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.ShadowFlame);
-                if (hasCultivatingFlame && Main.rand.NextBool(20))
+                if (hasCultivatingFlame && Main.myPlayer == Player.whoAmI && Main.rand.NextBool(20))
                 {
                     Main.projectile[Projectile.NewProjectile(
                         Player.GetSource_FromThis(),
@@ -46,7 +46,7 @@ namespace SuperfluityTwo.Common.Players
             if (!proj.noEnchantments && hit.DamageType.CountsAsClass(DamageClass.Summon))
             {
                 if (hasShadowRite) HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, BuffID.ShadowFlame);
-                if (hasCultivatingFlame && Main.rand.NextBool(20) && proj.type != ProjectileID.InfernoFriendlyBlast)
+                if (hasCultivatingFlame && Main.myPlayer == Player.whoAmI && Main.rand.NextBool(20) && proj.type != ProjectileID.InfernoFriendlyBlast)
                 {
                     Main.projectile[Projectile.NewProjectile(
                         proj.GetSource_FromThis(),

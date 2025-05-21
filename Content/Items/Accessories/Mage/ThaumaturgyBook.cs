@@ -13,7 +13,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
         {
             Item.width = 24;
             Item.height = 28;
-            Item.value = Item.sellPrice(gold: 3, silver: 50);
+            Item.value = Item.sellPrice(gold: 4, silver: 50);
             Item.rare = ItemRarityID.LightPurple;
             Item.accessory = true;
         }
@@ -34,7 +34,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
             player.GetModPlayer<MagePlayer>().hasFlurryScroll = true;
 
             player.GetModPlayer<ThaumaturgyPlayer>().hasThaumaturgy = true;
-            //player.GetModPlayer<ThaumaturgyPlayer>().hideThaumaturgy = hideVisual;
+            player.GetModPlayer<ThaumaturgyPlayer>().hideThaumaturgy = hideVisual;
         }
 
         public override void UpdateVanity(Player player)
