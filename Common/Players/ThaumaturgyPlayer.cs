@@ -82,8 +82,8 @@ namespace SuperfluityTwo.Common.Players
             float range = 90f;
             bool shouldTick = ThaumaturgyTimer % 20 == 0;
             if (shouldTick) ThaumaturgyTimer = 0;
-            int damage = 30;
-            float kb = 9f; //only applied against npcs, not pvp players
+            int damage = 32;
+            float kb = 9.5f; //only applied against npcs, not pvp players
 
             if (Player.whoAmI == Main.myPlayer)
             {

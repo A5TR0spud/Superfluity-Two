@@ -314,7 +314,7 @@ Items: {
 		Tooltip:
 			'''
 			12% increased magic attack speed
-			Enables auto cast for all magic weapons
+			Enables auto cast for magic weapons
 			'''
 	}
 
@@ -356,13 +356,7 @@ Items: {
 
 	ThaumaturgyBook: {
 		DisplayName: Book of Thaumaturgy
-		Tooltip:
-			'''
-			12% increased magic attack speed
-			6% increased magic damage
-			Enables auto cast for all magic weapons
-			Periodically casts a protective circle around the user
-			'''
+		Tooltip: Periodically casts a protective circle around the user
 	}
 
 	MagisLostLore: {
@@ -371,7 +365,7 @@ Items: {
 			'''
 			12% increased magic attack speed
 			6% increased magic damage
-			Enables auto cast for all magic weapons
+			Enables auto cast for magic weapons
 			Most magic projectiles become guided
 			Periodically casts a protective circle around the user
 			'''
