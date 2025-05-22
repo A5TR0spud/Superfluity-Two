@@ -74,11 +74,11 @@ namespace SuperfluityTwo.Content.Buffs
             Texture2D texture2d = texAsset.Value;
             DrawData glow = new DrawData(
                 texture: texture2d,
-                position: new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - drawInfo.drawPlayer.bodyFrame.Width / 2 + drawInfo.drawPlayer.width / 2), (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawInfo.drawPlayer.height - drawInfo.drawPlayer.bodyFrame.Height + 4f)) + drawInfo.drawPlayer.bodyPosition + new Vector2(drawInfo.drawPlayer.bodyFrame.Width / 2, drawInfo.drawPlayer.bodyFrame.Height / 2)
-                + new Vector2(0, -16 * 2),
+                position: new Vector2((int)(drawInfo.Center.X - Main.screenPosition.X), (int)(drawInfo.Center.Y - Main.screenPosition.Y))
+                + new Vector2(0, -16 * 2 * drawInfo.drawPlayer.gravDir),
                 sourceRect: new Rectangle(0, 0, texture2d.Width, texture2d.Height),
                 color: new Color(0.8f, 0.8f, 0.8f, 0.6f),
-                rotation: drawInfo.drawPlayer.GetModPlayer<RedAlertPlayer>().alertRotation,
+                rotation: drawInfo.drawPlayer.GetModPlayer<RedAlertPlayer>().alertRotation * drawInfo.drawPlayer.gravDir,
                 origin: new Vector2(texture2d.Width / 2, texture2d.Height / 2),
                 scale: 1f,
                 effect: SpriteEffects.None

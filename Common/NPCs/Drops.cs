@@ -60,19 +60,21 @@ namespace SuperfluityTwo.NPCs
                 npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsHardmode(), ModContent.ItemType<LeafTail>(), 100));
                 return;
             }
-            if (npc.type == NPCID.RaggedCaster || npc.type == NPCID.RaggedCasterOpenCoat)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Zygoma>(), 20));
-                return;
-            }
             if (npc.type == NPCID.Crimera || npc.type == NPCID.BigCrimera || npc.type == NPCID.LittleCrimera || npc.type == NPCID.EaterofSouls || npc.type == NPCID.BigEater || npc.type == NPCID.LittleEater)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<VileStone>(), 75));
                 return;
             }
+            if (npc.type == NPCID.RaggedCaster || npc.type == NPCID.RaggedCasterOpenCoat)
+            {
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<Zygoma>(), 20));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<Zygoma>(), chanceNumerator: 39, chanceDenominator: 400));
+                return;
+            }
             if (npc.type == NPCID.DiabolistRed || npc.type == NPCID.DiabolistWhite)
             {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CultivatingFlame>(), 75));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<CultivatingFlame>(), 20));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<CultivatingFlame>(), chanceNumerator: 39, chanceDenominator: 400));
                 return;
             }
             if (npc.type == NPCID.GoblinSummoner)

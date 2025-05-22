@@ -1,8 +1,5 @@
 Currently adds:
-Sunflower Hairpin: made with sunflower, check guide. Provides effects of sunflower (Happy!) but does not stack with placed sunflowers. Slightly glows(?).
-Meteor Mantle: made with meteorite bars, check guide. Provides effects of campfire, doesn't stack with the effect.
-Bastet's Blessing: made with obsidian, check guide. Provides effects of Bast Defense (5 def), no stacking.
-Lover's Locket: made with chain, check guide. Provides effects of a Heart Lantern, no stacking with the effect.
-Starpower Bandolier: made with Star in a Bottle. Provides effects of Star in a Bottle, no stacking with the effect.
-Lucky Clover: made with a Garden Gnome. Provides 0.2 luck.
-Solace: Combines all of the above. Does *NOT* provide Sunflower Hairpin's passive monster spawn rate decrease.
+Accessories made from or at "buff stations." These include but are not limited to: campfire, star in a bottle, ammo box, slice of cake.
+Some QoL to shops e.g. Merchant sells Recall and Wormhole Potions, Goblin Tinkerer can sell Depth Meter
+Some QoL recipes, such as a craftable Finch Staff and transmuting mimic drops
+Other accessories

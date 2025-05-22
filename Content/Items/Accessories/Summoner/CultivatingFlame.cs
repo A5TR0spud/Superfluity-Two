@@ -10,8 +10,8 @@ namespace SuperfluityTwo.Content.Items.Accessories.Summoner
 	{
         public override void SetDefaults()
 		{
-			Item.width = 18;
-			Item.height = 10;
+			Item.width = 22;
+			Item.height = 16;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Yellow;
             Item.accessory = true;

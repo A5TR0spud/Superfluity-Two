@@ -10,6 +10,7 @@ using System.Net;
 using System.IO;
 using Microsoft.VisualBasic;
 using Humanizer;
+using System;
 
 namespace SuperfluityTwo.Common.Players
 {
@@ -19,7 +20,6 @@ namespace SuperfluityTwo.Common.Players
         public bool hideThaumaturgy = false;
         public bool forceShowThaumaturgy = false;
         public int thaumaturgeDefense = 0;
-        internal bool forceThaumaturgyDraw = false;
         internal int ThaumaturgyCycleTimer = 0;
         internal int ThaumaturgyTimer = 0;
         internal int ThaumaturgyRotation = 0;
@@ -32,6 +32,9 @@ namespace SuperfluityTwo.Common.Players
         internal bool reduceAlpha = false;
         internal int outOfSyncTimer = 0;
         internal bool wasProtectionUp = false;
+        internal float effectScalar = 0f;
+        internal float alpha = 0f;
+        internal float scale = 0;
         public override void ResetEffects()
         {
             hasThaumaturgy = false;
@@ -42,16 +45,6 @@ namespace SuperfluityTwo.Common.Players
 
         public override void UpdateEquips()
         {
-            if (hasThaumaturgy) ThaumaturgyCycleTimer++;
-            else ThaumaturgyCycleTimer = ON_TIME + 1;
-            int time = ThaumaturgyCycleTimer % CYCLE_TIME;
-
-            if (time == 0) ThaumaturgyCycleTimer = 0;
-
-            bool cycledOn = time < ON_TIME;
-            reduceAlpha = hideThaumaturgy;
-            shouldShowThaumaturgy = (hasThaumaturgy /*&& !hideThaumaturgy*/ && cycledOn) || forceShowThaumaturgy;
-            forceThaumaturgyDraw = forceShowThaumaturgy;
             if (IsProtectionUp())
             {
                 TickThaumaturgy();
@@ -59,13 +52,13 @@ namespace SuperfluityTwo.Common.Players
                 if (Main.netMode == NetmodeID.MultiplayerClient && !wasProtectionUp && Player.whoAmI == Main.myPlayer)
                 {
                     outOfSyncTimer++;
-                    if (outOfSyncTimer > 10) //every 10 cycles, assume other clients are out of sync
+                    if (outOfSyncTimer > 5) //every 5 cycles, assume other clients are out of sync
                     {
                         for (int i = 0; i < Main.maxPlayers; i++)
                         {
-                            //sync only to other players within 100 world coordinates
+                            //sync only to other players within 200 tiles
                             Player target = Main.player[i];
-                            if (!target.active || target.DistanceSQ(Player.Center) > 100 * 100) continue;
+                            if (!target.active || target.Distance(Player.Center) > 200 * 16) continue;
                             SyncPlayer(i, Player.whoAmI, false);
                         }
                         outOfSyncTimer = 0;
@@ -73,7 +66,70 @@ namespace SuperfluityTwo.Common.Players
                 }
             }
             wasProtectionUp = IsProtectionUp();
-            if (shouldShowThaumaturgy) ThaumaturgyRotation++;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (hasThaumaturgy) ThaumaturgyCycleTimer++;
+            else ThaumaturgyCycleTimer = ON_TIME + 1;
+            int time = ThaumaturgyCycleTimer % CYCLE_TIME;
+
+            reduceAlpha = hideThaumaturgy;
+
+            if (time == 0) ThaumaturgyCycleTimer = 0;
+
+            bool cycledOn = time < ON_TIME;
+            shouldShowThaumaturgy = (hasThaumaturgy /*&& !hideThaumaturgy*/ && cycledOn) || forceShowThaumaturgy;
+            if (shouldShowThaumaturgy)
+            {
+                ThaumaturgyRotation++;
+                UpdateEffectScalar();
+            }
+        }
+
+        private void UpdateEffectScalar()
+        {
+            int time = ThaumaturgyCycleTimer % CYCLE_TIME;
+            if (time < ANIMATION_TIME)
+            {
+                effectScalar = (float)time / ANIMATION_TIME;
+            }
+            else if ((ON_TIME - time) < ANIMATION_TIME)
+            {
+                effectScalar = Math.Max((float)(ON_TIME - time) / ANIMATION_TIME, 0f);
+            }
+            else
+            {
+                effectScalar = 1f;
+            }
+            effectScalar = 1f - (1f - effectScalar) * (1f - effectScalar);
+            UpdateAlpha();
+            UpdateScale();
+        }
+
+        private void UpdateAlpha()
+        {
+            float num = effectScalar * (reduceAlpha ? 0.5f : 1f);
+            if (forceShowThaumaturgy)
+            {
+                if (hasThaumaturgy)
+                {
+                    float ratio = reduceAlpha ? 0.3f : 0.5f;
+                    num = ratio + ((1f - ratio) * num);
+                }
+                else
+                {
+                    num = 1f;
+                }
+            }
+            alpha = num;
+        }
+
+        private void UpdateScale()
+        {
+            float num = 0.25f + 0.75f * effectScalar;
+            if (forceShowThaumaturgy) num = 1f;
+            scale = num;
         }
 
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
@@ -214,38 +270,24 @@ namespace SuperfluityTwo.Common.Players
 
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
-            if (drawInfo.drawPlayer.dead)
+            Player player = drawInfo.drawPlayer;
+            if (player.dead)
             {
                 return;
             }
             Texture2D texture2d = texAsset.Value;
-            ThaumaturgyPlayer modded = drawInfo.drawPlayer.GetModPlayer<ThaumaturgyPlayer>();
-            float alpha;
-            int time = modded.ThaumaturgyCycleTimer % ThaumaturgyPlayer.CYCLE_TIME;
-            float fadeDuration = ThaumaturgyPlayer.ANIMATION_TIME;
-            if (modded.forceThaumaturgyDraw || (time <= ThaumaturgyPlayer.ON_TIME - fadeDuration && time >= fadeDuration))
-            {
-                alpha = 1f;
-            }
-            else if (time < fadeDuration)
-            {
-                alpha = time / fadeDuration;
-            }
-            else
-            {
-                alpha = (ThaumaturgyPlayer.ON_TIME - time) / fadeDuration;
-            }
-            alpha = 1f - alpha;
-            alpha *= alpha;
-            alpha = 1f - alpha;
-            DrawData glow = new DrawData(
+            ThaumaturgyPlayer modded = player.GetModPlayer<ThaumaturgyPlayer>();
+
+            //Vector2 pos = drawInfo.Center.RotatedBy(-drawInfo.rotation, drawInfo.Position + drawInfo.rotationOrigin) - Main.screenPosition;
+
+            DrawData glow = new(
                 texture: texture2d,
-                position: new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - drawInfo.drawPlayer.bodyFrame.Width / 2 + drawInfo.drawPlayer.width / 2), (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawInfo.drawPlayer.height - drawInfo.drawPlayer.bodyFrame.Height + 4f)) + drawInfo.drawPlayer.bodyPosition + new Vector2(drawInfo.drawPlayer.bodyFrame.Width / 2, drawInfo.drawPlayer.bodyFrame.Height / 2),
+                position: new Vector2((int)(drawInfo.drawPlayer.Center.X - Main.screenPosition.X), (int)(drawInfo.drawPlayer.Center.Y + drawInfo.drawPlayer.gfxOffY - Main.screenPosition.Y)),
                 sourceRect: new Rectangle(0, 0, texture2d.Width, texture2d.Height),
-                color: new Color(0.8f, 0.8f, 0.8f, 0.6f) * alpha * (modded.reduceAlpha ? 0.3f : 1f),
-                rotation: modded.ThaumaturgyRotation * 0.002f - drawInfo.rotation,
+                color: new Color(0.8f, 0.8f, 0.8f, 0.6f) * modded.alpha,
+                rotation: modded.ThaumaturgyRotation * 0.002f * drawInfo.drawPlayer.gravDir - drawInfo.rotation,
                 origin: new Vector2(texture2d.Width / 2, texture2d.Height / 2),
-                scale: 0.25f + 0.75f * alpha,
+                scale: modded.scale,
                 effect: SpriteEffects.None
             );
             drawInfo.DrawDataCache.Add(glow);

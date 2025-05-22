@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Mage
 {
-    public class MagisLostLore : ModItem
+    public class MagisLostLore : GlowItem
     {
         public override void SetDefaults()
         {
@@ -37,7 +37,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
 
             player.GetModPlayer<ThaumaturgyPlayer>().hasThaumaturgy = true;
             player.GetModPlayer<ThaumaturgyPlayer>().hideThaumaturgy = hideVisual;
-            player.GetModPlayer<ThaumaturgyPlayer>().thaumaturgeDefense += 6;
+            player.GetModPlayer<ThaumaturgyPlayer>().thaumaturgeDefense += 4;
 
             player.GetModPlayer<MagePlayer>().hasZygoma = true;
         }
