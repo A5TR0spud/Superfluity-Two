@@ -370,6 +370,16 @@ Items: {
 			Periodically casts a protective circle around the user
 			'''
 	}
+
+	Phylactery: {
+		DisplayName: Phylactery
+		Tooltip:
+			'''
+			Increases max life by 50
+			Increases life regen the closer you are to death
+			Reduces damage taken the closer you are to death
+			'''
+	}
 }
 
 Buffs: {

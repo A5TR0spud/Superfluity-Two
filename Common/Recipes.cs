@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using SuperfluityTwo.Content.Items.Accessories;
 using SuperfluityTwo.Content.Items.Accessories.Mage;
 using SuperfluityTwo.Content.Items.Accessories.Summoner;
 using Terraria;
@@ -196,13 +197,24 @@ namespace SuperfluousSummoning.Content
             RegisterMutualLightDarkCraft(ItemID.DarkShard, ItemID.LightShard, 10);
 
             RegisterMutualShimmerCraftList([
-                ModContent.ItemType<Zygoma>(),
+                ItemID.NimbusRod,
+                ModContent.ItemType<ThunderScroll>()
+            ]);
+
+
+            RegisterMutualShimmerCraftList([
+                ItemID.SpectreStaff,
+                ModContent.ItemType<Zygoma>()
+            ]);
+
+            RegisterMutualShimmerCraftList([
+                ItemID.InfernoFork,
                 ModContent.ItemType<CultivatingFlame>()
             ]);
 
             RegisterMutualShimmerCraftList([
-                ItemID.NimbusRod,
-                ModContent.ItemType<ThunderScroll>()
+                ItemID.ShadowbeamStaff,
+                ModContent.ItemType<Phylactery>()
             ]);
         }
 

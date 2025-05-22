@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.25
+
+### 0.25 Additions
+
+- Added **Phylactery,** dropped by Necromancers
+  - Increases max life by 50
+  - Increases life regen the closer you are to death
+  - Reduces damage taken the closer you are to death
+- Added shimmer-craft for Zygoma to and from Spectre Staff
+- Added shimmer-craft for Cultivating Flame to and from Inferno Trident
+- Added shimmer-craft for Phylactery to and from Shadowbeam Staff
+
+### 0.25 Changes
+
+- Removed shimmer-craft for Zygoma to and from Cultivating Flame
+
 ## 0.24.2
 
 ### 0.24.2 Changes

@@ -1,4 +1,5 @@
 using SuperfluityTwo.Common;
+using SuperfluityTwo.Content.Items.Accessories;
 using SuperfluityTwo.Content.Items.Accessories.Mage;
 using SuperfluityTwo.Content.Items.Accessories.Mayday;
 using SuperfluityTwo.Content.Items.Accessories.Ranger;
@@ -75,6 +76,12 @@ namespace SuperfluityTwo.NPCs
             {
                 npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<CultivatingFlame>(), 20));
                 npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<CultivatingFlame>(), chanceNumerator: 39, chanceDenominator: 400));
+                return;
+            }
+            if (npc.type == NPCID.Necromancer || npc.type == NPCID.NecromancerArmored)
+            {
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.NotExpert(), ModContent.ItemType<Phylactery>(), 20));
+                npcLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<Phylactery>(), chanceNumerator: 39, chanceDenominator: 400));
                 return;
             }
             if (npc.type == NPCID.GoblinSummoner)
