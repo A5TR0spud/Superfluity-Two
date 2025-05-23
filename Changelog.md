@@ -2,7 +2,7 @@
 
 ## 0.25.1
 
-### Fixes
+### 0.25.1 Fixes
 
 - *Actually* fixed thaumaturgy syncing with players in multiplayer
 
