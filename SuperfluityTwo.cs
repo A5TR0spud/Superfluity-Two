@@ -35,12 +35,11 @@ namespace SuperfluityTwo
 						break;
 					case (byte)SF2NetworkID.SyncPlayerThaumaturgyCycle:
 						int toWho = reader.Read7BitEncodedInt();
-						int fromWho = whoAmI;
 						int cycleTimer = reader.Read7BitEncodedInt();
 						myPacket.Write((byte)SF2NetworkID.SyncPlayerThaumaturgyCycle);
-						myPacket.Write7BitEncodedInt(fromWho);
+						myPacket.Write7BitEncodedInt(whoAmI);
 						myPacket.Write7BitEncodedInt(cycleTimer);
-						myPacket.Send(toClient: toWho, ignoreClient: fromWho);
+						myPacket.Send(toClient: toWho, ignoreClient: whoAmI);
 						break;
 					default:
 						Logger.WarnFormat("SuperfluityTwo: Unknown Message type: {0}", msgID);
@@ -55,7 +54,7 @@ namespace SuperfluityTwo
 				{
 					case (byte)SF2NetworkID.JoiningPlayerRequestingSync:
 						fromWho = reader.Read7BitEncodedInt();
-						Main.LocalPlayer.GetModPlayer<NetworkedPlayer>().PingedForReturnInfo(fromWho);
+						Main.LocalPlayer.GetModPlayer<NetworkedPlayer>().SendInfoToNewPlayer(fromWho);
 						break;
 					case (byte)SF2NetworkID.SyncPlayerThaumaturgyCycle:
 						fromWho = reader.Read7BitEncodedInt();
