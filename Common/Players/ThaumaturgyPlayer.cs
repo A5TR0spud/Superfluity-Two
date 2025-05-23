@@ -12,6 +12,8 @@ using Microsoft.VisualBasic;
 using Humanizer;
 using System;
 using SuperfluityTwo.Content.Buffs;
+using Terraria.Chat;
+using Terraria.Localization;
 
 namespace SuperfluityTwo.Common.Players
 {
@@ -31,7 +33,6 @@ namespace SuperfluityTwo.Common.Players
         internal const int OFF_TIME = 9 * 60;
         internal const int CYCLE_TIME = ON_TIME + OFF_TIME;
         internal bool reduceAlpha = false;
-        internal int outOfSyncTimer = 0;
         internal bool wasProtectionUp = false;
         internal float effectScalar = 0f;
         internal float alpha = 0f;
@@ -60,17 +61,12 @@ namespace SuperfluityTwo.Common.Players
                 Player.statDefense += thaumaturgeDefense;
                 if (Main.netMode == NetmodeID.MultiplayerClient && !wasProtectionUp && Player.whoAmI == Main.myPlayer)
                 {
-                    outOfSyncTimer++;
-                    if (outOfSyncTimer > 5) //every 5 cycles, assume other clients are out of sync
+                    for (int i = 0; i < Main.maxPlayers; i++)
                     {
-                        for (int i = 0; i < Main.maxPlayers; i++)
-                        {
-                            //sync only to other players within 200 tiles
-                            Player target = Main.player[i];
-                            if (!target.active || target.Distance(Player.Center) > 200 * 16) continue;
-                            SyncPlayer(i, Player.whoAmI, false);
-                        }
-                        outOfSyncTimer = 0;
+                        //sync only to other players within 200 tiles
+                        Player target = Main.player[i];
+                        if (!target.active || target.Distance(Player.Center) > 200 * 16) continue;
+                        SyncPlayer(i, Player.whoAmI, false);
                     }
                 }
             }
@@ -146,12 +142,11 @@ namespace SuperfluityTwo.Common.Players
 
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
-            if (toWho == fromWho) return;
-            ModPacket myPacket = ModContent.GetInstance<SuperfluityTwo>().GetPacket();
-            myPacket.Write((byte)SF2NetworkID.SyncPlayerThaumaturgyCycle_S2C);
-            myPacket.Write7BitEncodedInt(fromWho);
-            myPacket.Write7BitEncodedInt(Main.player[fromWho].GetModPlayer<ThaumaturgyPlayer>().ThaumaturgyCycleTimer);
-            myPacket.Send(toClient: toWho, ignoreClient: fromWho);
+            if (toWho == fromWho)
+            {
+                return;
+            }
+            Player.GetModPlayer<NetworkedPlayer>().WriteThaumaturgyPacket(toWho);
         }
 
         public bool IsProtectionUp()

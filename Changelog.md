@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.25.1
+
+### Fixes
+
+- ~~Actually fixed thaumaturgy syncing with players in multiplayer~~
+  - Not yet
+
 ## 0.25
 
 ### 0.25 Additions
