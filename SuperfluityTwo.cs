@@ -38,7 +38,6 @@ namespace SuperfluityTwo
 						int fromWho = whoAmI;
 						int cycleTimer = reader.Read7BitEncodedInt();
 						myPacket.Write((byte)SF2NetworkID.SyncPlayerThaumaturgyCycle);
-						myPacket.Write7BitEncodedInt(toWho);
 						myPacket.Write7BitEncodedInt(fromWho);
 						myPacket.Write7BitEncodedInt(cycleTimer);
 						myPacket.Send(toClient: toWho, ignoreClient: fromWho);
