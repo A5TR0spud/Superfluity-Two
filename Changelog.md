@@ -4,8 +4,7 @@
 
 ### Fixes
 
-- ~~Actually fixed thaumaturgy syncing with players in multiplayer~~
-  - Not yet
+- *Actually* fixed thaumaturgy syncing with players in multiplayer
 
 ## 0.25
 
