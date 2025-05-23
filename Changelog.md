@@ -11,10 +11,22 @@
 - Added shimmer-craft for Zygoma to and from Spectre Staff
 - Added shimmer-craft for Cultivating Flame to and from Inferno Trident
 - Added shimmer-craft for Phylactery to and from Shadowbeam Staff
+- Added a unique sprite for the circle from Ancient Magi's Lost Lore
 
 ### 0.25 Changes
 
 - Removed shimmer-craft for Zygoma to and from Cultivating Flame
+- Increased duration of Thuamaturgy from 7 to 8 seconds
+- Increased cooldown of Thaumaturgy from 7 to 9 seconds
+- Nerfed Thaumaturgy damage from 32 to 20
+  - Magi's Lost Lore does 30 damage
+  - Combined, they deal 40 damage
+- Ancient Magi's Lost Lore:
+  - No longer increases magic damage by 6%
+  - While circle is active, magic attacks inflict Starsplit:
+    - +10% damage taken
+    - 20 dps
+  - While circle is active, increases magic attack speed by 12%
 
 ## 0.24.2
 

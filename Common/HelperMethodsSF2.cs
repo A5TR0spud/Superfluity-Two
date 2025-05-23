@@ -6,8 +6,11 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Common;
-public class HelperMethodsSF2 {
-    public static bool ShouldProjectileUpdatePosition(Projectile projectile) {
+
+public class HelperMethodsSF2
+{
+    public static bool ShouldProjectileUpdatePosition(Projectile projectile)
+    {
         if (projectile.aiStyle == 4
             || projectile.aiStyle == 38
             || projectile.aiStyle == 84
@@ -31,17 +34,20 @@ public class HelperMethodsSF2 {
         return true;
     }
 
-    #nullable enable
-    public static Player? TryGetOwner(Projectile projectile) {
-        if (projectile.friendly) {
+#nullable enable
+    public static Player? TryGetOwner(Projectile projectile)
+    {
+        if (projectile.friendly)
+        {
             projectile.TryGetOwner(out Player? player);
             return player;
         }
         return null;
     }
-    #nullable restore
+#nullable restore
 
-    public static void DecayDeathMessage(ref PlayerDeathReason deathReason, Player player) {
+    public static void DecayDeathMessage(ref PlayerDeathReason deathReason, Player player)
+    {
         string translation = "Mods.SuperfluityTwo.DeathMessages.Decay.";
         string suffix;
         if (player.difficulty == 2) suffix = "Hardcore";
@@ -49,7 +55,8 @@ public class HelperMethodsSF2 {
         deathReason.CustomReason = NetworkText.FromKey(translation + suffix, player.name);
     }
 
-    public static void MaydayDeathMessage(ref PlayerDeathReason deathReason, Player player) {
+    public static void MaydayDeathMessage(ref PlayerDeathReason deathReason, Player player)
+    {
         string translation = "Mods.SuperfluityTwo.DeathMessages.Mayday.";
         string suffix;
         if (player.difficulty == 2) suffix = "Hardcore";
@@ -57,7 +64,8 @@ public class HelperMethodsSF2 {
         deathReason.CustomReason = NetworkText.FromKey(translation + suffix, player.name);
     }
 
-    public static void OnHitInflictWithVaryingDuration(NPC victim, int buffID) {
+    public static void OnHitInflictWithVaryingDuration(NPC victim, int buffID)
+    {
         if (Main.rand.NextBool(4))
         {
             victim.AddBuff(buffID, 360);
@@ -69,6 +77,22 @@ public class HelperMethodsSF2 {
         else
         {
             victim.AddBuff(buffID, 120);
+        }
+    }
+
+    public static void OnHitInflictWithVaryingDuration(Player victim, int buffID)
+    {
+        if (Main.rand.NextBool(7))
+        {
+            victim.AddBuff(buffID, 360);
+        }
+        else if (Main.rand.NextBool(3))
+        {
+            victim.AddBuff(buffID, 120);
+        }
+        else
+        {
+            victim.AddBuff(buffID, 60);
         }
     }
 }

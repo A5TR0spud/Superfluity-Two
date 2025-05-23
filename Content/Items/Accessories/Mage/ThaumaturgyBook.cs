@@ -41,11 +41,13 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
             player.GetModPlayer<ThaumaturgyPlayer>().hasThaumaturgy = true;
             player.GetModPlayer<ThaumaturgyPlayer>().hideThaumaturgy = hideVisual;
             player.GetModPlayer<ThaumaturgyPlayer>().thaumaturgeDefense += 3;
+            player.GetModPlayer<ThaumaturgyPlayer>().thaumaturgyDamage += 10;
         }
 
         public override void UpdateVanity(Player player)
         {
             player.GetModPlayer<ThaumaturgyPlayer>().forceShowThaumaturgy = true;
+            player.GetModPlayer<ThaumaturgyPlayer>().showMagi = false;
         }
     }
 }

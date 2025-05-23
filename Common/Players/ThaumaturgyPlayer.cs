@@ -11,6 +11,7 @@ using System.IO;
 using Microsoft.VisualBasic;
 using Humanizer;
 using System;
+using SuperfluityTwo.Content.Buffs;
 
 namespace SuperfluityTwo.Common.Players
 {
@@ -26,8 +27,8 @@ namespace SuperfluityTwo.Common.Players
         internal bool shouldShowThaumaturgy = false;
         private List<int> projectilesFromLastTick = [];
         internal const int ANIMATION_TIME = 20;
-        internal const int ON_TIME = 7 * 60 + 2 * ANIMATION_TIME;
-        internal const int OFF_TIME = 7 * 60;
+        internal const int ON_TIME = 8 * 60 + 2 * ANIMATION_TIME;
+        internal const int OFF_TIME = 9 * 60;
         internal const int CYCLE_TIME = ON_TIME + OFF_TIME;
         internal bool reduceAlpha = false;
         internal int outOfSyncTimer = 0;
@@ -35,12 +36,19 @@ namespace SuperfluityTwo.Common.Players
         internal float effectScalar = 0f;
         internal float alpha = 0f;
         internal float scale = 0;
+        public bool showMagi = false;
+        internal const int THAUMATURGY_BASE_DAMAGE = 10;
+        public int thaumaturgyDamage = THAUMATURGY_BASE_DAMAGE;
+        public bool hasMagi = false;
         public override void ResetEffects()
         {
             hasThaumaturgy = false;
             forceShowThaumaturgy = false;
             hideThaumaturgy = false;
             thaumaturgeDefense = 0;
+            showMagi = false;
+            thaumaturgyDamage = THAUMATURGY_BASE_DAMAGE;
+            hasMagi = false;
         }
 
         public override void UpdateEquips()
@@ -48,6 +56,7 @@ namespace SuperfluityTwo.Common.Players
             if (IsProtectionUp())
             {
                 TickThaumaturgy();
+                if (hasMagi) Player.GetAttackSpeed(DamageClass.Magic) += 0.12f;
                 Player.statDefense += thaumaturgeDefense;
                 if (Main.netMode == NetmodeID.MultiplayerClient && !wasProtectionUp && Player.whoAmI == Main.myPlayer)
                 {
@@ -82,7 +91,10 @@ namespace SuperfluityTwo.Common.Players
             shouldShowThaumaturgy = (hasThaumaturgy /*&& !hideThaumaturgy*/ && cycledOn) || forceShowThaumaturgy;
             if (shouldShowThaumaturgy)
             {
-                ThaumaturgyRotation++;
+                if (!showMagi)
+                    ThaumaturgyRotation++;
+                else
+                    ThaumaturgyRotation = 0;
                 UpdateEffectScalar();
             }
         }
@@ -155,13 +167,23 @@ namespace SuperfluityTwo.Common.Players
             ThaumaturgyCycleTimer = ANIMATION_TIME;
         }
 
+        public Color GetColor()
+        {
+            Color toret = new Color(0.8f, 0.8f, 0.8f, 0.6f) * alpha;
+            if (showMagi)
+            {
+                toret = new Color(0.95f, 0.95f, 0.95f, 0.85f) * alpha;
+            }
+            return toret;
+        }
+
         internal void TickThaumaturgy()
         {
             ThaumaturgyTimer++;
             float range = 90f;
             bool shouldTick = ThaumaturgyTimer % 20 == 0;
             if (shouldTick) ThaumaturgyTimer = 0;
-            int damage = 32;
+            int damage = thaumaturgyDamage;
             float kb = 9.5f; //only applied against npcs, not pvp players
 
             if (Player.whoAmI == Main.myPlayer)
@@ -246,6 +268,56 @@ namespace SuperfluityTwo.Common.Players
                 }
             }
         }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (IsProtectionUp() && hasMagi && hit.DamageType.CountsAsClass(DamageClass.Magic))
+            {
+                HelperMethodsSF2.OnHitInflictWithVaryingDuration(target, ModContent.BuffType<Starsplit>());
+            }
+        }
+
+        public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
+        {
+            if (projectile.noEnchantmentVisuals || projectile.noEnchantments) return;
+            if (IsProtectionUp() && hasMagi && projectile.DamageType.CountsAsClass(DamageClass.Magic) && projectile.friendly && !projectile.hostile)
+            {
+                if (Main.rand.NextBool(4 * (1 + projectile.extraUpdates)))
+                {
+                    int num = Dust.NewDust(
+                        boxPosition,
+                        boxWidth,
+                        boxHeight,
+                        DustID.ManaRegeneration,
+                        projectile.velocity.X * 0.2f,// + (float)(projectile.direction * 3),
+                        projectile.velocity.Y * 0.2f,
+                        100,
+                        newColor: Colors.RarityPink,
+                        0.75f
+                    );
+                    Main.dust[num].noGravity = true;
+                    Main.dust[num].velocity *= 0.7f;
+                    Main.dust[num].velocity.Y -= 0.5f;
+                }
+                if (Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
+                {
+                    int num = Dust.NewDust(
+                        boxPosition,
+                        boxWidth,
+                        boxHeight,
+                        DustID.ShimmerSpark,
+                        projectile.velocity.X * 0.2f,// + (float)(projectile.direction * 3),
+                        projectile.velocity.Y * 0.2f,
+                        100,
+                        default(Color),
+                        0.75f
+                    );
+                    Main.dust[num].noGravity = true;
+                    Main.dust[num].velocity *= 0.7f;
+                    Main.dust[num].velocity.Y -= 0.5f;
+                }
+            }
+        }
     }
 
     internal class ThaumaturgyDrawLayer : PlayerDrawLayer
@@ -267,7 +339,7 @@ namespace SuperfluityTwo.Common.Players
             if (drawInfo.shadow != 0) return false;
             return drawInfo.drawPlayer.GetModPlayer<ThaumaturgyPlayer>().shouldShowThaumaturgy;
         }
-
+        const int FRAMES = 2;
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             Player player = drawInfo.drawPlayer;
@@ -277,16 +349,17 @@ namespace SuperfluityTwo.Common.Players
             }
             Texture2D texture2d = texAsset.Value;
             ThaumaturgyPlayer modded = player.GetModPlayer<ThaumaturgyPlayer>();
+            Rectangle source = new Rectangle(0, modded.showMagi ? texture2d.Height / FRAMES : 0, texture2d.Width, texture2d.Height / FRAMES);
 
             //Vector2 pos = drawInfo.Center.RotatedBy(-drawInfo.rotation, drawInfo.Position + drawInfo.rotationOrigin) - Main.screenPosition;
 
             DrawData glow = new(
                 texture: texture2d,
                 position: new Vector2((int)(drawInfo.drawPlayer.Center.X - Main.screenPosition.X), (int)(drawInfo.drawPlayer.Center.Y + drawInfo.drawPlayer.gfxOffY - Main.screenPosition.Y)),
-                sourceRect: new Rectangle(0, 0, texture2d.Width, texture2d.Height),
-                color: new Color(0.8f, 0.8f, 0.8f, 0.6f) * modded.alpha,
+                sourceRect: source,
+                color: modded.GetColor(),
                 rotation: modded.ThaumaturgyRotation * 0.002f * drawInfo.drawPlayer.gravDir - drawInfo.rotation,
-                origin: new Vector2(texture2d.Width / 2, texture2d.Height / 2),
+                origin: new Vector2(texture2d.Width / 2, texture2d.Height / (2 * FRAMES)),
                 scale: modded.scale,
                 effect: SpriteEffects.None
             );

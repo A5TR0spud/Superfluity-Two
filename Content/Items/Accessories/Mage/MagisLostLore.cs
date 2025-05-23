@@ -31,20 +31,24 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mage
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(DamageClass.Magic) += 0.06f;
+            //player.GetDamage(DamageClass.Magic) += 0.06f;
             player.GetAttackSpeed(DamageClass.Magic) += 0.12f;
             player.GetModPlayer<MagePlayer>().hasFlurryScroll = true;
 
             player.GetModPlayer<ThaumaturgyPlayer>().hasThaumaturgy = true;
             player.GetModPlayer<ThaumaturgyPlayer>().hideThaumaturgy = hideVisual;
             player.GetModPlayer<ThaumaturgyPlayer>().thaumaturgeDefense += 4;
+            player.GetModPlayer<ThaumaturgyPlayer>().thaumaturgyDamage += 20;
 
             player.GetModPlayer<MagePlayer>().hasZygoma = true;
+            player.GetModPlayer<ThaumaturgyPlayer>().showMagi = true;
+            player.GetModPlayer<ThaumaturgyPlayer>().hasMagi = true;
         }
 
         public override void UpdateVanity(Player player)
         {
             player.GetModPlayer<ThaumaturgyPlayer>().forceShowThaumaturgy = true;
+            player.GetModPlayer<ThaumaturgyPlayer>().showMagi = true;
         }
     }
 }

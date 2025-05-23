@@ -364,10 +364,14 @@ Items: {
 		Tooltip:
 			'''
 			12% increased magic attack speed
-			6% increased magic damage
 			Enables auto cast for magic weapons
 			Most magic projectiles become guided
 			Periodically casts a protective circle around the user
+			While circle is active:
+			12% increased magic attack speed,
+			Magic attacks inflict Starsplit
+			Starsplit increases damage taken by 10%
+			Starsplit deals 20 damage per second
 			'''
 	}
 
@@ -440,6 +444,11 @@ Buffs: {
 	MatrixBarrier: {
 		DisplayName: Mayday Barrier
 		Description: Damage taken is reduced by 25%
+	}
+
+	Starsplit: {
+		DisplayName: Starsplit
+		Description: Mods.SuperfluityTwo.Buffs.Starsplit.Description
 	}
 }
 
