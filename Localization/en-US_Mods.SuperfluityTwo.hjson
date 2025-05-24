@@ -384,6 +384,11 @@ Items: {
 			Reduces damage taken the closer you are to death
 			'''
 	}
+
+	Meridian: {
+		DisplayName: Meridian
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -458,6 +463,7 @@ Projectiles: {
 	Growth.DisplayName: Growth
 	Strataslash.DisplayName: Strataslash
 	Shockwave.DisplayName: Shockwave
+	MeridianBullet.DisplayName: Meridian Bullet
 }
 
 DeathMessages: {
