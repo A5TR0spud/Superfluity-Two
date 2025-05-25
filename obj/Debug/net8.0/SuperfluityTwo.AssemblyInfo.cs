@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuperfluityTwo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4091db89a290de102b93501ff02faa2fa7d01573")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07718910fc4781ff43c273a4d9297a92f2dba222")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuperfluityTwo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuperfluityTwo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -125,6 +125,7 @@ namespace SuperfluityTwo.Common.Players
                 || projectile.hostile
                 || !projectile.TryGetOwner(out Player player)
                 || player.heldProj == projectile.identity
+                || projectile.aiStyle == ProjAIStyleID.HeldProjectile
             )
                 return;
 
@@ -214,6 +215,7 @@ namespace SuperfluityTwo.Common.Players
                 && player.GetModPlayer<MagePlayer>().hasThunderScroll
                 && player.heldProj != projectile.identity
                 && Main.myPlayer == player.whoAmI
+                && projectile.aiStyle != ProjAIStyleID.HeldProjectile
             )
             {
                 moddedPlayer = player.GetModPlayer<MagePlayer>();

@@ -97,8 +97,7 @@ namespace SuperfluityTwo.Common.Players
             //if (projectile.noEnchantments) return;
             //if (projectile.WhipPointsForCollision.Count > 0) return;
             //if (projectile.DamageType != DamageClass.Ranged) return;
-            Player player;
-            if (!projectile.TryGetOwner(out player) && player.GetModPlayer<RangerPlayer>().HasTrapperLash) return;
+            if (!projectile.TryGetOwner(out Player player) || !projectile.friendly) return;
             RangerPlayer modded = player.GetModPlayer<RangerPlayer>();
 
             bool canTrapperLash = modded.HasTrapperLash && (projectile.CountsAsClass(DamageClass.Ranged) || projectile.CountsAsClass(DamageClass.Magic));

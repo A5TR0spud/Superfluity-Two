@@ -464,6 +464,8 @@ Projectiles: {
 	Strataslash.DisplayName: Strataslash
 	Shockwave.DisplayName: Shockwave
 	MeridianBullet.DisplayName: Meridian Bullet
+	MeridianArrow.DisplayName: Meridian Arrow
+	MeridianHoldout.DisplayName: Meridian Holdout
 }
 
 DeathMessages: {
