@@ -19,10 +19,10 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
     public class MeridianBullet : ModProjectile
     {
         // How much more damage the beams do when the Prism is fully charged. Damage smoothly scales up to this multiplier.
-        private const float MaxDamageMultiplier = 1.5f;
+        private const float MaxDamageMultiplier = 0.75f;
 
         // Beams increase their scale from 0 to this value as the Prism charges up.
-        private const float MaxBeamScale = 1.8f;
+        private const float MaxBeamScale = 1.2f;
 
         // The maximum possible range of the beam. Don't set this too high or it will cause significant lag.
         private const float MaxBeamLength = 2400f;
@@ -49,7 +49,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
         private const float VisualEffectThreshold = 0.1f;
 
         // Each Last Prism beam draws two lasers separately: an inner beam and an outer beam. This controls their opacity.
-        private const float OuterBeamOpacityMultiplier = 0.75f;
+        private const float OuterBeamOpacityMultiplier = 1f;
 
         // The maximum brightness of the light emitted by the beams. Brightness scales from 0 to this value as the Prism's charge increases.
         private const float BeamLightBrightness = 0.75f;
@@ -110,7 +110,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
                 Projectile.timeLeft = 2;
 
             // Grab some variables from the host Prism.
-                Vector2 hostPrismDir = Vector2.Normalize(hostPrism.velocity);
+            Vector2 hostPrismDir = Vector2.Normalize(hostPrism.velocity);
             float chargeRatio = MathHelper.Clamp(hostPrism.ai[0] / MaxCharge, 0f, 1f);
 
             // Update the beam's damage every frame based on charge and the host Prism's damage.
@@ -126,7 +126,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 
                 // For the first 2/3 of charge time, the opacity scales up from 0% to 40%.
                 // Spin rate increases slowly during this time.
-                if (chargeRatio <= 0.66f)
+                /*if (chargeRatio <= 0.66f)
                 {
                     float phaseRatio = chargeRatio * 1.5f;
                     Projectile.Opacity = MathHelper.Lerp(0f, 0.4f, phaseRatio);
@@ -138,15 +138,15 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
                 {
                     float phaseRatio = (chargeRatio - 0.66f) * 3f;
                     Projectile.Opacity = MathHelper.Lerp(0.4f, 1f, phaseRatio);
-                }
+                }*/
             }
 
             // If the host Prism is already at max charge, don't calculate anything. Just use the max values.
             else
             {
                 Projectile.scale = MaxBeamScale;
-                Projectile.Opacity = 1f;
             }
+            Projectile.Opacity = 1f;
 
             // This trigonometry calculates where the beam is supposed to be pointing.
             Vector2 unitRot = Vector2.UnitY;
