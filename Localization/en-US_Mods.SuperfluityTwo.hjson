@@ -387,7 +387,11 @@ Items: {
 
 	Meridian: {
 		DisplayName: Meridian
-		Tooltip: ""
+		Tooltip:
+			'''
+			Cycles through all ammo in inventory
+			Does not consume ammo
+			'''
 	}
 }
 
