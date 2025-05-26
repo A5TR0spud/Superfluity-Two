@@ -54,14 +54,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
         // The maximum brightness of the light emitted by the beams. Brightness scales from 0 to this value as the Prism's charge increases.
         private const float BeamLightBrightness = 0.75f;
 
-        // These variables control the beam's potential coloration.
-        // As a value, hue ranges from 0f to 1f, both of which are pure red. The laser beams vary from 0.57 to 0.75, which winds up being a blue-to-purple gradient.
-        // Saturation ranges from 0f to 1f and controls how greyed out the color is. 0 is fully grayscale, 1 is vibrant, intense color.
-        // Lightness ranges from 0f to 1f and controls how dark or light the color is. 0 is pitch black. 1 is pure white.
-        private const float BeamColorHue = 0.57f;
-        private const float BeamColorSaturation = 0.66f;
-        private const float BeamColorLightness = 0.53f;
-
         private const int DamageStart = 30;
         private const int MaxCharge = 120;
 
@@ -73,7 +65,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 7;
+            Main.projFrames[Type] = 3;
         }
         public override void SetDefaults()
         {
@@ -126,7 +118,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 
                 // For the first 2/3 of charge time, the opacity scales up from 0% to 40%.
                 // Spin rate increases slowly during this time.
-                /*if (chargeRatio <= 0.66f)
+                if (chargeRatio <= 0.66f)
                 {
                     float phaseRatio = chargeRatio * 1.5f;
                     Projectile.Opacity = MathHelper.Lerp(0f, 0.4f, phaseRatio);
@@ -138,30 +130,31 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
                 {
                     float phaseRatio = (chargeRatio - 0.66f) * 3f;
                     Projectile.Opacity = MathHelper.Lerp(0.4f, 1f, phaseRatio);
-                }*/
+                }
             }
 
             // If the host Prism is already at max charge, don't calculate anything. Just use the max values.
             else
             {
                 Projectile.scale = MaxBeamScale;
+                Projectile.Opacity = 1f;
             }
-            Projectile.Opacity = 1f;
 
             // This trigonometry calculates where the beam is supposed to be pointing.
             Vector2 unitRot = Vector2.UnitY;
-            Vector2 yVec = new Vector2(4f, 0);
+            //Vector2 yVec = new Vector2(32f, 0);
             float hostPrismAngle = hostPrism.velocity.ToRotation();
-            Vector2 beamSpanVector = (unitRot * yVec).RotatedBy(hostPrismAngle);
+            //Vector2 beamSpanVector = (unitRot * yVec).RotatedBy(hostPrismAngle);
 
             // Calculate the beam's emanating position. Start with the Prism's center.
             Projectile.Center = hostPrism.Center;
             // Add a fixed offset to align with the Prism's sprite sheet.
             Projectile.position += hostPrismDir * 16f + new Vector2(0f, -hostPrism.gfxOffY);
             // Add the forwards offset, measured in pixels.
-            Projectile.position += hostPrismDir * 1;
+            Projectile.position += hostPrismDir * 16f;
             // Add the sideways offset vector, which is calculated for the current angle of the beam and scales with the beam's sideways offset.
-            Projectile.position += beamSpanVector;
+            //Projectile.position += beamSpanVector;
+            //Projectile.position += new Vector2(0, -1f * Projectile.direction).RotatedBy(hostPrismAngle);
 
             // Set the beam's velocity to point towards its current spread direction and sanity check it. It should have magnitude 1.
             Projectile.velocity = hostPrismDir;
@@ -182,7 +175,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             Color beamColor = GetOuterBeamColor();
             if (chargeRatio >= VisualEffectThreshold)
             {
-                ProduceBeamDust(beamColor);
+                ProduceBeamDust(chargeRatio);
 
                 // If the game is rendering (i.e. isn't a dedicated server), make the beam disturb water.
                 if (Main.netMode != NetmodeID.Server)
@@ -226,7 +219,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             // Alternatively, if you want the beam to ignore tiles, just set it to be the max beam length with the following line.
             // return MaxBeamLength;
             float[] laserScanResults = new float[NumSamplePoints];
-            Collision.LaserScan(samplingPoint, Projectile.velocity, 0 * Projectile.scale, MaxBeamLength, laserScanResults);
+            Collision.LaserScan(samplingPoint, Projectile.velocity, 0/*BeamTileCollisionWidth * Projectile.scale*/, MaxBeamLength, laserScanResults);
             float averageLengthSample = 0f;
             for (int i = 0; i < laserScanResults.Length; ++i)
             {
@@ -256,6 +249,15 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             Vector2 startPosition = centerFloored - Main.screenPosition;
             Vector2 endPosition = startPosition + Projectile.velocity * visualBeamLength;
 
+            
+            Projectile hostPrism = Main.projectile[(int)HostPrismIndex];
+            float chargeRatio = MathHelper.Clamp(hostPrism.ai[0] / MaxCharge, 0f, 1f);
+            if (chargeRatio > 0.9f)
+            {
+                float t = hostPrism.ai[0];
+                drawScale *= 0.95f + 0.05f * (float)Math.Cos(-0.05f * t);
+            }
+
             // Draw the outer beam.
             DrawBeam(Main.spriteBatch, texture, startPosition, endPosition, drawScale, GetOuterBeamColor() * OuterBeamOpacityMultiplier * Projectile.Opacity);
 
@@ -265,48 +267,34 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 
         private void DrawBeam(SpriteBatch spriteBatch, Texture2D texture, Vector2 startPosition, Vector2 endPosition, Vector2 drawScale, Color beamColor)
         {
-            Utils.LaserLineFraming lineFraming = new Utils.LaserLineFraming(DelegateMethods.TurretLaserDraw);
+            Utils.LaserLineFraming lineFraming = new Utils.LaserLineFraming(DelegateMethods.RainbowLaserDraw);
 
             // c_1 is an unnamed decompiled variable which is the render color of the beam drawn by DelegateMethods.RainbowLaserDraw.
             DelegateMethods.c_1 = beamColor;
             Utils.DrawLaser(spriteBatch, texture, startPosition, endPosition, drawScale, lineFraming);
         }
 
-        private void ProduceBeamDust(Color beamColor)
+        private void ProduceBeamDust(float chargeRatio)
         {
-            // Create one dust per frame a small distance from where the beam ends.
-            const int type = 15;
+            const int type = DustID.Vortex;
             Vector2 endPosition = Projectile.Center + Projectile.velocity * (BeamLength - 14.5f * Projectile.scale);
 
-            // Main.rand.NextBool is used to give a 50/50 chance for the angle to point to the left or right.
-            // This gives the dust a 50/50 chance to fly off on either side of the beam.
-            float angle = Projectile.rotation + (Main.rand.NextBool() ? 1f : -1f) * MathHelper.PiOver2;
-            float startDistance = Main.rand.NextFloat(1f, 1.8f);
-            float scale = Main.rand.NextFloat(0.7f, 1.1f);
-            Vector2 velocity = angle.ToRotationVector2() * startDistance;
-            Dust dust = Dust.NewDustDirect(endPosition, 0, 0, type, velocity.X, velocity.Y, 0, beamColor, scale);
-            dust.color = beamColor;
+            float theta = Projectile.velocity.ToRotation() + (Main.rand.NextBool() ? (-1f) : 1f) * ((float)Math.PI / 2f);
+            float speed = ((float)Main.rand.NextDouble() * 2f + 2f) * chargeRatio;
+            Vector2 velocity = new Vector2((float)Math.Cos(theta) * speed, (float)Math.Sin(theta) * speed);
+            Dust dust = Dust.NewDustDirect(endPosition, 0, 0, type, velocity.X, velocity.Y);
             dust.noGravity = true;
-
-            // If the beam is currently large, make the dust faster and larger to match.
-            if (Projectile.scale > 1f)
-            {
-                dust.velocity *= Projectile.scale;
-                dust.scale *= Projectile.scale;
-            }
+            dust.scale = 1.7f * chargeRatio;
         }
 
         private Color GetOuterBeamColor()
         {
-            // This hue calculation produces a unique color for each beam based on its Beam ID.
-            float hue = BeamColorHue;
-
-            // Main.hslToRgb converts Hue, Saturation, Lightness into a Color for general purpose use.
-            Color c = Main.hslToRgb(hue, BeamColorSaturation, BeamColorLightness);
-
-            // Manually reduce the opacity of the color so beams can overlap without completely overwriting each other.
-            c.A = 64;
-            return c;
+            const float alpha = 0.9f;
+            const float emission = 0.1f;
+            const float r = 1.0f;
+            const float g = 1.0f;
+            const float b = 1.0f;
+            return new(r * alpha, g * alpha, b * alpha, Math.Max(alpha - emission, 0f));
         }
 
         private void ProduceWaterRipples(Vector2 beamDims)

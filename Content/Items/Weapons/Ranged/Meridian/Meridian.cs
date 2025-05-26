@@ -10,6 +10,15 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 {
 	public class Meridian : ModItem
 	{
+		/*public override void SetStaticDefaults()
+		{
+			AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[Type] = ItemID.RocketLauncher;
+			/*AmmoID.Sets.IsArrow[Type] = true;
+			AmmoID.Sets.IsBullet[Type] = true;
+			AmmoID.Sets.IsSpecialist[Type] = true;\*\/
+			AmmoID.Sets.[Type] = true;
+        }*/
+
 		public override void SetDefaults()
 		{
 			Item.width = 52;
@@ -31,6 +40,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 			Item.noUseGraphic = true;
 			Item.channel = true;
 			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
+			Item.useAmmo = AmmoID.Bullet;
 		}
 
 		public override void AddRecipes()
@@ -66,6 +76,33 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 				.AddIngredient(ItemID.EndlessQuiver)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
+		}
+
+        public override bool? CanChooseAmmo(Item ammo, Player player)
+        {
+			if (ammo.ammo != AmmoID.None)
+			{
+				return true;
+			}
+            return null;
+        }
+
+        public override bool CanConsumeAmmo(Item ammo, Player player)
+        {
+            return false;
+        }
+
+        public override bool NeedsAmmo(Player player)
+        {
+            return false;
+        }
+
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		{
+			damage = player.HeldItem.damage;
+			knockback = player.HeldItem.knockBack;
+			velocity = velocity.SafeNormalize(-Vector2.UnitY) * player.HeldItem.shootSpeed;
+			type = ModContent.ProjectileType<MeridianHoldout>();
 		}
 
 		public override Color? GetAlpha(Color lightColor)

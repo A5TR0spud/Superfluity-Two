@@ -1,7 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using SuperfluityTwo.Common;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
@@ -14,7 +17,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 {
     public class MeridianHoldout : ModProjectile
     {
-        public SoundStyle BULLET_SHOOT_SOUND = SoundID.Item5;
+        public SoundStyle BULLET_SHOOT_SOUND = SoundID.Item11;
         public SoundStyle ARROW_SHOOT_SOUND = SoundID.Item5;
         public SoundStyle ROCKET_SHOOT_SOUND = SoundID.Item38;
         //public override string Texture => $"{nameof(SuperfluityTwo)}/Content/Items/Weapons/Ranged/Meridian/MeridianHoldout";
@@ -61,16 +64,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             return false;
         }
 
-        const float ARROW_ARC = MathHelper.Pi * 0.66f;
-        float ArrowFireCounter = 0;
-        int ArrowSoundTimer = 0;
-
-        public override void OnSpawn(IEntitySource source)
-        {
-            ArrowFireCounter = 0;
-            ArrowSoundTimer = 0;
-        }
-
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -84,6 +77,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             // Update the Prism's position in the world and relevant variables of the player holding it.
             UpdatePlayerVisuals(player, rrp);
 
+            bool stillInUse = player.channel && !player.noItems && !player.CCed;
             // Update the Prism's behavior: project beams on frame 1, consume mana, and despawn if out of mana.
             if (Projectile.owner == Main.myPlayer)
             {
@@ -92,41 +86,65 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 
                 // The Prism immediately stops functioning if the player is Cursed (player.noItems) or "Crowd Controlled", e.g. the Frozen debuff.
                 // player.channel indicates whether the player is still holding down the mouse button to use the item.
-                bool stillInUse = player.channel && !player.noItems && !player.CCed;
+
 
                 // Spawn in the Prism's lasers on the first frame if the player is capable of using the item.
                 /*if (stillInUse && FrameCounter == 1f)
                 {
                     FireBeams();
                 }*/
-                if (stillInUse)
-                {
-                    HandleFiring();
-                }
+
 
                 // If the Prism cannot continue to be used, then destroy it immediately.
                 /*else*/
-                else if (!stillInUse)
+                if (!stillInUse)
                 {
                     Projectile.Kill();
+                    return;
                 }
+            }
+
+            if (stillInUse)
+            {
+                HandleFiring();
             }
 
             // This ensures that the Prism never times out while in use.
             Projectile.timeLeft = 2;
         }
 
-        private void HandleFiring()
+        public override void OnSpawn(IEntitySource source)
         {
-            HandleArrows();
-            HandleBullets();
+            ArrowFireCounter = 0;
+            ArrowSoundTimer = 0;
+            BulletFireCounter = 0;
+            BulletSoundTimer = 0;
+            ArrowAmmoCycle = 0;
+            BulletAmmoCycle = 0;
+            RocketFireCounter = 0;
         }
 
-        private void HandleArrows()
+        private void HandleFiring()
+        {
+            HandleArrows(Projectile.owner == Main.myPlayer);
+            HandleBullets(Projectile.owner == Main.myPlayer);
+            HandleRockets(Projectile.owner == Main.myPlayer);
+        }
+
+        const float ARROW_ARC = MathHelper.Pi * 0.66f;
+        float ArrowFireCounter = 0;
+        int ArrowSoundTimer = 0;
+        float BulletFireCounter = 0;
+        int BulletSoundTimer = 0;
+        int ArrowAmmoCycle = 0;
+        int BulletAmmoCycle = 0;
+        float RocketFireCounter = 0;
+
+        private void HandleArrows(bool actuallyFire)
         {
             Player owner = Main.player[Projectile.owner];
             int dmg = Projectile.damage;
-            float time = 10 / (2 * owner.GetWeaponAttackSpeed(owner.HeldItem));
+            float time = 12 / (2 * owner.GetWeaponAttackSpeed(owner.HeldItem));
             float kb = Projectile.knockBack;
             float shootSpeed = owner.HeldItem.shootSpeed;
             Vector2 dir = Projectile.velocity.SafeNormalize(-Vector2.UnitY);
@@ -135,16 +153,41 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             Vector2 velDir = rot.AngleTowards((Main.MouseWorld - pos).ToRotation(), MathHelper.PiOver4 * 0.5f).ToRotationVector2();
             if (ArrowFireCounter <= 0)
             {
-                Vector2 vel = velDir * shootSpeed;
-                Projectile.NewProjectile(
-                    owner.GetSource_FromThis(),
-                    pos,
-                    vel,
-                    ModContent.ProjectileType<MeridianArrow>(),
-                    dmg,
-                    kb,
-                    owner.whoAmI
-                );
+                if (actuallyFire)
+                {
+                    int arrowType = CycleArrowAmmo(out Item ammoChosen);
+                    int damageAdd = 0;
+                    float kbAdd = 0;
+                    float speedAdd = 0;
+                    if (HelperMethodsSF2.CanItemBeShot(ammoChosen))
+                    {
+                        damageAdd = Math.Max(ammoChosen.damage, 15);
+                        kbAdd = ammoChosen.knockBack;
+                        speedAdd = ammoChosen.shootSpeed;
+                        if (arrowType == ProjectileID.WoodenArrowFriendly)
+                            arrowType = ModContent.ProjectileType<MeridianArrow>();
+                    }
+                    Vector2 vel = velDir * shootSpeed;
+                    Projectile proj = Projectile.NewProjectileDirect(
+                        owner.GetSource_FromThis(),
+                        pos,
+                        vel + dir * speedAdd,
+                        arrowType,
+                        dmg + 3 * damageAdd,
+                        kb + kbAdd,
+                        owner.whoAmI
+                    );
+                    if (proj.penetrate == 1 && proj.damage < Projectile.damage * 1.5f) proj.damage *= 2;
+                    if (proj.penetrate > 0 && arrowType != ModContent.ProjectileType<MeridianArrow>())
+                    {
+                        proj.damage = Math.Max(proj.damage, (int)(proj.damage * 2f / proj.penetrate));
+                    }
+                }
+                for (int i = 0; i < 12; i++)
+                {
+                    Vector2 dustDir = (MathHelper.TwoPi * i / 12f).ToRotationVector2();
+                    Dust.NewDustPerfect(pos + dir * 6, DustID.ShimmerSpark, dustDir * 0.3f);
+                }
                 ArrowFireCounter += time;
                 if (ArrowSoundTimer <= 0)
                 {
@@ -161,13 +204,16 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             ArrowFireCounter--;
         }
 
-        private void HandleBullets()
+        bool BulletAlternator = false;
+
+        private void HandleBullets(bool actuallyFire)
         {
-            if (FrameCounter == 1f)
+            if (FrameCounter == 1f && actuallyFire)
             {
                 // If for some reason the beam velocity can't be correctly normalized, set it to a default value.
                 Vector2 beamVelocity = Vector2.Normalize(Projectile.velocity);
-                if (beamVelocity.HasNaNs()) {
+                if (beamVelocity.HasNaNs())
+                {
                     beamVelocity = -Vector2.UnitY;
                 }
 
@@ -189,6 +235,76 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
                 // After creating the beams, mark the Prism as having an important network event. This will make Terraria sync its data to other players ASAP.
                 Projectile.netUpdate = true;
             }
+
+            Vector2 dir = Projectile.velocity.SafeNormalize(-Vector2.UnitY);
+            for (int i = 0; i < 2; i++)
+            {
+                float theta = 0.1f * FrameCounter + i * MathHelper.Pi;
+                Vector2 arcDir = new Vector2((float)Math.Cos(theta) * 4, (float)Math.Sin(theta) * 32).RotatedBy(dir.ToRotation());
+                Dust.NewDustPerfect(Projectile.Center + dir * 64 + arcDir, DustID.ShimmerSpark, dir * 0.3f);
+            }
+            if (BulletFireCounter <= 0)
+            {
+                Player owner = Main.player[Projectile.owner];
+                int dmg = Projectile.damage;
+                float time = 9 / (2 * owner.GetWeaponAttackSpeed(owner.HeldItem));
+                float kb = Projectile.knockBack;
+                float shootSpeed = owner.HeldItem.shootSpeed;
+                BulletFireCounter += time;
+                if (BulletSoundTimer <= 2)
+                {
+                    SoundEngine.PlaySound(BULLET_SHOOT_SOUND, Projectile.position);
+                    BulletSoundTimer += 5;
+                }
+                BulletSoundTimer--;
+                if (CycleBulletAmmo(out Item chosenAmmoItem) && actuallyFire)
+                {
+                    Vector2 vel = dir * shootSpeed;
+                    float theta = 0.1f * FrameCounter + (BulletAlternator ? MathHelper.Pi : 0);
+                    Vector2 arcDir = new Vector2((float)Math.Cos(theta) * 4, (float)Math.Sin(theta) * 32).RotatedBy(dir.ToRotation());
+                    Projectile.NewProjectile(
+                        owner.GetSource_FromThis(),
+                        Projectile.Center + dir * 64 + arcDir,
+                        vel + dir * chosenAmmoItem.shootSpeed,
+                        chosenAmmoItem.shoot,
+                        dmg + 2 * chosenAmmoItem.damage,
+                        kb + chosenAmmoItem.knockBack,
+                        owner.whoAmI
+                    );
+                    BulletAlternator = !BulletAlternator;
+                }
+            }
+            BulletFireCounter--;
+        }
+
+
+        private void HandleRockets(bool actuallyFire)
+        {
+            Player owner = Main.player[Projectile.owner];
+            int dmg = (int)(Projectile.damage * 1.5f);
+            float time = 90 / owner.GetWeaponAttackSpeed(owner.HeldItem);
+            float kb = Projectile.knockBack;
+            float shootSpeed = owner.HeldItem.shootSpeed;
+            Vector2 dir = Projectile.velocity.SafeNormalize(-Vector2.UnitY);
+            Vector2 pos = Projectile.Center + dir * 64;
+            if (RocketFireCounter <= -20)
+            {
+                if (actuallyFire)
+                {
+                    Projectile.NewProjectile(
+                        owner.GetSource_FromThis(),
+                        pos,
+                        dir * shootSpeed,
+                        ModContent.ProjectileType<MeridianRocket>(),
+                        dmg,
+                        kb,
+                        owner.whoAmI
+                    );
+                }
+                RocketFireCounter += time;
+                SoundEngine.PlaySound(ROCKET_SHOOT_SOUND, Projectile.position);
+            }
+            RocketFireCounter--;
         }
 
         private void UpdateAnimation()
@@ -202,22 +318,25 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             Projectile.frameCounter++;
         }
 
-        private void UpdateAim(Vector2 source, float speed) {
-			// Get the player's current aiming direction as a normalized vector.
-			Vector2 aim = Vector2.Normalize(Main.MouseWorld - source);
-			if (aim.HasNaNs()) {
-				aim = Projectile.velocity.SafeNormalize(-Vector2.UnitY);
-			}
+        private void UpdateAim(Vector2 source, float speed)
+        {
+            // Get the player's current aiming direction as a normalized vector.
+            Vector2 aim = Vector2.Normalize(Main.MouseWorld - source);
+            if (aim.HasNaNs())
+            {
+                aim = Projectile.velocity.SafeNormalize(-Vector2.UnitY);
+            }
 
-			// Change a portion of the Prism's current velocity so that it points to the mouse. This gives smooth movement over time.
-			//aim = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(Projectile.velocity), aim, AimResponsiveness));
-			aim *= speed;
+            // Change a portion of the Prism's current velocity so that it points to the mouse. This gives smooth movement over time.
+            //aim = Vector2.Normalize(Vector2.Lerp(Vector2.Normalize(Projectile.velocity), aim, AimResponsiveness));
+            aim *= speed;
 
-			if (aim != Projectile.velocity) {
-				Projectile.netUpdate = true;
-			}
-			Projectile.velocity = aim;
-		}
+            if (aim != Projectile.velocity)
+            {
+                Projectile.netUpdate = true;
+            }
+            Projectile.velocity = aim;
+        }
 
         private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)
         {
@@ -242,20 +361,85 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             // If you do not multiply by Projectile.direction, the player's hand will point the wrong direction while facing left.
             player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
         }
-        
-        // Because the Prism is a holdout Projectile and stays glued to its user, it needs custom drawcode.
-		public override bool PreDraw(ref Color lightColor) {
-			SpriteEffects effects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
-			Texture2D texture = texAsset.Value;
-			int frameHeight = texture.Height / MAX_FRAMES;
-			int spriteSheetOffset = frameHeight * Projectile.frame;
-			Vector2 sheetInsertPosition = (Projectile.Center + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition).Floor();
 
-			// The Prism is always at full brightness, regardless of the surrounding light. This is equivalent to it being its own glowmask.
-			// It is drawn in a non-white color to distinguish it from the vanilla Last Prism.
-			Color drawColor = Color.White;
-			Main.EntitySpriteDraw(texture, sheetInsertPosition, new Rectangle?(new Rectangle(0, spriteSheetOffset, texture.Width, frameHeight - 2)), drawColor, Projectile.rotation, new Vector2(texture.Width / 2f, frameHeight / 2f), Projectile.scale, effects, 0f);
-			return false;
-		}
+        // Because the Prism is a holdout Projectile and stays glued to its user, it needs custom drawcode.
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteEffects effects = Projectile.spriteDirection == -1 ? SpriteEffects.FlipVertically : SpriteEffects.None;
+            Texture2D texture = texAsset.Value;
+            int frameHeight = texture.Height / MAX_FRAMES;
+            int spriteSheetOffset = frameHeight * Projectile.frame;
+            Vector2 sheetInsertPosition = (Projectile.Center + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition).Floor();
+
+            // The Prism is always at full brightness, regardless of the surrounding light. This is equivalent to it being its own glowmask.
+            // It is drawn in a non-white color to distinguish it from the vanilla Last Prism.
+            Color drawColor = Color.White;
+            Main.EntitySpriteDraw(texture, sheetInsertPosition, new Rectangle?(new Rectangle(0, spriteSheetOffset, texture.Width, frameHeight - 2)), drawColor, Projectile.rotation, new Vector2(texture.Width / 2f, frameHeight / 2f), Projectile.scale, effects, 0f);
+            return false;
+        }
+        
+        
+        private int CycleArrowAmmo(out Item chosenAmmoItem)
+        {
+            int toRet = ModContent.ProjectileType<MeridianArrow>();
+            if (!Projectile.TryGetOwner(out Player owner))
+            {
+                chosenAmmoItem = null;
+                return toRet;
+            }
+            List<Item> ammoIDs = [];
+            foreach (Item ammo in owner.inventory)
+            {
+                if (!HelperMethodsSF2.CanItemBeShot(ammo) || !HelperMethodsSF2.IsArrow(ammo.ammo))
+                {
+                    continue;
+                }
+                ammoIDs.Add(ammo);
+            }
+            if (ammoIDs.Count > 0)
+            {
+                int index = ArrowAmmoCycle % (ammoIDs.Count + 1);
+                if (index == 0) {
+                    chosenAmmoItem = null;
+                    ArrowAmmoCycle++;
+                    return toRet;
+                }
+                index--;
+                chosenAmmoItem = ammoIDs[index];
+                toRet = chosenAmmoItem.shoot;
+                ArrowAmmoCycle++;
+            }
+            else
+            {
+                chosenAmmoItem = null;
+            }
+            return toRet;
+        }
+
+        private bool CycleBulletAmmo(out Item chosenAmmoItem)
+        {
+            if (!Projectile.TryGetOwner(out Player owner))
+            {
+                chosenAmmoItem = null;
+                return false;
+            }
+            List<Item> ammoIDs = [];
+            foreach (Item ammo in owner.inventory)
+            {
+                if (!HelperMethodsSF2.CanItemBeShot(ammo) || !HelperMethodsSF2.IsBullet(ammo.ammo))
+                {
+                    continue;
+                }
+                ammoIDs.Add(ammo);
+            }
+            if (ammoIDs.Count > 0)
+            {
+                chosenAmmoItem = ammoIDs[BulletAmmoCycle % ammoIDs.Count];
+                BulletAmmoCycle++;
+                return true;
+            }
+            chosenAmmoItem = null;
+            return false;
+        }
     }   
 }

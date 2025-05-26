@@ -470,6 +470,7 @@ Projectiles: {
 	MeridianBullet.DisplayName: Meridian Bullet
 	MeridianArrow.DisplayName: Meridian Arrow
 	MeridianHoldout.DisplayName: Meridian Holdout
+	MeridianRocket.DisplayName: Meridian Rocket
 }
 
 DeathMessages: {

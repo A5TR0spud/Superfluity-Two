@@ -95,4 +95,57 @@ public class HelperMethodsSF2
             victim.AddBuff(buffID, 60);
         }
     }
+
+    public static bool CanItemBeShot(Item ammo, bool checkRocket = false)
+    {
+        if (ammo == null ||
+            ammo.notAmmo ||
+            (ammo.shoot <= ProjectileID.None && !checkRocket) ||
+            ammo.stack <= 0)
+        {
+            return false;
+        }
+        bool flag = ammo.ammo != AmmoID.None;
+        if (flag && checkRocket)
+        {
+            return GetRocketShoot(ammo) > ProjectileID.None;
+        }
+        return flag;
+    }
+
+    public static int GetRocketShoot(Item rocketAmmo) {
+        //int1: weapon itemID
+        //int2: ammo   itemID
+        //int3: ammo   projectileID
+        if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(ItemID.RocketLauncher, out var value))
+        {
+            if (value.TryGetValue(rocketAmmo.type, out int projID))
+            {
+                return projID;
+            }
+        }
+        return ProjectileID.None;
+    }
+
+    public static bool IsArrow(int ammoID) =>
+        ammoID == AmmoID.Arrow ||
+        ammoID == AmmoID.Stake ||
+        ammoID == AmmoID.StyngerBolt ||
+        ammoID == AmmoID.Dart
+    ;
+
+    public static bool IsBullet(int ammoID) =>
+        ammoID == AmmoID.Bullet ||
+        ammoID == AmmoID.CandyCorn ||
+        ammoID == AmmoID.Coin ||
+        ammoID == AmmoID.NailFriendly
+    ;
+
+    public static bool IsRocket(int ammoID) =>
+        ammoID == AmmoID.Rocket
+    ;
+
+    public static bool IsOther(int ammoID) =>
+        !IsArrow(ammoID) && !IsBullet(ammoID) && !IsRocket(ammoID)
+    ;
 }

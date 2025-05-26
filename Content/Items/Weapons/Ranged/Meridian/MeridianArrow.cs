@@ -30,7 +30,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             Projectile.height = 14;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.penetrate = 14;
+            Projectile.penetrate = 10;
             Projectile.timeLeft = LIFETIME;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
@@ -39,6 +39,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.stopsDealingDamageAfterPenetrateHits = true;
+            Projectile.arrow = true;
         }
 
         public override Color? GetAlpha(Color lightColor)
@@ -46,18 +47,15 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             return Color.White * (1 - Projectile.alpha / 255f);
         }
 
-        float initSpeed = 10;
+        float maxSpeed = 10;
+        int maxDamage = 10;
 
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
-            initSpeed = Projectile.velocity.Length();
+            maxSpeed = Projectile.velocity.Length();
             Projectile.velocity *= 0.1f;
-            for (int i = 0; i < 12; i++)
-            {
-                Vector2 dir = (MathHelper.TwoPi * i / 12f).ToRotationVector2();
-                Dust.NewDustPerfect(Projectile.Center + dir * 6, DustID.ShimmerSpark, dir * 0.3f);
-            }
+            maxDamage = Projectile.damage;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -95,7 +93,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Projectile.damage = (int)(Projectile.damage * 0.95f);
+            Projectile.damage = (int)(Projectile.damage * 0.85f);
             Projectile.velocity *= 0.5f;
             BounceToTarget();
             Projectile.timeLeft = LIFETIME;
@@ -117,10 +115,11 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             else
             {
                 float speed = Projectile.velocity.Length();
-                speed = Math.Min(speed * ACCELERATION, initSpeed);
+                speed = Math.Min(speed * ACCELERATION, maxSpeed);
                 Projectile.velocity = Projectile.velocity.SafeNormalize(-Vector2.UnitY) * speed;
                 Home(out bool hasLoS);
                 Projectile.tileCollide = hasLoS;
+                Projectile.damage = (int)(maxDamage * speed / maxSpeed);
             }
         }
 
