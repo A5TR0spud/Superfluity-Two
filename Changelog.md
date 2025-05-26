@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.26.0
+
+### 0.26.0 Additions
+
+- Added Meridian, the ranger's Zenith
+
 ## 0.25.1
 
 ### 0.25.1 Fixes
