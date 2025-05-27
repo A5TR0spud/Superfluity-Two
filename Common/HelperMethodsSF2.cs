@@ -145,7 +145,8 @@ public class HelperMethodsSF2
         ammoID == AmmoID.Rocket
     ;
 
-    public static bool IsOther(int ammoID) =>
-        !IsArrow(ammoID) && !IsBullet(ammoID) && !IsRocket(ammoID)
-    ;
+    public static bool IsOther(int ammoID)
+    {
+        return !IsArrow(ammoID) && !IsBullet(ammoID) && !IsRocket(ammoID) && ammoID != AmmoID.None;
+    }
 }

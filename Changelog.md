@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.27.0
+
+### 0.27.0 Additions
+
+- Added Hurricane Lantern, a hardmode magic weapon
+- Added Disposable Rocket Launcher, a hardmode ranged weapon
+
+### 0.27.0 Fixes
+
+- Fixed Meridian shimmer decrafting in corruption vs crimson
+- Meridian's ammo counter now correctly discounts ammo it can't actually shoot (e.g. fallen stars, coins)
+- Bastet's VFX is now properly implemented as a projectile, rather than rendering as part of the player
+
 ## 0.26.0
 
 ### 0.26.0 Additions

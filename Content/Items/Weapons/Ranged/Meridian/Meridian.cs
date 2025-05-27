@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using SuperfluityTwo.Common;
 using SuperfluityTwo.Content.Projectiles;
 using Terraria;
 using Terraria.Audio;
@@ -59,6 +60,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 				.AddIngredient(ItemID.EndlessMusketPouch)
 				.AddIngredient(ItemID.EndlessQuiver)
 				.AddTile(TileID.MythrilAnvil)
+				.AddDecraftCondition(Condition.CrimsonWorld)
 				.Register();
 
 			CreateRecipe()
@@ -75,6 +77,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 				.AddIngredient(ItemID.EndlessMusketPouch)
 				.AddIngredient(ItemID.EndlessQuiver)
 				.AddTile(TileID.MythrilAnvil)
+				.AddDecraftCondition(Condition.CorruptWorld)
 				.Register();
 		}
 
@@ -82,7 +85,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
         {
 			if (ammo.ammo != AmmoID.None)
 			{
-				return true;
+				return HelperMethodsSF2.CanItemBeShot(ammo, ammo.ammo == AmmoID.Rocket);
 			}
             return null;
         }

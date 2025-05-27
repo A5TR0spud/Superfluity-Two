@@ -19,7 +19,6 @@ namespace SuperfluityTwo.Common.Players
     public class SolacePlayer : ModPlayer {
         public bool hasBastetBlessing = false;
         public bool hasLuckyClover = false;
-        public int bastetProtectVFXTime = 0;
         public bool bastetVisible = false;
         public bool bastetAnkhVisible = false;
         public bool forceBastetVisible = false;
@@ -31,6 +30,7 @@ namespace SuperfluityTwo.Common.Players
         public bool hasStarCanteen = false;
         public bool hasSunflowerSpeed = false;
         public bool hasSunflowerAggro = false;
+        public bool flagNeedVFX = false;
         public override void ResetEffects()
         {
             hasBastetBlessing = false;
@@ -121,10 +121,14 @@ namespace SuperfluityTwo.Common.Players
                 info.Damage = (int)(info.Damage * 0.7f);
                 SolacePlayer modded = self.GetModPlayer<SolacePlayer>();
                 if (modded.forceBastetVisible || modded.bastetVisible)
+                {
                     for (int i = 0; i < 10; i++)
                         Dust.NewDust(self.position, self.width, self.height, DustID.GoldFlame, 0, -4);
-                if (self.statLife - initDmg <= 0 && self.statLife - info.Damage > 0 && (modded.bastetAnkhVisible || modded.forceBastetVisible)) 
-                    modded.bastetProtectVFXTime = 60;
+                    if (self.statLife - initDmg <= 0 && self.statLife - info.Damage > 0)
+                    {
+                        modded.flagNeedVFX = true;
+                    }
+                }
             }
             orig(self, info, quiet);
         }
@@ -150,11 +154,27 @@ namespace SuperfluityTwo.Common.Players
                     NetMessage.SendData(MessageID.SyncItem, -1, -1, null, index, 1f);
             }
         }
-    
+
         public override void PostUpdate()
         {
-            if (bastetProtectVFXTime > 0) bastetProtectVFXTime--;
             if (heartPickupCooldown > 0) heartPickupCooldown--;
+
+            if (flagNeedVFX)
+            {
+                flagNeedVFX = false;
+                if (Main.myPlayer == Player.whoAmI)
+                {
+                    Projectile.NewProjectile(
+                        Player.GetSource_FromThis(),
+                        Player.Center - new Vector2(0, Player.height / 2),
+                        new Vector2(Main.rand.NextFloat() - 0.5f, -3f),
+                        ModContent.ProjectileType<BastetVFX>(),
+                        0,
+                        0,
+                        Player.whoAmI
+                    );
+                }
+            }
         }
 
         public override void PostUpdateRunSpeeds()
@@ -165,58 +185,5 @@ namespace SuperfluityTwo.Common.Players
                 Player.maxRunSpeed *= 1.1f;
             }
         }
-
-        public override void OnRespawn()
-        {
-            bastetProtectVFXTime = 0;
-        }
-    }
-
-    internal class BastetPlayerLayer : PlayerDrawLayer
-	{
-        public static Asset<Texture2D> texAsset;
-        public override void Load()
-        {
-            texAsset = ModContent.Request<Texture2D>($"{nameof(SuperfluityTwo)}/Content/Items/Accessories/Solace/BastetVFX", AssetRequestMode.AsyncLoad);
-        }
-
-		public override Position GetDefaultPosition() {
-			return new AfterParent(PlayerDrawLayers.IceBarrier);
-		}
-
-		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
-            if (drawInfo.shadow != 0)
-                return false;
-            SolacePlayer modded = drawInfo.drawPlayer.GetModPlayer<SolacePlayer>();
-            if (modded.bastetProtectVFXTime > 0)
-                return true;
-            return false;
-		}
-
-		protected override void Draw(ref PlayerDrawSet drawInfo) {
-			if (drawInfo.drawPlayer.dead) {
-				return;
-			}
-            SolacePlayer modded = drawInfo.drawPlayer.GetModPlayer<SolacePlayer>();
-            Texture2D texture2d = texAsset.Value;
-            float offset = modded.bastetProtectVFXTime / 60.0f;
-            offset = offset * offset - 1.0f;
-            offset *= 60.0f;
-            float a = modded.bastetProtectVFXTime / 60.0f;
-            DrawData glow = new DrawData(
-                texture: texture2d,
-                position: new Vector2((int)(drawInfo.Position.X - Main.screenPosition.X - drawInfo.drawPlayer.bodyFrame.Width / 2 + drawInfo.drawPlayer.width / 2), (int)(drawInfo.Position.Y - Main.screenPosition.Y + drawInfo.drawPlayer.height - drawInfo.drawPlayer.bodyFrame.Height + 4f)) + drawInfo.drawPlayer.bodyPosition + new Vector2(drawInfo.drawPlayer.bodyFrame.Width / 2, drawInfo.drawPlayer.bodyFrame.Height / 2)
-                + new Vector2(0, offset),
-                sourceRect: new Rectangle(0, 0, texture2d.Width, texture2d.Height),
-                color: new Color(a, a, a, a),
-                rotation: 0,
-                origin: new Vector2(texture2d.Width / 2, texture2d.Height / 2),
-                scale: 1f,
-                effect: SpriteEffects.None
-            );
-            glow.shader = 0;
-            //glow.color.A = (byte)(int)(a * 255);
-            drawInfo.DrawDataCache.Add(glow);
-		}
     }
 }

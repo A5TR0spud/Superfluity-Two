@@ -224,13 +224,8 @@ Items: {
 	}
 
 	HandheldMissileLauncher: {
-		DisplayName: INDEV Handheld Missile Launcher
-		Tooltip:
-			'''
-			Uses grenades as ammo
-			50% chance to save ammo
-			Unobtainable: What have you done?!
-			'''
+		DisplayName: Disposable Rocket Launcher
+		Tooltip: Uses grenades as ammo
 	}
 
 	AntlionLeg: {
@@ -291,8 +286,8 @@ Items: {
 	}
 
 	HurricaneLantern: {
-		DisplayName: INDEV Hurricane Lantern
-		Tooltip: "'Weatherman says there's a risk of rain' ?????? this is monsoon's tooltip"
+		DisplayName: Hurricane Lantern
+		Tooltip: "'Weatherman says there's a risk of rain'"
 	}
 
 	Zygoma: {
@@ -471,6 +466,10 @@ Projectiles: {
 	MeridianArrow.DisplayName: Meridian Arrow
 	MeridianHoldout.DisplayName: Meridian Holdout
 	MeridianRocket.DisplayName: Meridian Rocket
+	HurriRain.DisplayName: Hurri Rain
+	Hurricane.DisplayName: Hurricane
+	LilRocket.DisplayName: Lil Rocket
+	BastetVFX.DisplayName: Bastet V F X
 }
 
 DeathMessages: {
