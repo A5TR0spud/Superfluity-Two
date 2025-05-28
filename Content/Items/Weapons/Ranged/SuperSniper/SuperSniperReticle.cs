@@ -38,7 +38,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
             Player player = Main.player[Projectile.owner];
             //SoundEngine.PlaySound(SoundID.Item40, player.position);
             SoundEngine.PlaySound(SoundID.Item38, player.position);
-            Projectile.CritChance = player.HeldItem.crit;
         }
 
         public override void AI()
@@ -49,6 +48,11 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             modifiers.ScalingArmorPenetration += 0.5f;
+        }
+
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
+        {
+            modifiers.ScalingArmorPenetration += 0.25f;
         }
 
         public override bool ShouldUpdatePosition()

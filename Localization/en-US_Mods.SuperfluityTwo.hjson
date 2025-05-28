@@ -390,11 +390,12 @@ Items: {
 	}
 
 	SuperSniper: {
-		DisplayName: Super Snipe
+		DisplayName: Super Sniper
 		Tooltip:
 			'''
 			Fires a super precise round directly at your cursor
 			Ignores over half of enemy defense
+			<right> to zoom out
 			'''
 	}
 }

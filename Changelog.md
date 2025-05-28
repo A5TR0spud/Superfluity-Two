@@ -6,7 +6,7 @@
 
 - Added Hurricane Lantern, a hardmode magic weapon
 - Added Disposable Rocket Launcher, a hardmode ranged weapon
-- Added Super Snipe, a post-Plantera ranged weapon
+- Added Super Sniper, a post-Plantera ranged weapon
 - Added Foggy Mirror
 
 ### 0.27.0 Fixes
