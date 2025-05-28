@@ -52,6 +52,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.aiStyle = ProjAIStyleID.HeldProjectile;
+            Projectile.netImportant = true;
         }
 
         public override Color? GetAlpha(Color lightColor)

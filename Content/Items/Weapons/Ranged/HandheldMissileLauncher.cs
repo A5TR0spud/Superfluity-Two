@@ -51,14 +51,14 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged
 			const int horizOffset = 54 - 12 - 8; //54 is the width of the sprite, 12 to counteract the holdoutoffset, and 4 to account for the projectile visuals
 			Vector2 newPos = position + new Vector2(horizOffset, -5 * player.direction).RotatedBy(velocity.ToRotation());
 			if (Collision.CanHitLine(player.Center, 0, 0, newPos, 0, 0))
-            {
+			{
 				position = newPos;
-            }
+			}
 		}
 
         public override Vector2? HoldoutOffset()
-        {
-            return new Vector2(-12, -5);
-        }
+		{
+			return new Vector2(-12, -5);
+		}
     }
 }

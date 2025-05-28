@@ -82,6 +82,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
             //Projectile.aiStyle = ProjAIStyleID.ThickLaser;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
+            Projectile.netImportant = true;
         }
 
 

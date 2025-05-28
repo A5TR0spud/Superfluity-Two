@@ -276,12 +276,12 @@ Items: {
 	}
 
 	FoggyMirror: {
-		DisplayName: FoGGy M1rr0R INDEV
+		DisplayName: Foggy Mirror
 		Tooltip:
 			'''
 			Teleports you to a random location
-			?Right click to teleport to your last death
-			INDEV: What hath thou wrought?
+			Right click to teleport to your most recent death
+			[c/FF8888:Teleporting to death comes at a cost]
 			'''
 	}
 
@@ -388,6 +388,15 @@ Items: {
 			Does not consume ammo
 			'''
 	}
+
+	SuperSniper: {
+		DisplayName: Super Snipe
+		Tooltip:
+			'''
+			Fires a super precise round directly at your cursor
+			Ignores over half of enemy defense
+			'''
+	}
 }
 
 Buffs: {
@@ -470,6 +479,8 @@ Projectiles: {
 	Hurricane.DisplayName: Hurricane
 	LilRocket.DisplayName: Lil Rocket
 	BastetVFX.DisplayName: Bastet V F X
+	SuperSniperHoldout.DisplayName: Super Sniper Holdout
+	SuperSniperReticle.DisplayName: Super Sniper Reticle
 }
 
 DeathMessages: {

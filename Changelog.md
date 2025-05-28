@@ -6,12 +6,15 @@
 
 - Added Hurricane Lantern, a hardmode magic weapon
 - Added Disposable Rocket Launcher, a hardmode ranged weapon
+- Added Super Snipe, a post-Plantera ranged weapon
+- Added Foggy Mirror
 
 ### 0.27.0 Fixes
 
 - Fixed Meridian shimmer decrafting in corruption vs crimson
 - Meridian's ammo counter now correctly discounts ammo it can't actually shoot (e.g. fallen stars, coins)
 - Bastet's VFX is now properly implemented as a projectile, rather than rendering as part of the player
+- Joining players should now see Meridian and its laser if its being constantly fired at time of joining
 
 ## 0.26.0
 
