@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.28.0
+
+### 0.28.0 Additions
+
+- ~~Added Magpie, a post-1-mech ranged gun~~
+
+### 0.28.0 Changes
+
+- Updated reticle visual for Super Sniper
+
 ## 0.27.0
 
 ### 0.27.0 Additions
