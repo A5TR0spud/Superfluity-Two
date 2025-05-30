@@ -14,13 +14,13 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 	{
 		public override void SetDefaults()
 		{
-			Item.damage = 40;
+			Item.damage = 46;
 			Item.width = 26;
 			Item.height = 18;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shootSpeed = 30f;
-			Item.useAnimation = 20;
-			Item.useTime = 20;
+			Item.useAnimation = 14;
+			Item.useTime = 14;
 			Item.reuseDelay = 12;
 			Item.noMelee = true;
 			Item.crit = 0;

@@ -405,6 +405,7 @@ Items: {
 			'''
 			Creates a reticle around the cursor
 			Attacks all enemies within the reticle
+			'A glorious bit of kit'
 			'''
 	}
 }
