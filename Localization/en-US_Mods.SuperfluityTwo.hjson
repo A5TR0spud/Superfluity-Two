@@ -398,6 +398,15 @@ Items: {
 			<right> to zoom out
 			'''
 	}
+
+	Magpie: {
+		DisplayName: Magpie
+		Tooltip:
+			'''
+			Creates a reticle around the cursor
+			Attacks all enemies within the reticle
+			'''
+	}
 }
 
 Buffs: {
@@ -482,6 +491,9 @@ Projectiles: {
 	BastetVFX.DisplayName: Bastet V F X
 	SuperSniperHoldout.DisplayName: Super Sniper Holdout
 	SuperSniperReticle.DisplayName: Super Sniper Reticle
+	MagpieHoldout.DisplayName: Magpie Holdout
+	MagpieTracker.DisplayName: Magpie Tracker
+	MagpieLock.DisplayName: Magpie Lock
 }
 
 DeathMessages: {

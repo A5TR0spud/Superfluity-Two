@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using log4net.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -13,17 +14,16 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
+namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 {
-    public class SuperSniperHoldout : ModProjectile
+    public class MagpieHoldout : ModProjectile
     {
         private static Asset<Texture2D> texAsset;
 
-        public override string Texture => $"{nameof(SuperfluityTwo)}/Content/Items/Weapons/Ranged/SuperSniper/SuperSniper";
+        public override string Texture => $"{nameof(SuperfluityTwo)}/Content/Items/Weapons/Ranged/Magpie/Magpie";
 
         ref float useTimer => ref Projectile.ai[0];
-        ref float dustTimer => ref Projectile.ai[1];
-        ref float recoilTimer => ref Projectile.ai[2];
+        ref float FrameCounter => ref Projectile.ai[1];
 
         public override void Load()
         {
@@ -36,6 +36,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
 
             ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
         }
+        
         public override void SetDefaults()
         {
             Projectile.width = 18;
@@ -89,80 +90,28 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
                 HandleFiring();
             }
             Projectile.timeLeft = 2;
+            FrameCounter++;
         }
 
         private void HandleFiring()
         {
             Player player = Main.player[Projectile.owner];
-            float chargeRatio = 1f - (useTimer / GetDefaultUseTimer());
-            Vector2 dir = Projectile.velocity.SafeNormalize(-Vector2.UnitY);
-            dustTimer += chargeRatio;
-            if (useTimer <= 0)
+            if (player.whoAmI == Main.myPlayer && FrameCounter == 1)
             {
-                if (!player.PickAmmo(player.HeldItem, out int proj, out float speed, out int damage, out float kB, out int itemID))
-                {
-                    Projectile.Kill();
-                    return;
-                }
-
-                if (player.whoAmI == Main.myPlayer)
-                {
-                    Projectile.NewProjectileDirect(
-                        player.GetSource_FromThis(),
-                        Main.MouseWorld,
-                        dir * speed,
-                        ModContent.ProjectileType<SuperSniperReticle>(),
-                        damage,
-                        kB,
-                        player.whoAmI
-                    ).CritChance = player.HeldItem.crit;
-                }
-
-                Vector2 muzzleLocation = new Vector2(40, -2 * Projectile.direction).RotatedBy(Projectile.rotation);
-
-                for (int i = 0; i < 5; i++)
-                {
-                    Dust.NewDustPerfect(
-                        Position: Projectile.Center + muzzleLocation,
-                        Type: DustID.Smoke,
-                        Velocity: (1.75f + Main.rand.NextFloat()) * dir.RotatedByRandom(MathHelper.PiOver4 * 0.5f),
-                        Scale: 2f
-                    ).noGravity = true;
-                    Dust.NewDustPerfect(
-                        Position: Projectile.Center + muzzleLocation,
-                        Type: DustID.Torch,
-                        Velocity: (1.75f + Main.rand.NextFloat()) * dir.RotatedByRandom(MathHelper.PiOver4 * 0.5f),
-                        Scale: 2f
-                    ).noGravity = true;
-                }
-                Gore gore = Gore.NewGorePerfect(
-                    source: Projectile.GetSource_FromThis(),
-                    Position: Projectile.Center + muzzleLocation,
-                    Velocity: 0.9f * dir.RotatedByRandom(MathHelper.PiOver4 * 0.5f),
-                    Type: Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1),
-                    Scale: 0.8f
+                int uuid = Projectile.GetByUUID(Projectile.owner, Projectile.whoAmI);
+                Projectile.NewProjectile(
+                    player.GetSource_FromThis(),
+                    Main.MouseWorld,
+                    Vector2.Zero,
+                    ModContent.ProjectileType<MagpieTracker>(),
+                    Projectile.damage,
+                    Projectile.knockBack,
+                    player.whoAmI,
+                    uuid
                 );
-                gore.position -= new Vector2(gore.Width / 2, gore.Height / 2);
-                gore.position += dir * (gore.Width / 2);
-                gore.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-                gore.timeLeft /= 2;
-
-                ResetUseTimer();
-                recoilTimer = 10;
                 Projectile.netUpdate = true;
             }
-            while (dustTimer > 0)
-            {
-                Dust.NewDustPerfect(
-                    Projectile.Center + new Vector2(40, -2 * Projectile.direction).RotatedBy(Projectile.rotation),
-                    DustID.GoldFlame,
-                    (1.5f + chargeRatio) * dir.RotatedByRandom(MathHelper.PiOver4 * 0.5f),
-                    Scale: chargeRatio + 0.5f
-                ).noGravity = true;
-                dustTimer--;
-            }
             useTimer--;
-            if (recoilTimer > 0) recoilTimer--;
         }
 
         private void ResetUseTimer()
@@ -199,8 +148,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
             float rotation = Projectile.velocity.ToRotation();
             Projectile.spriteDirection = Projectile.direction;
 
-            Vector2 holdoutOffset = new Vector2(3, -35);
-            holdoutOffset.Y += recoilTimer * 0.2f;
+            Vector2 holdoutOffset = new Vector2(5, -20);
 
             Projectile.Center = playerHandPos + new Vector2(holdoutOffset.X * Projectile.direction, holdoutOffset.Y).RotatedBy(Projectile.rotation);
             Projectile.rotation = rotation;
@@ -221,12 +169,18 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
             
             Vector2 sheetInsertPosition = (Projectile.Center + Vector2.UnitY * Projectile.gfxOffY - Main.screenPosition).Floor();
             
-            Vector2 correction = new Vector2(0, -Projectile.direction + 1).RotatedBy(Projectile.rotation);
-            sheetInsertPosition += correction;
-
             Color drawColor = Projectile.GetAlpha(lightColor);
-            //i fixed this and then unfixed it cuz it looks better broken
-            Main.EntitySpriteDraw(texture, sheetInsertPosition, new Rectangle?(new Rectangle(0, 0, texture.Width, frameHeight - 2)), drawColor, Projectile.rotation, new Vector2(texture.Width / 2f, frameHeight / 2f), Projectile.scale, effects, 0f);
+            Main.EntitySpriteDraw(
+                texture,
+                sheetInsertPosition,
+                new Rectangle?(new Rectangle(0, 0, texture.Width, frameHeight)),
+                drawColor,
+                Projectile.rotation,
+                new Vector2(texture.Width / 2f, frameHeight / 2f),
+                Projectile.scale * 0.85f,
+                effects,
+                0f
+            );
             return false;
         }
     }

@@ -65,8 +65,10 @@ namespace SuperfluityTwo.Common.Players
 
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
-            if (projectile.noEnchantmentVisuals || projectile.noEnchantments) return;
-            if (HasFloe && projectile.DamageType.CountsAsClass(DamageClass.Ranged) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates))) {
+            if (projectile.noEnchantmentVisuals || projectile.noEnchantments || projectile.damage <= 0) return;
+            if (!projectile.friendly || projectile.hostile || !projectile.TryGetOwner(out Player owner) || owner.heldProj == projectile.whoAmI) return;
+            if (HasFloe && projectile.DamageType.CountsAsClass(DamageClass.Ranged) && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
+            {
                 int num = Dust.NewDust(boxPosition, boxWidth, boxHeight, DustID.IceTorch, projectile.velocity.X * 0.2f + (float)(projectile.direction * 3), projectile.velocity.Y * 0.2f, 100, default(Color), 2f);
                 Main.dust[num].noGravity = true;
                 Main.dust[num].velocity *= 0.7f;

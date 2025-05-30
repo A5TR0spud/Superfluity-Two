@@ -4,11 +4,15 @@
 
 ### 0.28.0 Additions
 
-- ~~Added Magpie, a post-1-mech ranged gun~~
+- Added Magpie, a post-twins ranged gun
 
 ### 0.28.0 Changes
 
 - Updated reticle visual for Super Sniper
+
+### 0.28.0 Fixes
+
+- Fixed Floe Crystal dust applying to projectiles that don't do damage
 
 ## 0.27.0
 
