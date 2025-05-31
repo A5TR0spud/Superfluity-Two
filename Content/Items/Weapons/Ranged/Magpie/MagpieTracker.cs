@@ -22,6 +22,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
         public ref float HostMagpieIndex => ref Projectile.ai[0];
         public ref float FrameCounter => ref Projectile.ai[1];
         public static List<int> trackedNPCs = [];
+        public ref float NewLockCooldown => ref Projectile.localAI[0];
+        const int LOCK_COOLDOWN = 6;
 
         public override void SetStaticDefaults()
         {
@@ -56,11 +58,12 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
             if (Main.myPlayer == Projectile.owner)
             {
                 trackedNPCs = [];
+                NewLockCooldown = 0;
             }
-            else
+            /*else
             {
                 Projectile.Opacity = 0;
-            }
+            }*/
         }
 
         public override void AI()
@@ -113,7 +116,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 bool flag = new Rectangle((int)Projectile.TopLeft.X, (int)Projectile.TopLeft.Y, Projectile.width, Projectile.height).Contains((int)target.Center.X, (int)target.Center.Y);
                 if (target.CanBeChasedBy(Projectile))
                 {
-                    if (flag && !trackedNPCs.Contains(npcIterate))
+                    if (flag && !trackedNPCs.Contains(npcIterate) && NewLockCooldown <= 0)
                     {
                         trackedNPCs.Add(npcIterate);
                         Projectile.NewProjectile(
@@ -128,6 +131,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                             ai1: 0,
                             ai2: npcIterate
                         );
+                        NewLockCooldown = LOCK_COOLDOWN;
                     }
                 }
                 if (!flag || !target.CanBeChasedBy(Projectile))
@@ -135,6 +139,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                     trackedNPCs.Remove(npcIterate);
                 }
             }
+            NewLockCooldown--;
         }
 
         public override bool? CanHitNPC(NPC target)

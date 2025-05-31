@@ -46,11 +46,13 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
         public override void OnSpawn(IEntitySource source)
         {
-            FireTimer = 0;
-            if (Main.myPlayer != Projectile.owner)
+            Player owner = Main.player[Projectile.owner];
+            int time = (int)(owner.HeldItem.useTime / owner.GetWeaponAttackSpeed(owner.HeldItem));
+            FireTimer = time;
+            /*if (Main.myPlayer != Projectile.owner)
             {
                 Projectile.Opacity = 0;
-            }
+            }*/
         }
 
         /*public override void OnKill(int timeLeft)
@@ -101,7 +103,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 Projectile.height = target.height;
                 Projectile.Center = target.Center;
             }
-            int time = (int)(owner.HeldItem.useTime / owner.GetWeaponAttackSpeed(owner.HeldItem));
+            int time = (int)(owner.HeldItem.useTime * (0.75f + 0.25f * owner.ownedProjectileCounts[Type]));
+            time = (int)(time / owner.GetWeaponAttackSpeed(owner.HeldItem));
             if (FireTimer >= time)
             {
                 if (!owner.PickAmmo(owner.HeldItem, out int proj, out float speed, out int dmg, out float kB, out int ammoItemID))
@@ -113,13 +116,14 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 {
                     if (Main.myPlayer == Projectile.owner)
                     {
-                        //float dist = target.Center.Distance(Projectile.Center);
-                        //Vector2 aimCompensation = dist * target.velocity / speed;
+                        float dist = Projectile.Center.Distance(target.Center) * 16;
+                        float vel = target.velocity.Length() * 16;
+                        Vector2 aimCompensation = vel * target.velocity.SafeNormalize(Vector2.Zero) * 16 * dist;
                         //int extraUpdates = Main.projectile
                         Projectile.NewProjectile(
                             owner.GetSource_FromThis(),
                             owner.Center,
-                            owner.Center.DirectionTo(target.Center) * speed,
+                            owner.Center.DirectionTo(target.Center + aimCompensation) * speed,
                             proj,
                             dmg,
                             kB,

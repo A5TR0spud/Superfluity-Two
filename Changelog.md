@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.28.1
+
+### 0.28.1 Changes
+
+- ~~Magpie's aim now corrects for movement~~
+- Magpie attacks slower (relatively) the more targets there are
+- Magpie now has a cooldown for obtaining new locks (10 locks per second)
+- Magpie's damage has been increased
+
+### 0.28.1 Fixes
+
+- ~~Actually fixed Floe Crystal dusts~~
+- ~~Fixed a rendering bug related to Magpie's reticle and locks~~
+
 ## 0.28.0
 
 ### 0.28.0 Additions
