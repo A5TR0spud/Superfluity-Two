@@ -22,8 +22,9 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
         public override string Texture => $"{nameof(SuperfluityTwo)}/Content/Items/Weapons/Ranged/Magpie/Magpie";
 
-        ref float useTimer => ref Projectile.ai[0];
-        ref float FrameCounter => ref Projectile.ai[1];
+        ref float FrameCounter => ref Projectile.ai[0];
+        public Vector2 overrideAim = Vector2.Zero;
+        public bool overrideAimBool = false;
 
         public override void Load()
         {
@@ -36,7 +37,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
             ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
         }
-        
+
         public override void SetDefaults()
         {
             Projectile.width = 18;
@@ -51,6 +52,11 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
             Projectile.netImportant = true;
         }
 
+        public override void OnSpawn(IEntitySource source)
+        {
+            overrideAimBool = false;
+        }
+
         public override bool? CanDamage()
         {
             return false;
@@ -59,11 +65,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
         public override bool ShouldUpdatePosition()
         {
             return false;
-        }
-
-        public override void OnSpawn(IEntitySource source)
-        {
-            ResetUseTimer();
         }
 
         public override void AI()
@@ -103,7 +104,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                     player.GetSource_FromThis(),
                     Main.MouseWorld,
                     Vector2.Zero,
-                    ModContent.ProjectileType<MagpieTracker>(),
+                    ModContent.ProjectileType<MagpieReticle>(),
                     Projectile.damage,
                     Projectile.knockBack,
                     player.whoAmI,
@@ -111,24 +112,17 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 );
                 Projectile.netUpdate = true;
             }
-            useTimer--;
         }
-
-        private void ResetUseTimer()
-        {
-            useTimer = GetDefaultUseTimer();
-        }
-
-        private int GetDefaultUseTimer()
-        {
-            Player player = Main.player[Projectile.owner];
-            return (int)(player.HeldItem.useTime / player.GetWeaponAttackSpeed(player.HeldItem));
-        }
-
 
         private void UpdateAim(Vector2 source, float speed)
         {
+            Player player = Main.player[Projectile.owner];
             Vector2 aim = Vector2.Normalize(Main.MouseWorld - source);
+            overrideAimBool = overrideAimBool && player.ownedProjectileCounts[ModContent.ProjectileType<MagpieLock>()] > 0;
+            if (overrideAimBool)
+            {
+                aim = overrideAim;
+            }
             if (aim.HasNaNs())
             {
                 aim = Projectile.velocity.SafeNormalize(-Vector2.UnitY);

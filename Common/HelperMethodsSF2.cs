@@ -113,7 +113,8 @@ public class HelperMethodsSF2
         return flag;
     }
 
-    public static int GetRocketShoot(Item rocketAmmo) {
+    public static int GetRocketShoot(Item rocketAmmo)
+    {
         //int1: weapon itemID
         //int2: ammo   itemID
         //int3: ammo   projectileID
@@ -148,5 +149,20 @@ public class HelperMethodsSF2
     public static bool IsOther(int ammoID)
     {
         return !IsArrow(ammoID) && !IsBullet(ammoID) && !IsRocket(ammoID) && ammoID != AmmoID.None;
+    }
+
+    public static bool IsProjectileVisuallyEnchantable(Projectile proj)
+    {
+        bool flag1 = proj.noEnchantments || proj.noEnchantmentVisuals;
+        bool flag2 = CanProjectileDealDamage(proj);
+        return !flag1 && flag2;
+    }
+
+    public static bool CanProjectileDealDamage(Projectile proj)
+    {
+        bool flag1 = proj.friendly && proj.damage > 0;
+        bool flag2 = proj.ModProjectile == null || (proj.ModProjectile.CanDamage() ?? true);
+        bool flag3 = proj.active;
+        return flag3 && flag1 && flag2;
     }
 }

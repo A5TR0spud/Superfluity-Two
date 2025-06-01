@@ -63,7 +63,7 @@ namespace SuperfluityTwo.Common.Players
 
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
-            if (projectile.noEnchantmentVisuals || projectile.noEnchantments) return;
+            if (!HelperMethodsSF2.IsProjectileVisuallyEnchantable(projectile)) return;
             if (hasShadowRite && projectile.DamageType.CountsAsClass(DamageClass.Summon) && projectile.friendly && !projectile.hostile && Main.rand.NextBool(2 * (1 + projectile.extraUpdates)))
             {
                 int num = Dust.NewDust(

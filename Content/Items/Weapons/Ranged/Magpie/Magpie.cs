@@ -14,7 +14,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 	{
 		public override void SetDefaults()
 		{
-			Item.damage = 65;
+			Item.damage = 60;
 			Item.width = 26;
 			Item.height = 18;
 			Item.useStyle = ItemUseStyleID.Shoot;

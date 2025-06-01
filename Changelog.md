@@ -4,15 +4,17 @@
 
 ### 0.28.1 Changes
 
-- ~~Magpie's aim now corrects for movement~~
+- Magpie's aim now corrects for movement
+- Magpie now has a spread of 1 degree
 - Magpie attacks slower (relatively) the more targets there are
 - Magpie now has a cooldown for obtaining new locks (10 locks per second)
 - Magpie's damage has been increased
+- Magpie now points in the direction it's firing
 
 ### 0.28.1 Fixes
 
-- ~~Actually fixed Floe Crystal dusts~~
-- ~~Fixed a rendering bug related to Magpie's reticle and locks~~
+- Actually fixed Floe Crystal dusts, +Shadow Rite and Vile Stone
+- Fixed a rendering bug related to Magpie's reticle and locks
 
 ## 0.28.0
 

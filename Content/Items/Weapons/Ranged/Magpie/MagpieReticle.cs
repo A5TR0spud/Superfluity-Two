@@ -16,7 +16,7 @@ using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 {
-    public class MagpieTracker : ModProjectile
+    public class MagpieReticle : ModProjectile
     {
         public override string Texture => $"{nameof(SuperfluityTwo)}/Content/Items/Weapons/Ranged/Magpie/MagpieLock";
         public ref float HostMagpieIndex => ref Projectile.ai[0];
@@ -71,7 +71,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
             Player player = Main.player[Projectile.owner];
 
             Projectile hostMagpie = Main.projectile[(int)HostMagpieIndex];
-            if (Projectile.type != ModContent.ProjectileType<MagpieTracker>() || !hostMagpie.active || hostMagpie.type != ModContent.ProjectileType<MagpieHoldout>())
+            if (Projectile.type != ModContent.ProjectileType<MagpieReticle>() || !hostMagpie.active || hostMagpie.type != ModContent.ProjectileType<MagpieHoldout>())
             {
                 Projectile.Kill();
                 return;
@@ -166,12 +166,14 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
             Color drawColor = Projectile.GetAlpha(lightColor);
 
-            for (int i = 0; i < Projectile.height / 6; i++)
+            int heightLeftToDraw = Projectile.height - 12;
+            while (heightLeftToDraw > 0)
             {
+                int heightToChop = Math.Min(heightLeftToDraw, 6);
                 Main.EntitySpriteDraw(
                     texture,
-                    (Projectile.TopLeft + new Vector2(0, 6 * i) - Main.screenPosition).Floor() + orig,
-                    new Rectangle(0, 8, 6, 6),
+                    (Projectile.TopLeft + new Vector2(0, Projectile.height - heightLeftToDraw - 6) - Main.screenPosition).Floor() + orig,
+                    new Rectangle(0, 8, 6, heightToChop),
                     drawColor,
                     Projectile.rotation,
                     orig,
@@ -181,8 +183,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 );
                 Main.EntitySpriteDraw(
                     texture,
-                    (Projectile.TopRight + new Vector2(0, 6 * i) - Main.screenPosition + new Vector2(-6, 0)).Floor() + orig,
-                    new Rectangle(40, 8, 6, 6),
+                    (Projectile.TopRight + new Vector2(0, Projectile.height - heightLeftToDraw - 6) - Main.screenPosition + new Vector2(-6, 0)).Floor() + orig,
+                    new Rectangle(40, 8, 6, heightToChop),
                     drawColor,
                     Projectile.rotation,
                     orig,
@@ -190,14 +192,26 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                     SpriteEffects.None,
                     0f
                 );
+                heightLeftToDraw -= heightToChop;
             }
 
-            for (int i = 0; i < Projectile.width / 18 + 1; i++)
+            int widthLeftToDraw = Projectile.width / 3 - 12;
+            while (widthLeftToDraw > 0)
             {
+                int widthToChop = Math.Min(widthLeftToDraw, 6);
+                if (widthLeftToDraw == 7)
+                {
+                    widthToChop--;
+                }
                 Main.EntitySpriteDraw(
                     texture,
-                    (Projectile.Top - new Vector2(Projectile.width / 6 + 6 * i, 0) - Main.screenPosition).Floor() + orig,
-                    new Rectangle(i == 0 ? 16 : 8, 0, 6, 6),
+                    (Projectile.TopLeft + new Vector2(Projectile.width / 3 - widthLeftToDraw - 6, 0) - Main.screenPosition).Floor() + orig,
+                    new Rectangle(
+                        x: widthLeftToDraw <= 6 ? 16 + 6 - widthToChop : 8,
+                        y: 0,
+                        width: widthToChop,
+                        height: 6
+                    ),
                     drawColor,
                     Projectile.rotation,
                     orig,
@@ -207,20 +221,30 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 );
                 Main.EntitySpriteDraw(
                     texture,
-                    (Projectile.Top + new Vector2(Projectile.width / 6 + 6 * i, 0) - Main.screenPosition + new Vector2(-6, 0)).Floor() + orig,
-                    new Rectangle(i == 0 ? 24 : 32, 0, 6, 6),
+                    (Projectile.TopRight + new Vector2(-Projectile.width / 3 + widthLeftToDraw + 6 - widthToChop, 0) - Main.screenPosition).Floor() + orig,
+                    new Rectangle(
+                        x: widthLeftToDraw <= 6 ? 24 : 32,
+                        y: 0,
+                        width: widthToChop,
+                        height: 6
+                    ),
                     drawColor,
                     Projectile.rotation,
                     orig,
                     1,
                     SpriteEffects.None,
                     0f
+                );
 
-                );
                 Main.EntitySpriteDraw(
                     texture,
-                    (Projectile.Bottom - new Vector2(Projectile.width / 6 + 6 * i, 0) - Main.screenPosition + new Vector2(0, -6)).Floor() + orig,
-                    new Rectangle(i == 0 ? 16 : 8, 16, 6, 6),
+                    (Projectile.BottomLeft + new Vector2(Projectile.width / 3 - widthLeftToDraw - 6, -6) - Main.screenPosition).Floor() + orig,
+                    new Rectangle(
+                        x: widthLeftToDraw <= 6 ? 16 + 6 - widthToChop : 8,
+                        y: 16,
+                        width: widthToChop,
+                        height: 6
+                    ),
                     drawColor,
                     Projectile.rotation,
                     orig,
@@ -230,8 +254,13 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 );
                 Main.EntitySpriteDraw(
                     texture,
-                    (Projectile.Bottom + new Vector2(Projectile.width / 6 + 6 * i, 0) - Main.screenPosition + new Vector2(-6, -6)).Floor() + orig,
-                    new Rectangle(i == 0 ? 24 : 32, 16, 6, 6),
+                    (Projectile.BottomRight + new Vector2(-Projectile.width / 3 + widthLeftToDraw + 6 - widthToChop, -6) - Main.screenPosition).Floor() + orig,
+                    new Rectangle(
+                        x: widthLeftToDraw <= 6 ? 24 : 32,
+                        y: 16,
+                        width: widthToChop,
+                        height: 6
+                    ),
                     drawColor,
                     Projectile.rotation,
                     orig,
@@ -239,6 +268,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                     SpriteEffects.None,
                     0f
                 );
+
+                widthLeftToDraw -= widthToChop;
             }
 
             Main.EntitySpriteDraw(

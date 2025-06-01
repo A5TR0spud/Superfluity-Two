@@ -493,7 +493,7 @@ Projectiles: {
 	SuperSniperHoldout.DisplayName: Super Sniper Holdout
 	SuperSniperReticle.DisplayName: Super Sniper Reticle
 	MagpieHoldout.DisplayName: Magpie Holdout
-	MagpieTracker.DisplayName: Magpie Tracker
+	MagpieReticle.DisplayName: Magpie Reticle
 	MagpieLock.DisplayName: Magpie Lock
 }
 
