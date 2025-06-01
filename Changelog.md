@@ -1,5 +1,11 @@
 # Changelog
 
+## TODO
+
+- Magpie: losing locks no longer puts pressure on magpie to fire early
+- ? Magpie: reverted attack speed per lock nerf
+- Magpie: nerfed damage
+
 ## 0.28.1
 
 ### 0.28.1 Changes
