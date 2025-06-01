@@ -2,9 +2,27 @@
 
 ## TODO
 
-- Magpie: losing locks no longer puts pressure on magpie to fire early
+### Additions
+
+- Add Azimuth: magic zenith:
+  - Fires last prism-esque laser
+  - Fires homing swirls
+
+### Changes
+
 - ? Magpie: reverted attack speed per lock nerf
 - Magpie: nerfed damage
+- Meridian: laser is no longer constant, but is much stronger
+- Meridian: vortices no longer aim at or home in on the cursor
+  - instead move towards enemies while firing in a constant direction
+- Meridian: buff single target, nerf group attack (but keep it clean-up worthy)
+- Meridian: improved "arrow" homing the faster it is going
+- Meridian: "arrows" will no longer home for the first 5 ticks
+
+### Fixes
+
+- Magpie: losing locks no longer puts pressure on magpie to fire early
+- Meridian: homing "arrows" no longer target enemies they won't be able to aim at in time
 
 ## 0.28.1
 
