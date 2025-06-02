@@ -1,6 +1,10 @@
 using System;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -164,5 +168,218 @@ public class HelperMethodsSF2
         bool flag2 = proj.ModProjectile == null || (proj.ModProjectile.CanDamage() ?? true);
         bool flag3 = proj.active;
         return flag3 && flag1 && flag2;
+    }
+
+    /// <summary>
+    /// Performs a raycast in the world to find collisions with tiles.
+    /// Assumes a "width" of zero.
+    /// Also moves coords into world bounds if they are out of bounds.
+    /// </summary>
+    /// <param name="startPos">The start position in world coordinates (16 units = 1 tile).</param>
+    /// <param name="endPos">The end position in world coordinates (16 units = 1 tile).</param>
+    /// <returns>True if there is no tile in the way; <br/>
+    /// False if there is a tile in the way.</returns>
+    public static bool Raycast(Vector2 startPos, Vector2 endPos, int stepSize = 8, bool debug = false)
+    {
+        if (CoordsOutOfBounds(startPos))
+        {
+            Vector2 dir = startPos.DirectionFrom(endPos);
+            do
+            {
+                startPos += dir;
+            } while (CoordsOutOfBounds(startPos));
+        }
+        if (CoordsOutOfBounds(endPos))
+        {
+            Vector2 dir = startPos.DirectionTo(endPos);
+            do
+            {
+                endPos += dir;
+            } while (CoordsOutOfBounds(endPos));
+        }
+
+        int totalDistance = (int)(startPos - endPos).Length();
+        int distanceLeft = totalDistance;
+        int nextToChop = -1;
+        while (distanceLeft > 0)
+        {
+            int distanceToChop = Math.Min(nextToChop <= 0 ? stepSize : nextToChop, distanceLeft);
+            nextToChop = -1;
+            float distanceRatio = 1 - (float)distanceLeft / totalDistance;
+            distanceLeft -= distanceToChop;
+            float x = MathHelper.Lerp(startPos.X, endPos.X, distanceRatio);
+            float y = MathHelper.Lerp(startPos.Y, endPos.Y, distanceRatio);
+            Tile toCheck = Main.tile[(int)(x / 16), (int)(y / 16)];
+            if (debug)
+            {
+                Dust.NewDustPerfect(
+                    new Vector2(x, y),
+                    DustID.GoldFlame,
+                    Vector2.Zero
+                ).noGravity = true;
+            }
+            if (toCheck == null)
+            {
+                continue;
+            }
+            if (!toCheck.HasUnactuatedTile)
+            {
+                continue;
+            }
+            if (!Main.tileSolid[toCheck.TileType] || Main.tileSolidTop[toCheck.TileType])
+            {
+                continue;
+            }
+            bool solidTop = toCheck.TopSlope;
+            bool solidRight = toCheck.RightSlope;
+            bool solidLeft = toCheck.LeftSlope;
+            bool solidBottom = toCheck.BottomSlope;
+            bool halfBlock = toCheck.IsHalfBlock;
+            const int SLOPE_THRESHOLD = 1;
+            if (halfBlock)
+            {
+                if (16 - y % 16 < 8)
+                {
+                    if (debug)
+                    {
+                        Dust.NewDustPerfect(
+                            endPos,
+                            DustID.Clentaminator_Red,
+                            Vector2.Zero
+                        ).noGravity = true;
+                    }
+                    return false;
+                }
+                nextToChop = 2;
+            }
+            else if (solidTop && solidRight)
+            {
+                if ((x % 16) + (16 - y % 16) <= 16 + SLOPE_THRESHOLD)
+                {
+                    if (debug)
+                    {
+                        Dust.NewDustPerfect(
+                            endPos,
+                            DustID.Clentaminator_Red,
+                            Vector2.Zero
+                        ).noGravity = true;
+                    }
+                    return false;
+                }
+                if (distanceToChop > 2)
+                    distanceLeft += distanceToChop - 2;
+                nextToChop = 2;
+            }
+            else if (solidTop && solidLeft)
+            {
+                if ((x % 16) - (16 - y % 16) >= 0 - SLOPE_THRESHOLD)
+                {
+                    if (debug)
+                    {
+                        Dust.NewDustPerfect(
+                            endPos,
+                            DustID.Clentaminator_Red,
+                            Vector2.Zero
+                        ).noGravity = true;
+                    }
+                    return false;
+                }
+                if (distanceToChop > 2)
+                    distanceLeft += distanceToChop - 2;
+                nextToChop = 2;
+            }
+            else if (solidBottom && solidLeft)
+            {
+                if ((x % 16) + (16 - y % 16) >= 16 - SLOPE_THRESHOLD)
+                {
+                    if (debug)
+                    {
+                        Dust.NewDustPerfect(
+                            endPos,
+                            DustID.Clentaminator_Red,
+                            Vector2.Zero
+                        ).noGravity = true;
+                    }
+                    return false;
+                }
+                if (distanceToChop > 2)
+                    distanceLeft += distanceToChop - 2;
+                nextToChop = 2;
+            }
+            else if (solidBottom && solidRight)
+            {
+                if ((x % 16) - (16 - y % 16) <= 0 + SLOPE_THRESHOLD)
+                {
+                    if (debug)
+                    {
+                        Dust.NewDustPerfect(
+                            endPos,
+                            DustID.Clentaminator_Red,
+                            Vector2.Zero
+                        ).noGravity = true;
+                    }
+                    return false;
+                }
+                if (distanceToChop > 2)
+                    distanceLeft += distanceToChop - 2;
+                nextToChop = 2;
+            }
+            else
+            {
+                if (debug)
+                {
+                    Dust.NewDustPerfect(
+                        endPos,
+                        DustID.Clentaminator_Red,
+                        Vector2.Zero
+                    ).noGravity = true;
+                }
+                return false;
+            }
+        }
+        if (debug)
+        {
+            Dust.NewDustPerfect(
+                endPos,
+                DustID.Clentaminator_Green,
+                Vector2.Zero
+            ).noGravity = true;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// More reliable than Raycast, but 12x as expensive.
+    /// Performs a raycast in the world to find collisions with tiles.
+    /// Assumes a "width" of four.
+    /// Also moves coords into world bounds if they are out of bounds.
+    /// </summary>
+    /// <param name="startPos">The start position in world coordinates (16 units = 1 tile).</param>
+    /// <param name="endPos">The end position in world coordinates (16 units = 1 tile).</param>
+    /// <returns>True if there is no tile in the way; <br/>
+    /// False if there is a tile in the way.</returns>
+    public static bool RaycastReliable(Vector2 startPos, Vector2 endPos, bool debug = false)
+    {
+        Vector2 dir = startPos.DirectionTo(endPos);
+        Vector2 lOff = 2 * dir.RotatedBy(MathHelper.PiOver2);
+        Vector2 rOff = 2 * dir.RotatedBy(-MathHelper.PiOver2);
+        bool flag1 = Raycast(startPos + lOff, endPos + lOff, 2, debug);
+        bool flag2 = Raycast(startPos, endPos, 2, debug);
+        bool flag3 = Raycast(startPos + rOff, endPos + rOff, 2, debug);
+        bool toRet = flag1 && flag2 && flag3;
+        if (debug)
+        {
+            Dust.NewDustPerfect(
+                endPos,
+                toRet ? DustID.Confetti_Green : DustID.Clentaminator_Red,
+                Vector2.Zero
+            ).noGravity = true;
+        }
+        return toRet;
+    }
+    public static bool CoordsOutOfBounds(Vector2 coords) => CoordsOutOfBounds(coords.X, coords.Y);
+    public static bool CoordsOutOfBounds(float x, float y)
+    {
+        return x < Main.leftWorld || x > Main.rightWorld || y < Main.topWorld || y > Main.bottomWorld;
     }
 }

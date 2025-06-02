@@ -408,6 +408,15 @@ Items: {
 			'A glorious bit of kit'
 			'''
 	}
+
+	Raycaster: {
+		DisplayName: Raycaster
+		Tooltip:
+			'''
+			Casts rays, can you believe it?
+			[i:WireKite] [c/AAAAFF:DEBUG]
+			'''
+	}
 }
 
 Buffs: {

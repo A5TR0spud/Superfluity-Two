@@ -12,15 +12,16 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 {
 	public class Magpie : ModItem
 	{
+		public const int USE_TIME = 14;
 		public override void SetDefaults()
 		{
-			Item.damage = 60;
+			Item.damage = 50;
 			Item.width = 26;
 			Item.height = 18;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shootSpeed = 30f;
-			Item.useAnimation = 14;
-			Item.useTime = 14;
+			Item.useAnimation = USE_TIME;
+			Item.useTime = USE_TIME;
 			Item.reuseDelay = 12;
 			Item.noMelee = true;
 			Item.crit = 0;

@@ -46,9 +46,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
         public override void OnSpawn(IEntitySource source)
         {
-            Player owner = Main.player[Projectile.owner];
-            int time = (int)(owner.HeldItem.useTime / owner.GetWeaponAttackSpeed(owner.HeldItem));
-            FireTimer = time;
+            FireTimer = Magpie.USE_TIME;
             /*if (Main.myPlayer != Projectile.owner)
             {
                 Projectile.Opacity = 0;
@@ -84,7 +82,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                     return;
                 }
             }
-            FireTimer++;
         }
 
         private void UpdateAim()
@@ -103,18 +100,126 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 Projectile.height = target.height;
                 Projectile.Center = target.Center;
             }
-            int time = (int)(owner.HeldItem.useTime * (0.75f + 0.25f * owner.ownedProjectileCounts[Type]) / owner.GetWeaponAttackSpeed(owner.HeldItem));
-            if (FireTimer >= time)
+            if (FireTimer >= Magpie.USE_TIME)
             {
                 if (!owner.PickAmmo(owner.HeldItem, out int proj, out float speed, out int dmg, out float kB, out int ammoItemID))
                 {
                     Projectile.Kill();
                     return;
                 }
-                if (Collision.CanHitLine(owner.Center, 2, 2, target.Center, 2, 2))
+                ///#TODO: Seriously revamp this to scan basically everything periodically and save the best scan result
+                Vector2 aimpointCenter      = target.Center;
+                Vector2 aimpointTop         = target.Top         + new Vector2(0, 2);
+                Vector2 aimpointTopRight    = target.TopRight    + new Vector2(-2, 2);
+                Vector2 aimpointRight       = target.Right       + new Vector2(-2, 0);
+                Vector2 aimpointBottomRight = target.BottomRight + new Vector2(-2, -2);
+                Vector2 aimpointBottom      = target.Bottom      + new Vector2(0, -2);
+                Vector2 aimpointBottomLeft  = target.BottomLeft  + new Vector2(2, -2);
+                Vector2 aimpointLeft        = target.Left        + new Vector2(2, 0);
+                Vector2 aimpointTopLeft     = target.TopLeft     + new Vector2(2, 2);
+
+                Vector2 randomSamplePoint1 = new Vector2(
+                    MathHelper.Lerp(aimpointTopLeft.X, aimpointBottomRight.X, Main.rand.NextFloat()),
+                    MathHelper.Lerp(aimpointTopLeft.Y, aimpointBottomRight.Y, Main.rand.NextFloat())
+                );
+                Vector2 randomSamplePoint2 = new Vector2(
+                    MathHelper.Lerp(aimpointTopLeft.X, aimpointBottomRight.X, Main.rand.NextFloat()),
+                    MathHelper.Lerp(aimpointTopLeft.Y, aimpointBottomRight.Y, Main.rand.NextFloat())
+                );
+                Vector2 randomSamplePoint3 = new Vector2(
+                    MathHelper.Lerp(aimpointTopLeft.X, aimpointBottomRight.X, Main.rand.NextFloat()),
+                    MathHelper.Lerp(aimpointTopLeft.Y, aimpointBottomRight.Y, Main.rand.NextFloat())
+                );
+
+                bool canHitCenter = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointCenter);
+                bool canHitTopLeft = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointTopLeft);
+                bool canHitTopRight = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointTopRight);
+                bool canHitBottomLeft = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointBottomLeft);
+                bool canHitBottomRight = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointBottomRight);
+                bool canHitTop = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointTop);
+                bool canHitLeft = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointLeft);
+                bool canHitRight = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointRight);
+                bool canHitBottom = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointBottom);
+
+                bool canHitRandom1 = HelperMethodsSF2.RaycastReliable(owner.Center, randomSamplePoint1);
+                bool canHitRandom2 = HelperMethodsSF2.RaycastReliable(owner.Center, randomSamplePoint2);
+                bool canHitRandom3 = HelperMethodsSF2.RaycastReliable(owner.Center, randomSamplePoint3);
+
+                bool tryToFire =
+                    canHitCenter ||
+                    canHitTopLeft ||
+                    canHitTopRight ||
+                    canHitBottomLeft ||
+                    canHitBottomRight ||
+                    canHitTop ||
+                    canHitLeft ||
+                    canHitRight ||
+                    canHitBottom ||
+                    canHitRandom1 ||
+                    canHitRandom2 ||
+                    canHitRandom3
+                ;
+                if (tryToFire)
                 {
+                    Vector2 targetPos = aimpointCenter;
+                    if (canHitRandom1 && Main.rand.NextBool())
+                    {
+                        targetPos = randomSamplePoint1;
+                    }
+                    else if (canHitCenter)
+                    {
+                        targetPos = aimpointCenter;
+                    }
+                    else if (canHitRandom2 && Main.rand.NextBool())
+                    {
+                        targetPos = randomSamplePoint2;
+                    }
+                    else if (canHitTop)
+                    {
+                        targetPos = aimpointTop;
+                    }
+                    else if (canHitRight)
+                    {
+                        targetPos = aimpointRight;
+                    }
+                    else if (canHitLeft)
+                    {
+                        targetPos = aimpointLeft;
+                    }
+                    else if (canHitBottom)
+                    {
+                        targetPos = aimpointBottom;
+                    }
+                    else if (canHitTopRight)
+                    {
+                        targetPos = aimpointTopRight;
+                    }
+                    else if (canHitBottomLeft)
+                    {
+                        targetPos = aimpointBottomLeft;
+                    }
+                    else if (canHitTopLeft)
+                    {
+                        targetPos = aimpointTopLeft;
+                    }
+                    else if (canHitBottomRight)
+                    {
+                        targetPos = aimpointBottomRight;
+                    }
+                    else if (canHitRandom1)
+                    {
+                        targetPos = randomSamplePoint1;
+                    }
+                    else if (canHitRandom2)
+                    {
+                        targetPos = randomSamplePoint2;
+                    }
+                    else if (canHitRandom3)
+                    {
+                        targetPos = randomSamplePoint3;
+                    }
                     MagpieHoldout hostMagpie = (MagpieHoldout)Main.projectile[(int)HostMagpieIndex].ModProjectile;
-                    float dist = owner.Center.Distance(target.Center);
+                    float dist = owner.Center.Distance(targetPos);
                     Vector2 aimCompensation = target.velocity * dist / speed;
                     if (Main.myPlayer == Projectile.owner)
                     {
@@ -122,19 +227,20 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                         Projectile.NewProjectile(
                             owner.GetSource_FromThis(),
                             owner.Center,
-                            owner.Center.DirectionTo(target.Center + aimCompensation).RotatedByRandom(MathHelper.ToRadians(0.5f)) * speed,
+                            owner.Center.DirectionTo(targetPos + aimCompensation).RotatedByRandom(MathHelper.ToRadians(0.5f)) * speed,
                             proj,
                             dmg,
                             kB,
                             Projectile.owner
                         );
                     }
-                    hostMagpie.overrideAim = owner.Center.DirectionTo(target.Center + aimCompensation);
-                    hostMagpie.overrideAimBool = true;
+                    hostMagpie.overrideAim = owner.Center.DirectionTo(targetPos + aimCompensation);
+                    hostMagpie.overrideAimTime = Magpie.USE_TIME;
                     SoundEngine.PlaySound(SoundID.Item41, owner.Center);
                 }
-                FireTimer -= time;
+                FireTimer -= Magpie.USE_TIME;
             }
+            FireTimer += owner.GetWeaponAttackSpeed(owner.HeldItem) / (0.75f + 0.25f * owner.ownedProjectileCounts[Type]);
         }
 
         public override bool? CanHitNPC(NPC target)

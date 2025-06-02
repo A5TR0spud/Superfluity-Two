@@ -114,7 +114,9 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
             {
                 NPC target = Main.npc[npcIterate];
                 bool flag = new Rectangle((int)Projectile.TopLeft.X, (int)Projectile.TopLeft.Y, Projectile.width, Projectile.height).Contains((int)target.Center.X, (int)target.Center.Y);
-                if (target.CanBeChasedBy(Projectile))
+                bool canTarget = target.CanBeChasedBy(Projectile) || (target.active && target.damage > 0 && !target.friendly && !target.dontTakeDamage);
+                if (canTarget)
+                // could be useful: target.aiStyle == NPCAIStyleID.Spell
                 {
                     if (flag && !trackedNPCs.Contains(npcIterate) && NewLockCooldown <= 0)
                     {
@@ -134,7 +136,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                         NewLockCooldown = LOCK_COOLDOWN;
                     }
                 }
-                if (!flag || !target.CanBeChasedBy(Projectile))
+                if (!flag || !canTarget)
                 {
                     trackedNPCs.Remove(npcIterate);
                 }

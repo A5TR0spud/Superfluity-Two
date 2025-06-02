@@ -24,7 +24,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
         ref float FrameCounter => ref Projectile.ai[0];
         public Vector2 overrideAim = Vector2.Zero;
-        public bool overrideAimBool = false;
+        public int overrideAimTime = 0;
 
         public override void Load()
         {
@@ -54,7 +54,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
         public override void OnSpawn(IEntitySource source)
         {
-            overrideAimBool = false;
+            overrideAimTime = 0;
         }
 
         public override bool? CanDamage()
@@ -116,10 +116,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 
         private void UpdateAim(Vector2 source, float speed)
         {
-            Player player = Main.player[Projectile.owner];
             Vector2 aim = Vector2.Normalize(Main.MouseWorld - source);
-            overrideAimBool = overrideAimBool && player.ownedProjectileCounts[ModContent.ProjectileType<MagpieLock>()] > 0;
-            if (overrideAimBool)
+            if (overrideAimTime > 0)
             {
                 aim = overrideAim;
             }
@@ -135,6 +133,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                 Projectile.netUpdate = true;
             }
             Projectile.velocity = aim;
+            overrideAimTime--;
         }
 
         private void UpdatePlayerVisuals(Player player, Vector2 playerHandPos)

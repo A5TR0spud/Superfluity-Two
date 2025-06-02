@@ -10,19 +10,36 @@
 
 ### Changes
 
-- ? Magpie: reverted attack speed per lock nerf
-- Magpie: nerfed damage
 - Meridian: laser is no longer constant, but is much stronger
 - Meridian: vortices no longer aim at or home in on the cursor
   - instead move towards enemies while firing in a constant direction
 - Meridian: buff single target, nerf group attack (but keep it clean-up worthy)
 - Meridian: improved "arrow" homing the faster it is going
 - Meridian: "arrows" will no longer home for the first 5 ticks
+- Magpie: NPCs are locked in order of proximity to cursor, rather than arbitrarily (by time)
 
 ### Fixes
 
-- Magpie: losing locks no longer puts pressure on magpie to fire early
 - Meridian: homing "arrows" no longer target enemies they won't be able to aim at in time
+
+### Internal Fixes/Changes
+
+- Move everything to folders/namespaces that make more sense
+- Magpie: switch to having either holdout + reticle or JUST holdout
+  - static int[] trackedNPCs;
+  - static int[Main.maxNPCs] trackedNPCFireTimers;
+
+## 0.28.2
+
+### 0.28.2 Changes
+
+- Magpie: reduced damage 60 -> 50
+- Relaxed Magpie targetting restrictions; can now target imp fireballs, Tim's spell, etc
+- Magpie now has a much more complicated line-of-sight check, so should fire more intelligently at enemies behind cover
+
+### 0.28.2 Fixes
+
+- Magpie: losing locks no longer puts pressure on magpie to fire early
 
 ## 0.28.1
 
