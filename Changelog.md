@@ -7,6 +7,7 @@
 - Add Azimuth: magic zenith:
   - Fires last prism-esque laser
   - Fires homing swirls
+- Tracer Round: bullet ammo. little damage. creates a reticle stuck to the npc. striking it deals 30 damage + turns the hit into a crit.
 
 ### Changes
 
