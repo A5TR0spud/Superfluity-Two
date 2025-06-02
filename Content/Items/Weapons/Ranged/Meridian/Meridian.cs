@@ -41,6 +41,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian
 			Item.noUseGraphic = true;
 			Item.channel = true;
 			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
+			ItemID.Sets.gunProj[Type] = true;
 			Item.useAmmo = AmmoID.Bullet;
 		}
 

@@ -32,8 +32,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.SuperSniper
 			Item.shoot = ModContent.ProjectileType<SuperSniperHoldout>();
 			Item.noUseGraphic = true;
 			Item.channel = true;
-			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 			Item.useAmmo = AmmoID.Bullet;
+			ItemID.Sets.gunProj[Type] = true;
 		}
 
 		public override void AddRecipes()

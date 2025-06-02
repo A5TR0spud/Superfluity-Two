@@ -34,13 +34,14 @@
 
 ### 0.28.2 Changes
 
-- Magpie: reduced damage 60 -> 50
-- Relaxed Magpie targetting restrictions; can now target imp fireballs, Tim's spell, etc
-- Magpie now has a much more complicated line-of-sight check, so should fire more intelligently at enemies behind cover
+- Magpie: reduced damage 60 -> 45
+- Relaxed Magpie targetting restrictions; can now target imp fireballs, goblin sorcery, etc
+- Magpie now has a much more complicated line-of-sight check, so should fire more intelligently at enemies behind partial cover
 
 ### 0.28.2 Fixes
 
 - Magpie: losing locks no longer puts pressure on magpie to fire early
+- Fixed Magpie and Super Sniper counting as specialist weapons
 
 ## 0.28.1
 

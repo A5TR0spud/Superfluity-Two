@@ -15,7 +15,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 		public const int USE_TIME = 14;
 		public override void SetDefaults()
 		{
-			Item.damage = 50;
+			Item.damage = 45;
 			Item.width = 26;
 			Item.height = 18;
 			Item.useStyle = ItemUseStyleID.Shoot;
@@ -33,8 +33,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
 			Item.shoot = ModContent.ProjectileType<MagpieHoldout>();
 			Item.noUseGraphic = true;
 			Item.channel = true;
-			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 			Item.useAmmo = AmmoID.Bullet;
+			ItemID.Sets.gunProj[Type] = true;
 		}
 
 		public override void AddRecipes()

@@ -108,116 +108,126 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                     return;
                 }
                 ///#TODO: Seriously revamp this to scan basically everything periodically and save the best scan result
-                Vector2 aimpointCenter      = target.Center;
-                Vector2 aimpointTop         = target.Top         + new Vector2(0, 2);
                 Vector2 aimpointTopRight    = target.TopRight    + new Vector2(-2, 2);
-                Vector2 aimpointRight       = target.Right       + new Vector2(-2, 0);
                 Vector2 aimpointBottomRight = target.BottomRight + new Vector2(-2, -2);
-                Vector2 aimpointBottom      = target.Bottom      + new Vector2(0, -2);
                 Vector2 aimpointBottomLeft  = target.BottomLeft  + new Vector2(2, -2);
-                Vector2 aimpointLeft        = target.Left        + new Vector2(2, 0);
                 Vector2 aimpointTopLeft     = target.TopLeft     + new Vector2(2, 2);
 
-                Vector2 randomSamplePoint1 = new Vector2(
-                    MathHelper.Lerp(aimpointTopLeft.X, aimpointBottomRight.X, Main.rand.NextFloat()),
-                    MathHelper.Lerp(aimpointTopLeft.Y, aimpointBottomRight.Y, Main.rand.NextFloat())
-                );
-                Vector2 randomSamplePoint2 = new Vector2(
-                    MathHelper.Lerp(aimpointTopLeft.X, aimpointBottomRight.X, Main.rand.NextFloat()),
-                    MathHelper.Lerp(aimpointTopLeft.Y, aimpointBottomRight.Y, Main.rand.NextFloat())
-                );
-                Vector2 randomSamplePoint3 = new Vector2(
-                    MathHelper.Lerp(aimpointTopLeft.X, aimpointBottomRight.X, Main.rand.NextFloat()),
-                    MathHelper.Lerp(aimpointTopLeft.Y, aimpointBottomRight.Y, Main.rand.NextFloat())
-                );
+                Vector2 aimpoint = target.Center;
 
-                bool canHitCenter = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointCenter);
-                bool canHitTopLeft = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointTopLeft);
-                bool canHitTopRight = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointTopRight);
-                bool canHitBottomLeft = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointBottomLeft);
-                bool canHitBottomRight = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointBottomRight);
-                bool canHitTop = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointTop);
-                bool canHitLeft = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointLeft);
-                bool canHitRight = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointRight);
-                bool canHitBottom = HelperMethodsSF2.RaycastReliable(owner.Center, aimpointBottom);
+                bool justFireMyGuy = new Rectangle((int)target.position.X, (int)target.position.Y, target.width, target.height).Contains((int)owner.Center.X, (int)owner.Center.Y);
+                List<Vector2> aimpoints = [];
+                bool tryToFire = justFireMyGuy;
+                if (!justFireMyGuy)
+                {
+                    const int AIMPOINT_DENSITY = 5;
+                    int lengthLeft;
+                    int pointsToAdd;
+                    // checkTop
+                    bool checkTop = owner.Center.Y < target.Top.Y;
+                    if (checkTop)
+                    {
+                        lengthLeft = target.width - 2 * AIMPOINT_DENSITY;
+                        pointsToAdd = Math.Max(lengthLeft / AIMPOINT_DENSITY, 0) + 1;
+                        aimpoints.Add(aimpointTopLeft);
+                        for (int i = 0; i < pointsToAdd; i++)
+                        {
+                            float ratio = (float)(i + 1) / pointsToAdd;
+                            aimpoints.Add(Vector2.Lerp(aimpointTopLeft, aimpointTopRight, ratio));
+                        }
+                        aimpoints.Add(aimpointTopRight);
+                    }
+                    // checkRight
+                    if (owner.Center.X > target.Right.X)
+                    {
+                        lengthLeft = target.height - 2 * AIMPOINT_DENSITY;
+                        pointsToAdd = Math.Max(lengthLeft / AIMPOINT_DENSITY, 0) + 1;
+                        aimpoints.Add(aimpointTopRight);
+                        for (int i = 0; i < pointsToAdd; i++)
+                        {
+                            float ratio = (float)(i + 1) / pointsToAdd;
+                            aimpoints.Add(Vector2.Lerp(aimpointTopRight, aimpointBottomRight, ratio));
+                        }
+                        aimpoints.Add(aimpointBottomRight);
+                    }
+                    // checkBottom
+                    if (owner.Center.Y > target.Bottom.Y)
+                    {
+                        lengthLeft = target.width - 2 * AIMPOINT_DENSITY;
+                        pointsToAdd = Math.Max(lengthLeft / AIMPOINT_DENSITY, 0) + 1;
+                        aimpoints.Add(aimpointBottomRight);
+                        for (int i = 0; i < pointsToAdd; i++)
+                        {
+                            float ratio = (float)(i + 1) / pointsToAdd;
+                            aimpoints.Add(Vector2.Lerp(aimpointBottomRight, aimpointBottomLeft, ratio));
+                        }
+                        aimpoints.Add(aimpointBottomLeft);
+                    }
+                    // checkLeft
+                    if (owner.Center.X < target.Left.X)
+                    {
+                        lengthLeft = target.height - 2 * AIMPOINT_DENSITY;
+                        pointsToAdd = Math.Max(lengthLeft / AIMPOINT_DENSITY, 0) + 1;
+                        //temp will keep the ordering of the list in a clockwise fashion
+                        List<Vector2> temp = [];
+                        if (checkTop)
+                        {
+                            temp = aimpoints;
+                            aimpoints = [];
+                        }
+                        aimpoints.Add(aimpointBottomLeft);
+                        for (int i = 0; i < pointsToAdd; i++)
+                        {
+                            float ratio = (float)(i + 1) / pointsToAdd;
+                            aimpoints.Add(Vector2.Lerp(aimpointBottomLeft, aimpointTopLeft, ratio));
+                        }
+                        aimpoints.Add(aimpointTopLeft);
+                        aimpoints.AddRange(temp);
+                    }
 
-                bool canHitRandom1 = HelperMethodsSF2.RaycastReliable(owner.Center, randomSamplePoint1);
-                bool canHitRandom2 = HelperMethodsSF2.RaycastReliable(owner.Center, randomSamplePoint2);
-                bool canHitRandom3 = HelperMethodsSF2.RaycastReliable(owner.Center, randomSamplePoint3);
+                    int run = 0;
+                    int bestScorer = 0;
+                    int bestScorerRun = 0;
 
-                bool tryToFire =
-                    canHitCenter ||
-                    canHitTopLeft ||
-                    canHitTopRight ||
-                    canHitBottomLeft ||
-                    canHitBottomRight ||
-                    canHitTop ||
-                    canHitLeft ||
-                    canHitRight ||
-                    canHitBottom ||
-                    canHitRandom1 ||
-                    canHitRandom2 ||
-                    canHitRandom3
-                ;
+                    for (int i = 0; i < aimpoints.Count; i++)
+                    {
+                        Vector2 point = aimpoints[i];
+                        bool canHit = HelperMethodsSF2.RaycastReliable(owner.Center, point);
+                        /*Dust.NewDustPerfect(
+                            point,
+                            canHit ? DustID.Confetti_Green : DustID.Clentaminator_Red,
+                            Vector2.Zero
+                        ).noGravity = true;*/
+                        if (canHit)
+                        {
+                            run++;
+                            tryToFire = true;
+                            if (run > bestScorerRun)
+                            {
+                                bestScorerRun = run;
+                                bestScorer = i;
+                            }
+                        }
+                        else
+                        {
+                            run = 0;
+                        }
+                    }
+                    /*if (bestScorerRun >= aimpoints.Count)
+                    {
+                        bestScorer = aimpoints.Count / 2;
+                    }
+                    else if (bestScorerRun > 1)
+                    {*/
+                    bestScorer = (bestScorer - (bestScorerRun / 2)) % aimpoints.Count;
+                    //}
+                    //bestScorer = Math.Clamp(bestScorer, 0, aimpoints.Count);
+                    aimpoint = aimpoints[bestScorer];
+                }
+                
                 if (tryToFire)
                 {
-                    Vector2 targetPos = aimpointCenter;
-                    if (canHitRandom1 && Main.rand.NextBool())
-                    {
-                        targetPos = randomSamplePoint1;
-                    }
-                    else if (canHitCenter)
-                    {
-                        targetPos = aimpointCenter;
-                    }
-                    else if (canHitRandom2 && Main.rand.NextBool())
-                    {
-                        targetPos = randomSamplePoint2;
-                    }
-                    else if (canHitTop)
-                    {
-                        targetPos = aimpointTop;
-                    }
-                    else if (canHitRight)
-                    {
-                        targetPos = aimpointRight;
-                    }
-                    else if (canHitLeft)
-                    {
-                        targetPos = aimpointLeft;
-                    }
-                    else if (canHitBottom)
-                    {
-                        targetPos = aimpointBottom;
-                    }
-                    else if (canHitTopRight)
-                    {
-                        targetPos = aimpointTopRight;
-                    }
-                    else if (canHitBottomLeft)
-                    {
-                        targetPos = aimpointBottomLeft;
-                    }
-                    else if (canHitTopLeft)
-                    {
-                        targetPos = aimpointTopLeft;
-                    }
-                    else if (canHitBottomRight)
-                    {
-                        targetPos = aimpointBottomRight;
-                    }
-                    else if (canHitRandom1)
-                    {
-                        targetPos = randomSamplePoint1;
-                    }
-                    else if (canHitRandom2)
-                    {
-                        targetPos = randomSamplePoint2;
-                    }
-                    else if (canHitRandom3)
-                    {
-                        targetPos = randomSamplePoint3;
-                    }
+                    Vector2 targetPos = aimpoint;
                     MagpieHoldout hostMagpie = (MagpieHoldout)Main.projectile[(int)HostMagpieIndex].ModProjectile;
                     float dist = owner.Center.Distance(targetPos);
                     Vector2 aimCompensation = target.velocity * dist / speed;
