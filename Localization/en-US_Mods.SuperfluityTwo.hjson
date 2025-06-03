@@ -411,11 +411,17 @@ Items: {
 
 	Raycaster: {
 		DisplayName: Raycaster
-		Tooltip:
-			'''
-			Casts rays, can you believe it?
-			[i:WireKite] [c/AAAAFF:DEBUG]
-			'''
+		Tooltip: Casts rays, can you believe it?
+	}
+
+	Sunbeamer: {
+		DisplayName: Sunbeamer
+		Tooltip: It burns.
+	}
+
+	Tooltips: {
+		Debug: "[i:WireKite] [c/AAAAFF:DEBUG]"
+		Joke: "[i:WhoopieCushion] [c/FFFFAA:Joke Item! :P]"
 	}
 }
 

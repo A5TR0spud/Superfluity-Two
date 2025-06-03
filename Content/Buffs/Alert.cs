@@ -5,7 +5,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using ReLogic.Content;
-using Terraria.GameContent;
 using Terraria.Audio;
 using SuperfluityTwo.Common.Players;
 

@@ -1,8 +1,5 @@
 using SuperfluityTwo.Common.Players;
-using SuperfluityTwo.Content.Items.Accessories.Mayday;
 using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Buffs

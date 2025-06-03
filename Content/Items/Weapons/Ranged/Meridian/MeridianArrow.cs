@@ -1,7 +1,4 @@
 using System;
-using System.Threading;
-using log4net.Core;
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;

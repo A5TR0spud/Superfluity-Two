@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Tools.Debug
 {
-	public class Raycaster : ModItem
+	public class Sunbeamer : ModItem
 	{
 		public override void SetDefaults()
 		{
@@ -22,34 +22,24 @@ namespace SuperfluityTwo.Content.Items.Tools.Debug
 			Item.useTurn = true;
 			Item.scale = 0.7f;
 			Item.autoReuse = true;
-			ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
 			SF2ItemSets.isDebugItem[Type] = true;
 		}
 
-        public override bool AltFunctionUse(Player player)
-        {
-            return true;
-        }
-
+		int alt = 0;
+		int alt2 = 0;
 		public override bool? UseItem(Player player)
 		{
 			if (player.whoAmI == Main.myPlayer)
 			{
-				if (player.altFunctionUse == 2)
+				Vector2 dir = Main.MouseWorld - player.Center;
+				for (float theta = (alt * -MathHelper.PiOver4 / 2f) + (0.5f * alt2 * MathHelper.PiOver4 / 30f); theta <= ((1 - alt) * MathHelper.PiOver4 / 2f) - (0.5f * (1 - alt2) * MathHelper.PiOver4 / 30f); theta += MathHelper.PiOver4 / 30f)
 				{
-					HelperMethodsSF2.RaycastReliable(player.Center, Main.MouseWorld, true);
+					HelperMethodsSF2.Raycast(player.Center, player.Center + dir.RotatedBy(theta), debug: true);
 				}
-				else
+				alt = 1 - alt;
+				if (alt == 0)
 				{
-					Vector2 dir = Main.MouseWorld - player.Center;
-					for (int i = -1; i <= 1; i++)
-					{
-						for (int j = -1; j <= 1; j++)
-						{
-							Vector2 startPos = player.Center + new Vector2(Main.rand.Next(5, 16) * i, Main.rand.Next(5, 16) * j);
-							HelperMethodsSF2.Raycast(startPos, startPos + dir.RotatedByRandom(0.1f * j * i), debug: true);
-						}
-					}
+					alt2 = 1 - alt2;
 				}
 			}
 			return true;

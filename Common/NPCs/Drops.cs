@@ -1,9 +1,7 @@
-using SuperfluityTwo.Common;
 using SuperfluityTwo.Content.Items.Accessories;
 using SuperfluityTwo.Content.Items.Accessories.Mage;
 using SuperfluityTwo.Content.Items.Accessories.Mayday;
 using SuperfluityTwo.Content.Items.Accessories.Ranger;
-using SuperfluityTwo.Content.Items.Accessories.Solace;
 using SuperfluityTwo.Content.Items.Accessories.Summoner;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;

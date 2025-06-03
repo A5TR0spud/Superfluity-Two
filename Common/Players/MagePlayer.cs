@@ -1,10 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
-using Mono.Cecil;
 using SuperfluityTwo.Content.Projectiles;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
 

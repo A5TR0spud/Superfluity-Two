@@ -1,19 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using log4net.Core;
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SuperfluityTwo.Common;
 using Terraria;
-using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian

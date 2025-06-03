@@ -18,6 +18,7 @@
 - Meridian: improved "arrow" homing the faster it is going
 - Meridian: "arrows" will no longer home for the first 5 ticks
 - Magpie: NPCs are locked in order of proximity to cursor, rather than arbitrarily (by time)
+- Super Sniper: have the reticle grow to size at 50% opacity while the rifle is charging up (more fair for pvp, better feedback for user)
 
 ### Fixes
 
@@ -29,6 +30,12 @@
 - Magpie: switch to having either holdout + reticle or JUST holdout
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
+
+## 0.28.3
+
+### 0.28.3 Changes
+
+- Magpie locks now interact with chlorophyte bullets to prevent wonky behaviour
 
 ## 0.28.2
 

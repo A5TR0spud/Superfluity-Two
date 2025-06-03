@@ -1,7 +1,5 @@
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Summoner

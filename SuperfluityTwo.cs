@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
 using SuperfluityTwo.Common;
 using SuperfluityTwo.Common.Players;
 using Terraria;
-using Terraria.Chat;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo

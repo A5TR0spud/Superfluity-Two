@@ -1,6 +1,4 @@
-using System;
 using Microsoft.Xna.Framework;
-using SuperfluityTwo.Content.Buffs;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;

@@ -1,4 +1,3 @@
-using SuperfluityTwo.Content.Items.Accessories.Ranger;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

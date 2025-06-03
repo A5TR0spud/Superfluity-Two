@@ -1,10 +1,5 @@
-using Microsoft.Xna.Framework.Graphics;
-using SuperfluityTwo.Common.Players;
-using SuperfluityTwo.Content.Items.Accessories.Mayday;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Buffs

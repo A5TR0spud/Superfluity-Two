@@ -1,6 +1,4 @@
-using System;
 using SuperfluityTwo.Content.Items.Accessories.Mage;
-using SuperfluityTwo.Content.Tiles;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;

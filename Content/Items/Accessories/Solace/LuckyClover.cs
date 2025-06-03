@@ -1,5 +1,4 @@
 using SuperfluityTwo.Common.Players;
-using SuperfluityTwo.Content.Tiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

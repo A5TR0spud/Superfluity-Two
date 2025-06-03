@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using SuperfluityTwo.Common;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
@@ -241,7 +237,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Magpie
                             proj,
                             dmg,
                             kB,
-                            Projectile.owner
+                            Projectile.owner,
+                            ai1: proj == ProjectileID.ChlorophyteBullet ? TrackedNPC + 1 : 0
                         );
                     }
                     hostMagpie.overrideAim = owner.Center.DirectionTo(targetPos + aimCompensation);

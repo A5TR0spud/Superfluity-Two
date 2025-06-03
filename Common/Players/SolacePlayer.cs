@@ -1,17 +1,10 @@
 using System;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
-using ReLogic.Content;
 using SuperfluityTwo.Content.Items.Accessories.Solace;
 using Terraria;
-using Terraria.Chat;
-using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.Net;
 
 
 namespace SuperfluityTwo.Common.Players

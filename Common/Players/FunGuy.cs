@@ -1,13 +1,9 @@
 using System;
 using Microsoft.Xna.Framework;
-using SuperfluityTwo.Content.Buffs;
 using SuperfluityTwo.Content.Projectiles;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 
 namespace SuperfluityTwo.Common.Players
 {

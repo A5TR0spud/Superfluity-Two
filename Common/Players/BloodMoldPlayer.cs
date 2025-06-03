@@ -1,17 +1,12 @@
 using System;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
 using SuperfluityTwo.Content.Buffs;
 using SuperfluityTwo.Content.Buffs.MaydayVariants;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 
 namespace SuperfluityTwo.Common.Players
 {

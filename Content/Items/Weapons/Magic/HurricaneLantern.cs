@@ -1,10 +1,6 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using SuperfluityTwo.Content.Items.Weapons.Ranged.Meridian;
 using SuperfluityTwo.Content.Projectiles;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Default;
 using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using Terraria;

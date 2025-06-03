@@ -2,7 +2,6 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using SuperfluityTwo.Common.Players;
-using SuperfluityTwo.Content.Buffs;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Mayday
 {

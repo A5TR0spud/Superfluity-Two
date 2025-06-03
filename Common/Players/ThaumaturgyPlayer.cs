@@ -6,14 +6,8 @@ using Terraria.ID;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.Net;
-using System.IO;
-using Microsoft.VisualBasic;
-using Humanizer;
 using System;
 using SuperfluityTwo.Content.Buffs;
-using Terraria.Chat;
-using Terraria.Localization;
 
 namespace SuperfluityTwo.Common.Players
 {

@@ -1,7 +1,6 @@
 using SuperfluityTwo.Common.Players;
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Mage;
 public class Zygoma : GlowItem {

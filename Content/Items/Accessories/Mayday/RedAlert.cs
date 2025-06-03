@@ -1,9 +1,5 @@
 using Terraria;
 using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
 using SuperfluityTwo.Common.Players;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Mayday

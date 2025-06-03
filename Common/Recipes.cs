@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using SuperfluityTwo.Content.Items.Accessories;
 using SuperfluityTwo.Content.Items.Accessories.Mage;
 using SuperfluityTwo.Content.Items.Accessories.Summoner;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
