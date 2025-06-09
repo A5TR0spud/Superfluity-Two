@@ -423,6 +423,11 @@ Items: {
 		Debug: "[i:WireKite] [c/AAAAFF:DEBUG]"
 		Joke: "[i:WhoopieCushion] [c/FFFFAA:Joke Item! :P]"
 	}
+
+	FairyKnife: {
+		DisplayName: Fairy Knife
+		Tooltip: ""
+	}
 }
 
 Buffs: {
@@ -510,6 +515,7 @@ Projectiles: {
 	MagpieHoldout.DisplayName: Magpie Holdout
 	MagpieReticle.DisplayName: Magpie Reticle
 	MagpieLock.DisplayName: Magpie Lock
+	FairyKnifeProj.DisplayName: Fairy Knife Proj
 }
 
 DeathMessages: {
@@ -575,3 +581,5 @@ DeathMessages: {
 		Normal: "{0} is permitted to rest..."
 	}
 }
+
+Conditions.EncounteredAnyFairy: After encountering any fairy

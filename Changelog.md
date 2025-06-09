@@ -31,6 +31,12 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.29.0
+
+### 0.29.0 Additions
+
+- Added Fairy Knife
+
 ## 0.28.3
 
 ### 0.28.3 Changes

@@ -1,4 +1,8 @@
+using SuperfluityTwo.Common;
+using SuperfluityTwo.Content.Items.Weapons.Magic;
+using SuperfluityTwo.Content.Items.Weapons.Magic.FairyKnife;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -48,9 +52,18 @@ namespace SuperfluityTwo.NPCs
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.BestiaryGirl, "Shop"))
             {
-                shop.Add(new Item(ItemID.CreativeWings) {
-					shopCustomPrice = Item.buyPrice(gold: 30)
-				}, Condition.BestiaryFilledPercent(30));
+                shop.Add(new Item(ItemID.CreativeWings)
+                {
+                    shopCustomPrice = Item.buyPrice(gold: 30)
+                }, Condition.BestiaryFilledPercent(30));
+
+                shop.InsertAfter(
+                    shop.GetEntry(ItemID.BlandWhip),
+                    new Item(ModContent.ItemType<FairyKnife>()),
+                    SF2Conditions.EncounteredAnyFairy
+                );
+
+                //shop.Add(ItemID.FairyBell, Condition.NpcIsPresent(NPCID.Wizard), Condition.DownedTwins);
                 return;
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.Clothier, "Shop"))
