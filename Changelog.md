@@ -36,6 +36,7 @@
 ### 0.29.0 Additions
 
 - Added Fairy Knife
+- Added PAL 9k
 
 ## 0.28.3
 

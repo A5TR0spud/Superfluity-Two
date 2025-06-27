@@ -428,6 +428,15 @@ Items: {
 		DisplayName: Fairy Knife
 		Tooltip: ""
 	}
+
+	Pal: {
+		DisplayName: PAL 9k
+		Tooltip:
+			'''
+			Shoots at nearby enemies
+			Does not consume ammo
+			'''
+	}
 }
 
 Buffs: {
@@ -516,6 +525,7 @@ Projectiles: {
 	MagpieReticle.DisplayName: Magpie Reticle
 	MagpieLock.DisplayName: Magpie Lock
 	FairyKnifeProj.DisplayName: Fairy Knife Proj
+	PalProj.DisplayName: Pal Proj
 }
 
 DeathMessages: {

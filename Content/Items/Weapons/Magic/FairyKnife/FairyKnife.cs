@@ -17,7 +17,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Magic.FairyKnife
 			Item.width += 2;
 			Item.useTime = 15;
 			Item.useAnimation = 15;
-			Item.knockBack = 15;
+			Item.knockBack = 2;
 			Item.value = Item.buyPrice(silver: 1);
 			Item.rare = ItemRarityID.Blue;
 			Item.mana = 5;
