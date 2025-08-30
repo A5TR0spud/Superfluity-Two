@@ -31,6 +31,12 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.30.0
+
+### 0.30.0 Additions
+
+- Added Asterism, a summon
+
 ## 0.29.0
 
 ### 0.29.0 Additions

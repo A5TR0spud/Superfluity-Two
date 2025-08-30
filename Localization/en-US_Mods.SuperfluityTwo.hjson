@@ -437,6 +437,11 @@ Items: {
 			Does not consume ammo
 			'''
 	}
+
+	AsterismItem: {
+		DisplayName: Asterism
+		Tooltip: Summons a star to fight for you
+	}
 }
 
 Buffs: {
@@ -503,6 +508,11 @@ Buffs: {
 		DisplayName: Starsplit
 		Description: Mods.SuperfluityTwo.Buffs.Starsplit.Description
 	}
+
+	AsterismBuff: {
+		DisplayName: Microcosm
+		Description: A star is fighting for you!
+	}
 }
 
 Projectiles: {
@@ -526,6 +536,7 @@ Projectiles: {
 	MagpieLock.DisplayName: Magpie Lock
 	FairyKnifeProj.DisplayName: Fairy Knife Proj
 	PalProj.DisplayName: Pal Proj
+	AsterismMinion.DisplayName: Asterism
 }
 
 DeathMessages: {
