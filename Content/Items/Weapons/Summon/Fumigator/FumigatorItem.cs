@@ -5,9 +5,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
+namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 {
-	public class AsterismItem : GlowItem
+	public class FumigatorItem : GlowItem
 	{
         public override void SetStaticDefaults() {
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
@@ -18,35 +18,42 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 
         public override void SetDefaults()
 		{
-			Item.width = 20;
-			Item.height = 20;
+			Item.width = 40;
+			Item.height = 14;
 			Item.mana = 12;
-			Item.useStyle = ItemUseStyleID.Swing;
+			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.UseSound = SoundID.Item44;
 			Item.useAnimation = 26;
 			Item.useTime = 26;
 			Item.noMelee = true;
 			//Item.crit = 0;
-			Item.damage = 18;
+			Item.damage = 7;
 			Item.DamageType = DamageClass.Summon;
 			Item.knockBack = 7.5f;
-			Item.value = Item.sellPrice(gold: 2);
-			Item.rare = ItemRarityID.Green;
+			Item.value = Item.sellPrice(gold: 5);
+			Item.rare = ItemRarityID.Blue;
 			Item.useTurn = false;
-			Item.buffType = ModContent.BuffType<AsterismBuff>();
-			Item.shoot = ModContent.ProjectileType<AsterismMinion>();
+			Item.buffType = ModContent.BuffType<FumigatorBuff>();
+			Item.shoot = ModContent.ProjectileType<FumigatorMinion>();
 		}
 
         public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.MagicMissile)
-				.AddIngredient(ItemID.FallenStar, 20)
-				.AddTile(TileID.ShimmerMonolith)
+				.AddIngredient(ItemID.IllegalGunParts)
+				.AddRecipeGroup(RecipeGroupID.IronBar, 10)
+				.AddIngredient(ItemID.GlowingMushroom, 20)
+				.AddTile(TileID.Anvils)
 				.Register();
 		}
 
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
+        public override Vector2? HoldoutOffset()
+        {
+            return new Vector2(-3, 0);
+        }
+
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		{
 			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
 			position = Main.MouseWorld;
 		}

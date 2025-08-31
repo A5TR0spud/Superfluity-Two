@@ -15,6 +15,11 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 	public class AsterismMinion : ModProjectile
 	{
         public ref float Timer => ref Projectile.ai[0];
+        public ref float Delta => ref Projectile.ai[1];
+        public int Target {
+			get => (int)Projectile.ai[2];
+			set => Projectile.ai[2] = value;
+		}
 
 		public override void SetStaticDefaults()
 		{
@@ -29,7 +34,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 
 
-			ProjectileID.Sets.TrailCacheLength[Type] = 32; // The length of old position to be recorded
+			ProjectileID.Sets.TrailCacheLength[Type] = 24; // The length of old position to be recorded
 			ProjectileID.Sets.TrailingMode[Type] = 0; // The recording mode
 		}
 
@@ -49,9 +54,10 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 			Projectile.localNPCHitCooldown = 20;
 		}
 
-        public override void OnSpawn(IEntitySource source)
-        {
+		public override void OnSpawn(IEntitySource source)
+		{
 			Timer = 0;
+			Delta = 0;
         }
 
 		// Here you can decide if your minion breaks things like grass or pots
@@ -111,6 +117,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 			if (owner.HasMinionAttackTargetNPC)
 			{
 				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
+				Target = owner.MinionAttackTargetNPC+ 1;
 				float between = Vector2.Distance(npc.Center, Projectile.Center);
 
 				// Reasonable distance away so it doesn't target across multiple screens
@@ -122,13 +129,29 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 				}
 			}
 
+			if (Target > 0)
+			{
+				NPC npc = Main.npc[Target - 1];
+				if (npc.active && npc.CanBeChasedBy(Projectile) && (Projectile.localNPCImmunity[npc.whoAmI] == 0 || Delta <= 1))
+				{
+					foundTarget = true;
+					distanceFromTarget = npc.Center.Distance(Projectile.Center);
+					targetCenter = npc.Center;
+				}
+				else
+				{
+					Target = 0;
+					Delta = 0;
+				}
+			}
+
 			if (!foundTarget)
 			{
 				Vector2 seedPos = Projectile.minionPos % 2 == 0 ? owner.Center : Projectile.Center;
 				// This code is required either way, used for finding a target
 				foreach (var npc in Main.ActiveNPCs)
 				{
-					if (npc.CanBeChasedBy() && Projectile.localNPCImmunity[npc.whoAmI] == 0)
+					if (npc.CanBeChasedBy(Projectile) && Projectile.localNPCImmunity[npc.whoAmI] == 0)
 					{
 						if (npc.Center.Distance(owner.Center) > 700f)
 						{
@@ -137,28 +160,36 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 						float between = Vector2.Distance(npc.Center, seedPos);
 						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
 						bool inRange = between < distanceFromTarget;
-						
+
 						if ((closest && inRange) || !foundTarget)
 						{
 							distanceFromTarget = between;
 							targetCenter = npc.Center;
 							foundTarget = true;
+							Target = npc.whoAmI + 1;
+							Delta = 0;
 						}
 					}
 				}
+			}
+
+			if (!foundTarget)
+			{
+				Target = 0;
 			}
 
 			// friendly needs to be set to true so the minion can deal contact damage
 			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
 			// Both things depend on if it has a target or not, so it's just one assignment here
 			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
+			//Projectile.friendly = foundTarget;
 		}
 
 		private Vector2 GetIdlePos()
 		{
 			Vector2 idlePosition = Main.player[Projectile.owner].Center;
 			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
+			idlePosition.Y += Main.player[Projectile.owner].gfxOffY;
 
 			Vector2 idleOffset = 32f * (float)Math.Sin(14.9f * Projectile.minionPos + Timer * 0.31726f) * new Vector2((float)Math.Cos(Projectile.minionPos + Timer), 0.7562f * (float)Math.Sin(Projectile.minionPos + Timer * 0.7562f));
 			return idlePosition + idleOffset;
@@ -166,10 +197,15 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 
 		private void ResetPos()
 		{
-			Projectile.oldPos[^1] = Projectile.position;
 			Projectile.velocity = Vector2.Zero;
 			Projectile.Center = GetIdlePos();
+			Delta = 0;
 		}
+
+        public override bool ShouldUpdatePosition()
+        {
+            return false;
+        }
 
 		private void Movement(Player owner, bool foundTarget, float distanceFromTarget, Vector2 targetCenter)
 		{
@@ -178,35 +214,34 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 				Vector2 direction = targetCenter - Projectile.Center;
 				direction.Normalize();
 
-				if (distanceFromTarget > 64)
-				{
-					Projectile.velocity *= 0.9f;
-					int alternator = Projectile.minionPos % 2 * 2 - 1;
-					Projectile.velocity = Projectile.velocity.RotatedBy(0.05 * (Projectile.minionPos / 2) * alternator);
-				}
-				Projectile.velocity += direction;
 				Projectile.Opacity = 1.0f;
+
+				int alternator = Projectile.minionPos % 2 * 2 - 1;
+				Vector2 dir = GetIdlePos().DirectionTo(targetCenter);
+				Projectile.velocity = dir;
+
+				float d = Delta * Delta;
+				Projectile.Center = GetIdlePos() * (1.0f - d) + targetCenter * d
+					+ dir.RotatedBy(Math.PI * alternator * 0.5f) * 16f * (Projectile.minionPos / 2) * (float)Math.Cos((d - 0.5f) * Math.PI);
+				Delta += 1f / (59 + Projectile.minionPos);
+				if (Delta > 1)
+				{
+					Delta = 0;
+					Target = 0;
+				}
 			}
 			else
 			{
-				Projectile.velocity = Vector2.Zero;
-				Projectile.Center = GetIdlePos();
+				ResetPos();
 			}
 		}
-
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			ResetPos();
-        }
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-			ResetPos();
-        }
 
 		private void Visuals()
 		{
 			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation += Projectile.velocity.X * 0.05f;
+			int alternator = Projectile.minionPos % 2 * 2 - 1;
+			Projectile.rotation += (float)Math.Sin(Projectile.minionPos) * 0.01f * alternator;
+			Projectile.scale = 0.8f + 0.2f * (float)Math.Sin(Timer * (1 + 0.1f * Projectile.minionPos));
 
 			// Some visuals here
 			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);

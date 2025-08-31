@@ -36,6 +36,7 @@
 ### 0.30.0 Additions
 
 - Added Asterism, a summon
+- Added Decommissioned Fumigator, a summon
 
 ## 0.29.0
 

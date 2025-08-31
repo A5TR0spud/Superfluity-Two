@@ -442,6 +442,15 @@ Items: {
 		DisplayName: Asterism
 		Tooltip: Summons a star to fight for you
 	}
+
+	FumigatorItem: {
+		DisplayName: Decommissioned Fumigator
+		Tooltip:
+			'''
+			Summons a spore mine to protect you
+			'It doesn't seem to work as intended anymore...'
+			'''
+	}
 }
 
 Buffs: {
@@ -513,6 +522,11 @@ Buffs: {
 		DisplayName: Microcosm
 		Description: A star is fighting for you!
 	}
+
+	FumigatorBuff: {
+		DisplayName: Sporefield
+		Description: A moldy mine is protecting you
+	}
 }
 
 Projectiles: {
@@ -537,6 +551,9 @@ Projectiles: {
 	FairyKnifeProj.DisplayName: Fairy Knife Proj
 	PalProj.DisplayName: Pal Proj
 	AsterismMinion.DisplayName: Asterism
+	FumigatorMinion.DisplayName: Sporemine
+	FumigatorCloud.DisplayName: Fumigator Cloud
+	FumigatorSpore.DisplayName: Fumigator Spore
 }
 
 DeathMessages: {
