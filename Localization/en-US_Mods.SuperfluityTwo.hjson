@@ -451,6 +451,11 @@ Items: {
 			'It doesn't seem to work as intended anymore...'
 			'''
 	}
+
+	KillerWispItem: {
+		DisplayName: Midnight Sun
+		Tooltip: Summons a killer wisp to protect you
+	}
 }
 
 Buffs: {
@@ -527,6 +532,11 @@ Buffs: {
 		DisplayName: Sporefield
 		Description: A moldy mine is protecting you
 	}
+
+	KillerWispBuff: {
+		DisplayName: The Light That Hates
+		Description: It's making a droning sound
+	}
 }
 
 Projectiles: {
@@ -554,6 +564,7 @@ Projectiles: {
 	FumigatorMinion.DisplayName: Sporemine
 	FumigatorCloud.DisplayName: Fumigator Cloud
 	FumigatorSpore.DisplayName: Fumigator Spore
+	KillerWispMinion.DisplayName: Killer Wisp
 }
 
 DeathMessages: {

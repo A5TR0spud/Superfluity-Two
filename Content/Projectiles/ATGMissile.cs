@@ -8,17 +8,21 @@ namespace SuperfluityTwo.Content.Projectiles
 {
 	public class ATGMissile : ModProjectile
 	{
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+        }
         public override void SetDefaults()
         {
-			Projectile.width = 14;
-			Projectile.height = 14;
-			Projectile.friendly = true;
+            Projectile.width = 14;
+            Projectile.height = 14;
+            Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
-			Projectile.penetrate = 1;
-			Projectile.timeLeft = 600;
-			Projectile.ignoreWater = true;
-			Projectile.tileCollide = false;
-		}
+            Projectile.penetrate = 1;
+            Projectile.timeLeft = 600;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = false;
+        }
 
         Vector2 accelerator;
         public override void OnSpawn(IEntitySource source)

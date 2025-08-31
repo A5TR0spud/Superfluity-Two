@@ -5,9 +5,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
+namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 {
-	public class FumigatorItem : GlowItem
+	public class KillerWispItem : GlowItem
 	{
         public override void SetStaticDefaults() {
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
@@ -18,38 +18,28 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 
         public override void SetDefaults()
 		{
-			Item.width = 40;
-			Item.height = 14;
-			Item.mana = 12;
-			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.width = 16;
+			Item.height = 16;
+			Item.mana = 16;
+			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.UseSound = SoundID.Item44;
 			Item.useAnimation = 26;
 			Item.useTime = 26;
 			Item.noMelee = true;
 			//Item.crit = 0;
-			Item.damage = 7;
+			Item.damage = 20;
 			Item.DamageType = DamageClass.Summon;
 			Item.knockBack = 7.5f;
-			Item.value = Item.sellPrice(gold: 5);
-			Item.rare = ItemRarityID.Blue;
+			Item.value = Item.sellPrice(gold: 3);
+			Item.rare = ItemRarityID.LightPurple;
 			Item.useTurn = false;
-			Item.buffType = ModContent.BuffType<FumigatorBuff>();
-			Item.shoot = ModContent.ProjectileType<FumigatorMinion>();
+			Item.buffType = ModContent.BuffType<KillerWispBuff>();
+			Item.shoot = ModContent.ProjectileType<KillerWispMinion>();
 		}
 
-        public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient(ItemID.IllegalGunParts)
-				.AddRecipeGroup(RecipeGroupID.IronBar, 10)
-				.AddIngredient(ItemID.GlowingMushroom, 20)
-				.AddTile(TileID.Anvils)
-				.Register();
-		}
-
-        public override Vector2? HoldoutOffset()
+        public override Color? GetAlpha(Color lightColor)
         {
-            return new Vector2(-3, 0);
+            return Color.White;
         }
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)

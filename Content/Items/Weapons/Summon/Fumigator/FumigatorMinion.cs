@@ -32,10 +32,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 
 			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-
-
-			ProjectileID.Sets.TrailCacheLength[Type] = 24; // The length of old position to be recorded
-			ProjectileID.Sets.TrailingMode[Type] = 0; // The recording mode
 		}
 
 		public sealed override void SetDefaults()
@@ -156,14 +152,36 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 					if (npc.CanBeChasedBy())
 					{
 						float between = Vector2.Distance(npc.Center, owner.Center);
+						float dist = npc.Center.Distance(Projectile.Center);
 						bool inRange = between < temp;
+						bool closest = between < distanceFromTarget;
+						bool lineOfSightPlayer = Collision.CanHitLine(owner.Center + new Vector2(-4, -4), 8, 8, npc.position, npc.width, npc.height);
+						bool lineOfSightMinion = Collision.CanHitLine(Projectile.Center + new Vector2(-4, -4), 8, 8, npc.position, npc.width, npc.height);
+						bool closeThroughWalls = between < 16 * 5;
 
-						if (inRange)
+						bool distTest = inRange;
+						if (Projectile.minionPos % 4 == 1)
+						{
+							distTest = inRange;
+						}
+						if (Projectile.minionPos % 4 == 2)
+						{
+							distTest = closest;
+						}
+						if (Projectile.minionPos % 4 == 3)
+						{
+							distTest = inRange || closest;
+						}
+						if (Projectile.minionPos % 4 == 0)
+						{
+							distTest = inRange && closest;
+						}
+						if (distTest && (lineOfSightPlayer || lineOfSightMinion || closeThroughWalls))
 						{
 							temp = between;
 							targetCenter = npc.Center;
 							foundTarget = true;
-							distanceFromTarget = npc.Center.Distance(Projectile.Center);
+							distanceFromTarget = dist;
 						}
 					}
 				}

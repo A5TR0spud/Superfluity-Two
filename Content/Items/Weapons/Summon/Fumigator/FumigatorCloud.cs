@@ -14,6 +14,11 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 	{
 		ref float timer => ref Projectile.ai[0];
 		ref float angularVel => ref Projectile.localAI[0];
+
+        public override void SetStaticDefaults()
+        {
+			ProjectileID.Sets.WindPhysicsImmunity[Projectile.type] = true;
+        }
 		public override void SetDefaults()
 		{
 			Projectile.width = 34;
@@ -46,7 +51,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 		{
 			Projectile.Opacity = 0.0f;
 			Projectile.rotation = Main.rand.NextFloatDirection();
-			angularVel = (Main.rand.NextFloat() - 0.5f) * 0.1f;
+			angularVel = (Main.rand.NextFloat() - 0.5f) * 0.02f;
 			Projectile.position.X -= Projectile.width / 2;
 			Projectile.position.Y -= Projectile.height / 2;
 		}
@@ -63,7 +68,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 			Projectile.velocity *= 0.99f;
 			Projectile.rotation += angularVel;
 
-			float overlapVelocity = 0.001f;
+			float overlapVelocity = 0.005f;
 			foreach (var other in Main.ActiveProjectiles)
 			{
 				if (other.type != Projectile.type)

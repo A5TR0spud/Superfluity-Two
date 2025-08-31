@@ -14,6 +14,11 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 	{
 		ref float timer => ref Projectile.ai[0];
 		ref float angularVel => ref Projectile.localAI[0];
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+        }
 		public override void SetDefaults()
 		{
 			Projectile.width = 12;
@@ -23,7 +28,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 			Projectile.penetrate = 1;
 			Projectile.timeLeft = 120;
 			Projectile.ignoreWater = true;
-			Projectile.tileCollide = true;
+			Projectile.tileCollide = false;
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 20;
 			Projectile.stopsDealingDamageAfterPenetrateHits = true;
@@ -31,16 +36,10 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 			Projectile.hide = true;
 		}
 
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			Projectile.rotation += Projectile.velocity.X * 0.001f;
-			return false;
-		}
-
-		public override bool? CanCutTiles()
-		{
-			return false;
-		}
+        public override bool? CanCutTiles()
+        {
+            return false;
+        }
 
 		public override void OnSpawn(IEntitySource source)
 		{
