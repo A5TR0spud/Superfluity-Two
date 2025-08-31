@@ -37,6 +37,7 @@
 
 - Added Asterism, a summon
 - Added Decommissioned Fumigator, a summon
+- Added Midnight Sun, a summon
 
 ## 0.29.0
 
