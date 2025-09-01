@@ -28,6 +28,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			get => (int)Projectile.ai[2];
 			set => Projectile.ai[2] = value;
 		}
+		public int damageCooldown = 0;
 
 		public override void SetStaticDefaults()
 		{
@@ -53,7 +54,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.usesLocalNPCImmunity = true;
-			Projectile.localNPCHitCooldown = 17;
+			Projectile.localNPCHitCooldown = 48;
 		}
 
 		public override bool? CanCutTiles()
@@ -78,6 +79,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			SearchForTargets(owner, out bool foundTarget, out Vector2 targetCenter);
 			Movement(owner, foundTarget, targetCenter);
 			Visuals();
+			damageCooldown--;
 		}
 
 		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
@@ -100,7 +102,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 
         public override bool? CanHitNPC(NPC target)
         {
-            return target.Center.Distance(Projectile.Center) < 128 && target.whoAmI == Target - 1;
+            return target.Center.Distance(Projectile.Center) < 128 && target.whoAmI == Target - 1 && damageCooldown <= 0;
         }
 
 		public override void ModifyDamageHitbox(ref Rectangle hitbox)
@@ -127,14 +129,17 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 					Vector2.Zero
 				).noGravity = true;
 			}
+			damageCooldown = 30;
         }
 
 		private void SearchForTargets(Player owner, out bool foundTarget, out Vector2 targetCenter)
 		{
 			// Starting search distance
-			float distanceFromTarget = 700f;
+			float distanceFromTarget = 700f * 5;
 			targetCenter = Projectile.position;
 			foundTarget = false;
+			bool retarget = false;
+			bool targettingCursor = false;
 
 			// This code is required if your minion weapon has the targeting feature
 			if (owner.HasMinionAttackTargetNPC)
@@ -143,32 +148,45 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 				float between = Vector2.Distance(npc.Center, Projectile.Center);
 
 				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f && owner.Center.Distance(npc.Center) < 800f)
+				if (between < 2000f && owner.Center.Distance(npc.Center) < 900f)
 				{
 					distanceFromTarget = between;
 					targetCenter = npc.Center;
 					foundTarget = true;
 					Target = owner.MinionAttackTargetNPC + 1;
+					targettingCursor = true;
 				}
 			}
 
 			if (Target > 0)
 			{
 				NPC npc = Main.npc[Target - 1];
-				if (npc.active && npc.CanBeChasedBy(Projectile) && npc.Center.Distance(owner.Center) < 800f)
+				if (npc.active && npc.CanBeChasedBy(Projectile) && npc.Center.Distance(owner.Center) < 900f)
 				{
 					foundTarget = true;
-					distanceFromTarget = npc.Center.Distance(Projectile.Center);
+					//distanceFromTarget = npc.Center.Distance(Projectile.Center) * 5;
 					targetCenter = npc.Center;
 				}
 				else
 				{
 					Target = 0;
 					foundTarget = false;
+					targettingCursor = false;
+				}
+				if (!targettingCursor && foundTarget)
+				{
+					retarget = Anger > 1.4f;
 				}
 			}
 
 			if (!foundTarget)
+			{
+				Anger = 0;
+			}
+
+			int old = Target;
+
+			if (retarget || !foundTarget)
 			{
 				List<int> blacklist = [];
 				foreach (var proj in Main.ActiveProjectiles)
@@ -180,15 +198,20 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 				}
 				foreach (var npc in Main.ActiveNPCs)
 				{
-					if (blacklist.Contains(npc.whoAmI))
-					{
-						continue;
-					}
 					bool lineOfSightPlayer = Collision.CanHitLine(owner.Center + new Vector2(-4, -4), 8, 8, npc.position, npc.width, npc.height);
 					bool lineOfSightMinion = Collision.CanHitLine(Projectile.Center + new Vector2(-4, -4), 8, 8, npc.position, npc.width, npc.height);
-					if (npc.CanBeChasedBy() && (lineOfSightPlayer || lineOfSightMinion) && npc.Center.Distance(Projectile.Center) < 700f && npc.Center.Distance(owner.Center) < 700f)
+					if (npc.CanBeChasedBy() && (lineOfSightPlayer || lineOfSightMinion) && npc.Center.Distance(owner.Center) < 700f)
 					{
 						float distPlayer = Vector2.Distance(npc.Center, owner.Center);
+						float mult = 1.0f;
+						foreach (int i in blacklist)
+						{
+							if (npc.whoAmI == i)
+							{
+								mult++;
+							}
+						}
+						distPlayer *= mult;
 
 						bool closePlayer = distPlayer < distanceFromTarget;
 
@@ -201,12 +224,12 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 						}
 					}
 				}
-
 			}
 
 			if (!foundTarget)
 			{
 				Target = 0;
+				Anger = 0;
 			}
 
 			// friendly needs to be set to true so the minion can deal contact damage
@@ -232,8 +255,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			if (foundTarget)
 			{
 				Vector2 dir = (targetCenter - Projectile.Center).SafeNormalize(Vector2.Zero); ;
-				Projectile.velocity *= 0.9f;
-				Projectile.velocity += (1 + 0.1f * Main.npc[Target - 1].velocity.Length() + 0.5f * Anger) * dir * Math.Clamp((Projectile.Center.Distance(targetCenter) - 56f) / 100f, -8f, 8f);
+				Projectile.velocity *= 0.99f;
+				Projectile.velocity += 0.3f * (1 + 0.1f * Main.npc[Target - 1].velocity.Length() + 0.5f * Anger) * dir * Math.Clamp((Projectile.Center.Distance(targetCenter) - 56f) / 100f, -8f, 8f);
 				if (Projectile.Center.Distance(targetCenter) > 128f)
 				{
 					if (Projectile.velocity.Length() > 8 + Anger)
@@ -242,17 +265,40 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 					}
 				}
 				Anger += 1 / 60f;
+				if (Anger > 1.5f)
+				{
+					Anger = 1.5f;
+				}
 			}
 			else
 			{
 				Vector2 dir = (GetIdlePos() - Projectile.Center).SafeNormalize(Vector2.Zero);
 				Projectile.velocity *= 0.9f;
-				Projectile.velocity += 0.5f * dir * Math.Clamp(Projectile.Center.Distance(GetIdlePos()) / 200f, 0f, 8f);
-				if (Projectile.Center.Distance(owner.Center) > 900f)
+				Projectile.velocity += dir * Math.Clamp(0.003f * Projectile.Center.Distance(GetIdlePos()), 0f, 8f);
+				if (Projectile.Center.Distance(owner.Center) > 1000f)
 				{
 					Projectile.Center = GetIdlePos();
 				}
 				Anger = 0;
+			}
+			// If your minion is flying, you want to do this independently of any conditions
+			float overlapVelocity = 0.1f;
+
+			float overlapDist = Projectile.width;
+
+			// Fix overlap with other minions
+			foreach (var other in Main.ActiveProjectiles)
+			{
+				if (other.type != Projectile.type)
+				{
+					continue;
+				}
+				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Projectile.Center.Distance(other.Center) < overlapDist)
+				{
+					Vector2 dir = other.Center.DirectionTo(Projectile.Center);
+					Projectile.velocity += dir * overlapVelocity;
+					Projectile.Center += dir;
+				}
 			}
 		}
 
