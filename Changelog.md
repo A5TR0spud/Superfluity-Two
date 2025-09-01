@@ -31,6 +31,20 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.30.1
+
+### 0.30.1 Changes
+
+- Midnight Sun:
+  - Damage buffed: 24 -> 28
+  - Max Anger increased: 1.5 -> 2.5
+    - Anger affects max speed and how long wisps track a target before searching for a new one
+  - Insta-kill threshold decreased 250 -> 200
+  - Retargetting penalty increased 30 -> 48
+  - Killer Wisps's no longer collide with tiles, fixing an issue where they could become stuck
+  - Midnight Sun's sprite has changed
+  - The Light That Hates buff's sprite has changed
+
 ## 0.30.0
 
 ### 0.30.0 Additions

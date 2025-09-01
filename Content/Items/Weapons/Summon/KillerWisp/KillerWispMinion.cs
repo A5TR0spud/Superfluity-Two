@@ -113,7 +113,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 		{
 			target.AddBuff(BuffID.Bleeding, 60 * 5);
-			if (target.life <= 250)
+			if (target.life <= 200)
 			{
 				modifiers.SetInstantKill();
 			}
@@ -129,7 +129,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 					Vector2.Zero
 				).noGravity = true;
 			}
-			damageCooldown = 30;
+			damageCooldown = 48;
         }
 
 		private void SearchForTargets(Player owner, out bool foundTarget, out Vector2 targetCenter)
@@ -175,7 +175,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 				}
 				if (!targettingCursor && foundTarget)
 				{
-					retarget = Anger > 1.4f;
+					retarget = Anger > 2.4f;
 				}
 			}
 
@@ -265,9 +265,9 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 					}
 				}
 				Anger += 1 / 60f;
-				if (Anger > 1.5f)
+				if (Anger > 2.5f)
 				{
-					Anger = 1.5f;
+					Anger = 2.5f;
 				}
 			}
 			else

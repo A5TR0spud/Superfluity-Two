@@ -27,7 +27,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			Item.useTime = 26;
 			Item.noMelee = true;
 			//Item.crit = 0;
-			Item.damage = 24;
+			Item.damage = 28;
 			Item.DamageType = DamageClass.Summon;
 			Item.knockBack = 7.5f;
 			Item.value = Item.sellPrice(gold: 3);
