@@ -41,7 +41,7 @@
     - Anger affects max speed and how long wisps track a target before searching for a new one
   - Insta-kill threshold decreased 250 -> 200
   - Retargetting penalty increased 30 -> 48
-  - Killer Wisps's no longer collide with tiles, fixing an issue where they could become stuck
+  - Killer Wisps no longer collide with tiles, fixing an issue where they could become stuck
   - Midnight Sun's sprite has changed
   - The Light That Hates buff's sprite has changed
 
