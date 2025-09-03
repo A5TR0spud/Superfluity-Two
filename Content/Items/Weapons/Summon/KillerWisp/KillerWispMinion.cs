@@ -55,6 +55,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 48;
+			Projectile.netImportant = true;
 		}
 
 		public override bool? CanCutTiles()
@@ -117,7 +118,12 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			{
 				modifiers.SetInstantKill();
 			}
-			float str = Main.rand.NextFloat() * 2.0f - 1.0f;
+			damageCooldown = 48;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            float str = Main.rand.NextFloat() * 2.0f - 1.0f;
 			for (int i = 0; i < 30; i++)
 			{
 				float delta = i / 29f;
@@ -129,7 +135,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 					Vector2.Zero
 				).noGravity = true;
 			}
-			damageCooldown = 48;
         }
 
 		private void SearchForTargets(Player owner, out bool foundTarget, out Vector2 targetCenter)
@@ -183,8 +188,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			{
 				Anger = 0;
 			}
-
-			int old = Target;
 
 			if (retarget || !foundTarget)
 			{

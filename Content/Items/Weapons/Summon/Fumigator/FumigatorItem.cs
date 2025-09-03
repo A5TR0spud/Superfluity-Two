@@ -29,7 +29,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Fumigator
 			//Item.crit = 0;
 			Item.damage = 7;
 			Item.DamageType = DamageClass.Summon;
-			Item.knockBack = 7.5f;
+			Item.knockBack = 1f;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Blue;
 			Item.useTurn = false;

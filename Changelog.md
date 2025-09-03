@@ -31,6 +31,18 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.31.0
+
+### 0.31.0 Additions
+
+- Added Safety Lamp, a summon
+
+### 0.31.0 Changes
+
+- Significantly reduced knockback of Decommissioned Fumigator
+- Changed sound of summoning an Asterism minion
+- Increased knockback and damage of Growth Spurt
+
 ## 0.30.1
 
 ### 0.30.1 Changes

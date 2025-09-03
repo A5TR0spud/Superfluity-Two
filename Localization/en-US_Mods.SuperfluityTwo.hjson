@@ -456,6 +456,11 @@ Items: {
 		DisplayName: Midnight Sun
 		Tooltip: Summons a killer wisp to protect you
 	}
+
+	SafetyLampItem: {
+		DisplayName: Safety Lamp
+		Tooltip: Summons a guiding light
+	}
 }
 
 Buffs: {
@@ -537,6 +542,11 @@ Buffs: {
 		DisplayName: The Light That Hates
 		Description: It's making a droning sound
 	}
+
+	SafetyLampBuff: {
+		DisplayName: Guiding Light
+		Description: A hope in the dark
+	}
 }
 
 Projectiles: {
@@ -565,6 +575,9 @@ Projectiles: {
 	FumigatorCloud.DisplayName: Fumigator Cloud
 	FumigatorSpore.DisplayName: Fumigator Spore
 	KillerWispMinion.DisplayName: Killer Wisp
+	SafetyLampCounter.DisplayName: Safety Lamp Counter
+	SafetyLampMinion.DisplayName: Safety Lamp Minion
+	SafetyLampShine.DisplayName: Safety Lamp Shine
 }
 
 DeathMessages: {

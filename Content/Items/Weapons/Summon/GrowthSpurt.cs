@@ -19,9 +19,9 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon
 			Item.useTime = 26;
 			Item.noMelee = true;
 			Item.crit = 0;
-			Item.damage = 7;
+			Item.damage = 9;
 			Item.DamageType = DamageClass.SummonMeleeSpeed;
-			Item.knockBack = 3;
+			Item.knockBack = 6.5f;
 			Item.value = Item.sellPrice(copper: 30);
 			Item.rare = ItemRarityID.White;
 			Item.useTurn = false;

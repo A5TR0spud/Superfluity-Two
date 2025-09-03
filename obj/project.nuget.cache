@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "c3etKJV/xtk=",
+  "dgSpecHash": "Ee5sMJeQpZk=",
   "success": true,
   "projectFilePath": "C:\\Users\\willi\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\SuperfluityTwo\\SuperfluityTwo.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\willi\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

@@ -52,6 +52,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.Asterism
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = 59;
+			Projectile.netImportant = true;
 		}
 
 		public override void OnSpawn(IEntitySource source)
