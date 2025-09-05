@@ -461,6 +461,11 @@ Items: {
 		DisplayName: Safety Lamp
 		Tooltip: Summons a guiding light
 	}
+
+	Desperado: {
+		DisplayName: Desperado
+		Tooltip: "'Why don't you come to your senses, pardner?'"
+	}
 }
 
 Buffs: {
@@ -578,6 +583,8 @@ Projectiles: {
 	SafetyLampCounter.DisplayName: Safety Lamp Counter
 	SafetyLampMinion.DisplayName: Safety Lamp Minion
 	SafetyLampShine.DisplayName: Safety Lamp Shine
+	DesperadoShrapnel.DisplayName: Desperado Shrapnel
+	DesperadoExplosion.DisplayName: Desperado Explosion
 }
 
 DeathMessages: {

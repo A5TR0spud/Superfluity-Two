@@ -19,14 +19,16 @@ namespace SuperfluityTwo.Content.Items.Accessories.Mayday
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.Ruby, 5)
                 .AddIngredient(ItemID.DemoniteBar, 12)
+                .AddIngredient(ItemID.Ruby, 5)
                 .AddTile(TileID.Anvils)
+                .AddDecraftCondition(Condition.CorruptWorld)
                 .Register();
             CreateRecipe()
-                .AddIngredient(ItemID.Ruby, 5)
                 .AddIngredient(ItemID.CrimtaneBar, 12)
+                .AddIngredient(ItemID.Ruby, 5)
                 .AddTile(TileID.Anvils)
+                .AddDecraftCondition(Condition.CrimsonWorld)
                 .Register();
         }
 

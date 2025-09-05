@@ -31,6 +31,16 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.32.0
+
+### 0.32.0 Additions
+
+- Added Desperado, a gun
+
+### 0.32.0 Fixes
+
+- Added proper shimmer decrafting to Red Alert
+
 ## 0.31.0
 
 ### 0.31.0 Additions
