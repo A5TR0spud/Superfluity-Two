@@ -31,6 +31,12 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.32.2
+
+### 0.32.2 Fixes
+
+- Pal 9k no longer lingers after death
+
 ## 0.32.1
 
 ### 0.32.1 Changes

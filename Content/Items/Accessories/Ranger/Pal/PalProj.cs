@@ -71,7 +71,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger.Pal
 		public override void AI()
 		{
 			int type = ModContent.ProjectileType<PalProj>();
-			if (Projectile.TryGetOwner(out Player player) && Projectile.friendly && !Projectile.hostile && (player.GetModPlayer<PalPlayer>().hasPal || player.GetModPlayer<PalPlayer>().hasPalVanity) && Projectile.type == type && player.ownedProjectileCounts[type] <= 1)
+			if (Projectile.TryGetOwner(out Player player) && player.active && !player.dead && Projectile.friendly && !Projectile.hostile && (player.GetModPlayer<PalPlayer>().hasPal || player.GetModPlayer<PalPlayer>().hasPalVanity) && Projectile.type == type && player.ownedProjectileCounts[type] <= 1)
 			{
 				Projectile.timeLeft = 2;
 			}
