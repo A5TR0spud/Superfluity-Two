@@ -18,40 +18,52 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger.Pal
         }
 
         public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient(ItemID.FlintlockPistol)
-				.AddIngredient(ItemID.HellstoneBar, 15)
-				.AddIngredient(ItemID.IllegalGunParts)
-				.AddTile(TileID.Anvils)
-				.Register();
-		}
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.FlintlockPistol)
+                .AddIngredient(ItemID.HellstoneBar, 15)
+                .AddIngredient(ItemID.IllegalGunParts)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<PalPlayer>().hasPal = true;
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<PalProj>()] <= 0)
-            {
-                Projectile.NewProjectile(
-                    player.GetSource_FromThis(),
-                    player.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<PalProj>(),
-                    15,
-                    1f,
-                    player.whoAmI
-                );
-            }
+        }
+
+        public override void UpdateVanity(Player player)
+        {
+            player.GetModPlayer<PalPlayer>().hasPalVanity = true;
         }
     }
 
     public class PalPlayer : ModPlayer
     {
         public bool hasPal = false;
+        public bool hasPalVanity = false;
 
         public override void ResetEffects()
         {
             hasPal = false;
+            hasPalVanity = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if ((hasPal || hasPalVanity) && Player.ownedProjectileCounts[ModContent.ProjectileType<PalProj>()] <= 0)
+            {
+                Projectile.NewProjectile(
+                    Player.GetSource_FromThis(),
+                    Player.Center,
+                    Vector2.Zero,
+                    ModContent.ProjectileType<PalProj>(),
+                    15,
+                    1f,
+                    Player.whoAmI,
+                    hasPalVanity && !hasPal ? 1 : 0
+                );
+            }
         }
     }
 }

@@ -31,6 +31,20 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.32.1
+
+### 0.32.1 Changes
+
+- Pal 9k is now visible as a vanity accessory
+- Desperado shrapnel no longer ignores 18 defense
+
+### 0.32.1 Fixes
+
+- Pal 9k should no longer jitter when stepping up or down tiles
+- Desperado explosion can no longer hit through walls or spawn behind the muzzle
+- Desperado shrapnel now have tile collision FX
+- Desperado FX should now work in multiplayer if they didn't already
+
 ## 0.32.0
 
 ### 0.32.0 Additions

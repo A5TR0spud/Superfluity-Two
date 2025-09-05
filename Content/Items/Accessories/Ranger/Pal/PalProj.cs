@@ -23,7 +23,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger.Pal
 		{
 			get
 			{
-				return Vanity == 1;
+				return (int)Vanity == 1;
 			}
 			set
 			{
@@ -36,6 +36,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger.Pal
 		public Vector2 elbowPoint;
 		float elbowRot;
 		float armRot;
+		ref float oldgfxOffY => ref Projectile.localAI[0];
 
 		public override void SetDefaults()
 		{
@@ -49,6 +50,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger.Pal
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = false;
 			Projectile.hide = true;
+			Projectile.ContinuouslyUpdateDamageStats = true;
 		}
 
 		public override bool? CanDamage()
@@ -69,18 +71,17 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger.Pal
 		public override void AI()
 		{
 			int type = ModContent.ProjectileType<PalProj>();
-			if (Projectile.TryGetOwner(out Player player) && Projectile.friendly && !Projectile.hostile && player.GetModPlayer<PalPlayer>().hasPal && Projectile.type == type && player.ownedProjectileCounts[type] <= 1)
+			if (Projectile.TryGetOwner(out Player player) && Projectile.friendly && !Projectile.hostile && (player.GetModPlayer<PalPlayer>().hasPal || player.GetModPlayer<PalPlayer>().hasPalVanity) && Projectile.type == type && player.ownedProjectileCounts[type] <= 1)
 			{
 				Projectile.timeLeft = 2;
 			}
 			else
 			{
-				Projectile.Kill();
 				return;
 			}
+			Projectile.position.Y += 0.25f * (player.gfxOffY - oldgfxOffY);
 
-			int facing;
-			bool yesTarget = UpdateTargetting(out facing);
+			bool yesTarget = UpdateTargetting(out int facing);
 			if (facing == 0)
 			{
 				facing = player.direction;
@@ -89,60 +90,70 @@ namespace SuperfluityTwo.Content.Items.Accessories.Ranger.Pal
 			{
 				Projectile.rotation = facing == -1 ? MathHelper.Pi : 0;
 			}
-			Vector2 targetPosAbsolute = player.Top + new Vector2(facing * -8, -18);
+			Vector2 targetPosAbsolute = player.Top + new Vector2(facing * -8, -18 + player.gfxOffY);
 			Vector2 targetPosRelative = targetPosAbsolute - Projectile.Center;
 
-			overlappingVelocity = overlappingVelocity.MoveTowards(targetPosRelative, 0.2f);
-			if (overlappingVelocity.LengthSquared() > 16) overlappingVelocity = 4 * overlappingVelocity.SafeNormalize(Vector2.Zero);
+			overlappingVelocity = overlappingVelocity.MoveTowards(targetPosRelative, 0.8f);
+			if (overlappingVelocity.Length() > 8) overlappingVelocity = 8 * overlappingVelocity.SafeNormalize(Vector2.Zero);
 
 			playerProvidedVelocity = player.velocity * 0.9f;
 
-			if (Projectile.Center.Distance(player.Center) > 16 * 4)
+			if (Projectile.Center.Distance(targetPosAbsolute) > 48)
 			{
 				Projectile.Center = targetPosAbsolute;
 				overlappingVelocity = Vector2.Zero;
 				playerProvidedVelocity = player.velocity;
+				playerProvidedVelocity.Y += player.gfxOffY;
 			}
 
 			float drag = 0.9f;
 			Projectile.position += overlappingVelocity + playerProvidedVelocity;
-			Projectile.velocity *= drag;
 			overlappingVelocity *= drag;
 			playerProvidedVelocity *= drag;
 
 			elbowPoint = Projectile.Center;
-			elbowPoint.Y = player.Center.Y;
+			elbowPoint.Y = player.Center.Y + player.gfxOffY;
 			elbowPoint.X += -2 * facing;
 			float dist = 30;
 			float threshold = 0.1f;
+			Vector2 offsetCenter = player.Center;
+			offsetCenter.Y += player.gfxOffY;
 			for (int i = 0; i < 2; i++)
 			{
 				if (elbowPoint.Distance(Projectile.Center) < dist - threshold)
 				{
 					elbowPoint += -elbowPoint.DirectionTo(Projectile.Center) * (dist - elbowPoint.Distance(Projectile.Center));
 				}
-				if (elbowPoint.Distance(player.Center) < dist - threshold)
+				if (elbowPoint.Distance(offsetCenter) < dist - threshold)
 				{
-					elbowPoint += -elbowPoint.DirectionTo(player.Center) * (dist - elbowPoint.Distance(player.Center));
+					elbowPoint += -elbowPoint.DirectionTo(offsetCenter) * (dist - elbowPoint.Distance(offsetCenter));
 				}
 				if (elbowPoint.Distance(Projectile.Center) > dist + threshold)
 				{
 					elbowPoint = elbowPoint.MoveTowards(Projectile.Center, elbowPoint.Distance(Projectile.Center) - dist);
 				}
-				if (elbowPoint.Distance(player.Center) > dist + threshold)
+				if (elbowPoint.Distance(offsetCenter) > dist + threshold)
 				{
-					elbowPoint = elbowPoint.MoveTowards(player.Center, elbowPoint.Distance(player.Center) - dist);
+					elbowPoint = elbowPoint.MoveTowards(offsetCenter, elbowPoint.Distance(offsetCenter) - dist);
 				}
 			}
 			elbowRot = elbowPoint.AngleTo(Projectile.Center);
-			armRot = elbowPoint.AngleFrom(player.Center);
+			armRot = elbowPoint.AngleFrom(offsetCenter);
 
 			Projectile.spriteDirection = facing;
+			oldgfxOffY = player.gfxOffY;
 		}
 
 		public bool UpdateTargetting(out int facing)
 		{
 			Projectile.TryGetOwner(out Player player);
+			IsVanity = player.GetModPlayer<PalPlayer>().hasPalVanity && !player.GetModPlayer<PalPlayer>().hasPal;
+			if (IsVanity)
+			{
+				facing = 0;
+				return false;
+			}
+
 			int targetID = Projectile.FindTargetWithLineOfSight();
 			if (targetID < 0)
 			{
