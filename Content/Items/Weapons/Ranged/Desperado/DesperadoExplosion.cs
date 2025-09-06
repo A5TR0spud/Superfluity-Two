@@ -15,7 +15,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 
 		public override void SetStaticDefaults()
 		{
-			Main.projFrames[Type] = 3;
+			Main.projFrames[Type] = 4;
 		}
 
 		public override void SetDefaults()
@@ -40,8 +40,6 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 			return false;
 		}
 
-		Vector2 offset = Vector2.Zero;
-
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
 			modifiers.FinalDamage /= 3;
@@ -56,12 +54,12 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 		{
 			Projectile.position += (Projectile.width / 2 + 4) * Projectile.velocity.SafeNormalize(Vector2.Zero);
 			Projectile.Opacity = 1;
-			offset = Projectile.Center - Main.player[Projectile.owner].Center;
 			Projectile.Damage();
 			SoundEngine.PlaySound(
 				SoundID.Item38,
 				Projectile.Center
 			);
+			Lighting.AddLight(Projectile.Center, new Vector3(0.933f, 0.345f, 0.400f) * 1.5f);
 
 			if (Projectile.owner == Main.myPlayer)
 			{
@@ -99,11 +97,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 		public override bool PreAI()
 		{
 			Projectile.rotation = Projectile.velocity.ToRotation();
-			Projectile.frame = (int)((1.0f - (float)Projectile.timeLeft / LIFETIME) * Main.projFrames[Type]);
-			if (offset != Vector2.Zero)
-			{
-				Projectile.Center = Main.player[Projectile.owner].Center + new Vector2(0, Main.player[Projectile.owner].gfxOffY) + offset;
-			}
+			float d = (float)(LIFETIME - Projectile.timeLeft) / (LIFETIME + 1);
+			Projectile.frame = (int)(d * (Main.projFrames[Type] + 1));
 			return false;
 		}
 

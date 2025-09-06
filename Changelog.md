@@ -31,6 +31,14 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.32.4
+
+### 0.32.4 Changes
+
+- Desperado explosion now creates a flash of light
+- Desperado explosion now has 4 frames and properly cycles through all of them in time
+- Desperado explosion no longer remains attached to the player
+
 ## 0.32.3
 
 ### 0.32.3 Changes

@@ -45,7 +45,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            Vector2 muzzleOffset = 32 * velocity.SafeNormalize(Vector2.Zero);
+            Vector2 muzzleOffset = new Vector2(32, -	2 * player.direction).RotatedBy(velocity.ToRotation());
 			bool flag = false;
 			foreach (var npc in Main.ActiveNPCs)
 			{
