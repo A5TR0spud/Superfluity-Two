@@ -271,7 +271,7 @@ Items: {
 			'''
 			Teleports you home and creates a portal
 			Use portal to return when you are done
-			Right clicking also teleports you back
+			<right> also teleports you back
 			'''
 	}
 
@@ -280,7 +280,7 @@ Items: {
 		Tooltip:
 			'''
 			Teleports you to a random location
-			Right click to teleport to your most recent death
+			<right> to teleport to your most recent death
 			[c/FF8888:Teleporting to death comes at a cost]
 			'''
 	}

@@ -27,7 +27,7 @@ namespace SuperfluityTwo.Content.Items.Tools.Misc
                 .AddTile(TileID.Tables)
                 .AddTile(TileID.Chairs)
                 .Register();
-            
+
             CreateRecipe()
                 .AddIngredient(ItemID.PotionOfReturn, 30)
                 .AddIngredient(ItemID.IceMirror)
@@ -35,6 +35,7 @@ namespace SuperfluityTwo.Content.Items.Tools.Misc
                 .AddIngredient(ItemID.RedTorch)
                 .AddTile(TileID.Tables)
                 .AddTile(TileID.Chairs)
+                .DisableDecraft()
                 .Register();
         }
 

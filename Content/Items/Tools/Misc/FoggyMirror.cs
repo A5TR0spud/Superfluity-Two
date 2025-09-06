@@ -27,6 +27,16 @@ namespace SuperfluityTwo.Content.Items.Tools.Misc
                 .AddTile(TileID.Chairs)
                 .AddCondition(Condition.InGraveyard)
                 .Register();
+
+            CreateRecipe()
+                .AddIngredient(ItemID.TeleportationPotion, 30)
+                .AddIngredient(ItemID.IceMirror)
+                .AddIngredient(ItemID.BlackLens)
+                .AddTile(TileID.Tables)
+                .AddTile(TileID.Chairs)
+                .AddCondition(Condition.InGraveyard)
+                .DisableDecraft()
+                .Register();
         }
 
         public override void UseStyle(Player player, Rectangle heldItemFrame)

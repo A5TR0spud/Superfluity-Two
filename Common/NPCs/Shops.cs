@@ -18,6 +18,9 @@ namespace SuperfluityTwo.NPCs
 					shopCustomPrice = Item.buyPrice(gold: 6)
 				}, Condition.InJungle, Condition.MoonPhasesEven);
 
+                shop.Add(ItemID.JungleRose, Condition.InJungle);
+                shop.Add(ItemID.NaturesGift, Condition.InJungle, Condition.NpcIsPresent(NPCID.Wizard));
+
                 shop.Add(ItemID.Daybloom, Condition.TimeDay);
                 shop.Add(ItemID.Moonglow, Condition.TimeNight);
                 shop.Add(ItemID.Blinkroot, Condition.MoonPhases37);

@@ -31,6 +31,18 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.32.3
+
+### 0.32.3 Changes
+
+- Dryad now sells Jungle Rose when in a jungle
+- Dryad now sells Nature's Gift when Wizard is present, and in the jungle
+
+### 0.32.3 Fixes
+
+- Return Address and Foggy Mirror now properly update desc with input bindings
+- Foggy Mirror can now be crafted with an Ice Mirror
+
 ## 0.32.2
 
 ### 0.32.2 Fixes
