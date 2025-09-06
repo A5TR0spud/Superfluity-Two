@@ -82,6 +82,10 @@ namespace SuperfluityTwo.NPCs
             {
                 npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<KillerWispItem>(), 15, 10));
             }
+            if (npc.type == NPCID.Drippler || npc.type == NPCID.BloodZombie)
+            {
+                npcLoot.Add(ItemDropRule.NormalvsExpert(ModContent.ItemType<SacrificialDagger>(), 150, 75));
+            }
         }
     }
 }

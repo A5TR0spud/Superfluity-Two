@@ -13,7 +13,7 @@ namespace SuperfluityTwo.Content.Items
             return !GetType().Name.Equals("GlowItem");
         }
 
-        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float  scale, int whoAmI) 	
+        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture + "_Glow", AssetRequestMode.ImmediateLoad).Value;
             spriteBatch.Draw
@@ -28,8 +28,8 @@ namespace SuperfluityTwo.Content.Items
                 Color.White,
                 rotation,
                 texture.Size() * 0.5f,
-                scale, 
-                SpriteEffects.None, 
+                scale,
+                SpriteEffects.None,
                 0f
             );
         }

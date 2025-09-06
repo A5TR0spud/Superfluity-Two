@@ -31,6 +31,16 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.33.0
+
+### 0.33.0 Additions
+
+- Added Sacrificial Dagger, an accessory
+
+### 0.33.0 Fixes
+
+- Resolved crash related to Desperado
+
 ## 0.32.4
 
 ### 0.32.4 Changes
@@ -44,7 +54,7 @@
 ### 0.32.3 Changes
 
 - Dryad now sells Jungle Rose when in a jungle
-- Dryad now sells Nature's Gift when Wizard is present, and in the jungle
+- Dryad now sells Nature's Gift when in a jungle if the Wizard is present
 
 ### 0.32.3 Fixes
 

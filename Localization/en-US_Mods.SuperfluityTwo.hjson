@@ -466,6 +466,15 @@ Items: {
 		DisplayName: Desperado
 		Tooltip: "'Why don't you come to your senses, pardner?'"
 	}
+
+	SacrificialDagger: {
+		DisplayName: Sacrificial Dagger
+		Tooltip:
+			'''
+			Increases your max number of minions by 1
+			[c/FF8888:Reduces max health by 40]
+			'''
+	}
 }
 
 Buffs: {

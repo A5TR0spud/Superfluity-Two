@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 {
-	public class Desperado : GlowItem
+	public class Desperado : ModItem
 	{
 		public override void SetDefaults()
 		{
