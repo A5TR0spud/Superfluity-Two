@@ -103,7 +103,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 				if (!npc.friendly &&
 					!npc.dontTakeDamage &&
 					!npc.immortal &&
-					Collision.CanHit(Projectile.Center, 0, 0, npc.position, npc.width, npc.height))
+					Collision.CanHit(Projectile.Center, 0, 0, npc.position, npc.width, npc.height) &&
+					npc.Hitbox.ClosestPointInRect(Projectile.Center).Distance(Projectile.Center) < Range)
 				{
 					return true;
 				}

@@ -31,6 +31,12 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.34.1
+
+### 0.34.1 Fixes
+
+- Safety Lamp trigger now has a range requirement
+
 ## 0.34.0
 
 ### 0.34.0 Additions
