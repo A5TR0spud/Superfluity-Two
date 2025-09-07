@@ -11,14 +11,15 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 {
 	public class SafetyLampItem : GlowItem
 	{
-        public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 
 			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f;
 		}
 
-        public override void SetDefaults()
+		public override void SetDefaults()
 		{
 			Item.width = 14;
 			Item.height = 30;
@@ -40,7 +41,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 			Item.shoot = ModContent.ProjectileType<SafetyLampCounter>();
 		}
 
-        public override void AddRecipes()
+		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient(ItemID.StarinaBottle)
@@ -50,7 +51,8 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 				.Register();
 		}
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
 			// This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
 			player.AddBuff(Item.buffType, 2);
 
@@ -66,5 +68,9 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 			return true;
 		}
 
+        public override void HoldItem(Player player)
+        {
+            Lighting.AddLight(player.Center, Color.LightYellow.ToVector3() * 0.53f);
+        }
     }
 }

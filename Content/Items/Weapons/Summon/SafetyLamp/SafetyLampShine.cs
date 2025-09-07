@@ -36,6 +36,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 		public override void SetStaticDefaults()
 		{
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.MinionShot[Projectile.type] = true;
 		}
 
 		public sealed override void SetDefaults()

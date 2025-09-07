@@ -49,7 +49,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 			bool flag = false;
 			foreach (var npc in Main.ActiveNPCs)
 			{
-				if (player.CanHit(npc) && npc.Hitbox.IntersectsConeFastInaccurate(player.Center, 16 * 6, velocity.ToRotation(), (float)Math.PI * 0.06125f))
+				if (!npc.friendly && player.CanNPCBeHitByPlayerOrPlayerProjectile(npc) && player.CanHit(npc) && npc.Hitbox.IntersectsConeFastInaccurate(player.Center, 16 * 6, velocity.ToRotation(), (float)Math.PI * 0.06125f))
 				{
 					type = ModContent.ProjectileType<DesperadoExplosion>();
 					flag = true;

@@ -76,7 +76,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 			if (Timer > 1f / Strength && Main.myPlayer == Projectile.owner)
 			{
 				Timer = Math.Min(Timer, 1f / Strength);
-				if (Projectile.FindTargetWithLineOfSight(Range) >= 0)
+				if (FindTarget())
 				{
 					Timer -= 1f / Strength;
 					Projectile.NewProjectile(
@@ -94,6 +94,21 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 				Projectile.netUpdate = true;
 			}
 			Timer += 1 / 60f;
+		}
+
+		private bool FindTarget()
+		{
+			foreach (var npc in Main.ActiveNPCs)
+			{
+				if (!npc.friendly &&
+					!npc.dontTakeDamage &&
+					!npc.immortal &&
+					Collision.CanHit(Projectile.Center, 0, 0, npc.position, npc.width, npc.height))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 		private void UpdateDamage(Player owner)

@@ -475,6 +475,11 @@ Items: {
 			[c/FF8888:Reduces max health by 40]
 			'''
 	}
+
+	TracerRound: {
+		DisplayName: Tracer Round
+		Tooltip: A very fast bullet that causes attacks to critically strike
+	}
 }
 
 Buffs: {
@@ -561,6 +566,11 @@ Buffs: {
 		DisplayName: Guiding Light
 		Description: A hope in the dark
 	}
+
+	Marked: {
+		DisplayName: Marked
+		Description: The next damage you take is doubled
+	}
 }
 
 Projectiles: {
@@ -594,6 +604,7 @@ Projectiles: {
 	SafetyLampShine.DisplayName: Safety Lamp Shine
 	DesperadoShrapnel.DisplayName: Desperado Shrapnel
 	DesperadoExplosion.DisplayName: Desperado Explosion
+	TracerBullet.DisplayName: Tracer Bullet
 }
 
 DeathMessages: {

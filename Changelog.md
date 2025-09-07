@@ -31,6 +31,18 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.34.0
+
+### 0.34.0 Additions
+
+- Added Tracer Round, a bullet ammo
+- Holding Safety Lamp now makes light
+
+### 0.34.0 Fixes
+
+- Desperado no longer explodes when aiming at NPCs you can't actually damage
+- Safety Lamp can now be triggered by "projectiles" like imp fireballs
+
 ## 0.33.0
 
 ### 0.33.0 Additions
