@@ -35,7 +35,7 @@
 
 ### 0.34.1 Fixes
 
-- Safety Lamp trigger now has a range requirement
+- Safety Lamp trigger now has a range requirement again
 
 ## 0.34.0
 
