@@ -33,7 +33,7 @@
 
 ## 0.34.2
 
-## 0.34.2 Additions
+### 0.34.2 Additions
 
 - Arms Dealer now sells tracer rounds once the Eye of Cthulhu is defeated
 - Arms Dealer now sells Revolver if the Travelling Merchant is present, during some moon phases
