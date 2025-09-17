@@ -100,9 +100,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 		{
 			foreach (var npc in Main.ActiveNPCs)
 			{
-				if (!npc.friendly &&
-					!npc.dontTakeDamage &&
-					!npc.immortal &&
+				if (npc.CanBeChasedBy() &&
 					Collision.CanHit(Projectile.Center, 0, 0, npc.position, npc.width, npc.height) &&
 					npc.Hitbox.ClosestPointInRect(Projectile.Center).Distance(Projectile.Center) < Range)
 				{

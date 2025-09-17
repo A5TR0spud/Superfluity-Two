@@ -31,6 +31,17 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.34.2
+
+## 0.34.2 Additions
+
+- Arms Dealer now sells tracer rounds once the Eye of Cthulhu is defeated
+- Arms Dealer now sells Revolver if the Travelling Merchant is present, during some moon phases
+
+### 0.34.2 Fixes
+
+- Safety Lamp's attack requirements are now more consistent with other auto-attacks and homing weapons
+
 ## 0.34.1
 
 ### 0.34.1 Fixes

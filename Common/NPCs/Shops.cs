@@ -1,4 +1,5 @@
 using SuperfluityTwo.Common;
+using SuperfluityTwo.Content.Items.Ammo.Tracer;
 using SuperfluityTwo.Content.Items.Weapons.Magic;
 using SuperfluityTwo.Content.Items.Weapons.Magic.FairyKnife;
 using Terraria;
@@ -31,12 +32,14 @@ namespace SuperfluityTwo.NPCs
             }
             if (shop.FullName == NPCShopDatabase.GetShopName(NPCID.ArmsDealer, "Shop"))
             {
-                shop.InsertAfter(shop.GetEntry(ItemID.MusketBall), new Item(ItemID.MeteorShot), Condition.DownedEowOrBoc);
+                shop.InsertAfter(shop.GetEntry(ItemID.MusketBall), new Item(ModContent.ItemType<TracerRound>()), Condition.DownedEyeOfCthulhu);
+                shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.MeteorShot), Condition.DownedEowOrBoc);
                 shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.CrystalBullet), Condition.DownedQueenSlime);
                 shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.ChlorophyteBullet), Condition.DownedPlantera);
                 shop.InsertAfter(shop.GetEntry(ItemID.SilverBullet), new Item(ItemID.MoonlordBullet), Condition.DownedMoonLord);
                 
                 shop.InsertAfter(shop.GetEntry(ItemID.FlintlockPistol), new Item(ItemID.Handgun), Condition.DownedSkeletron);
+                shop.InsertAfter(shop.GetEntry(ItemID.FlintlockPistol), new Item(ItemID.Revolver), Condition.NpcIsPresent(NPCID.TravellingMerchant), Condition.MoonPhases04);
                 shop.InsertAfter(shop.GetEntry(ItemID.Minishark), new Item(ItemID.ClockworkAssaultRifle), Condition.Hardmode);
                 shop.InsertAfter(shop.GetEntry(ItemID.Minishark), new Item(ItemID.Gatligator), Condition.Hardmode, Condition.MoonPhasesNearNew, Condition.NightOrEclipse);
                 return;
