@@ -86,16 +86,17 @@ namespace SuperfluityTwo.Content.Buffs.Marked
                     Color.White,
                     0.75f
                 ).noGravity = true;
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < 20; i++)
                 {
-                    float d = (i + 1) / 2.5f;
+                    float d = (i + 1) / 10f;
+                    float d2 = ((19 - i) * 0.25f + 5) * 0.1f;
                     Dust.NewDustPerfect(
                         npc.Center,
                         DustID.Firework_Blue,
                         new Vector2(d, d),
                         0,
                         Color.White,
-                        0.75f
+                        d2
                     ).noGravity = true;
                     Dust.NewDustPerfect(
                         npc.Center,
@@ -103,7 +104,7 @@ namespace SuperfluityTwo.Content.Buffs.Marked
                         new Vector2(d, -d),
                         0,
                         Color.White,
-                        0.75f
+                        d2
                     ).noGravity = true;
                     Dust.NewDustPerfect(
                         npc.Center,
@@ -111,7 +112,7 @@ namespace SuperfluityTwo.Content.Buffs.Marked
                         new Vector2(-d, d),
                         0,
                         Color.White,
-                        0.75f
+                        d2
                     ).noGravity = true;
                     Dust.NewDustPerfect(
                         npc.Center,
@@ -119,7 +120,7 @@ namespace SuperfluityTwo.Content.Buffs.Marked
                         new Vector2(-d, -d),
                         0,
                         Color.White,
-                        0.75f
+                        d2
                     ).noGravity = true;
                 }
             }

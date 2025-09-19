@@ -31,6 +31,21 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.35.0
+
+### 0.35.0 Additions
+
+- Added Standoff, a Desperado upgrade
+
+### 0.35.0 Changes
+
+- Buffed the Midnight Sun, as I realized solar eclipses require defeat of a mechanical boss
+
+### 0.35.0 Fixes
+
+- Adjusted Desperado muzzle offset
+- Desperado should now properly hit way-too-close enemies
+
 ## 0.34.2
 
 ### 0.34.2 Additions

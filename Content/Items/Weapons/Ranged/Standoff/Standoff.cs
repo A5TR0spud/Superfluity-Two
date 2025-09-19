@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado;
 using SuperfluityTwo.Content.Projectiles;
 using Terraria;
 using Terraria.Audio;
@@ -7,9 +8,9 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
+namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Standoff
 {
-	public class Desperado : ModItem
+	public class Standoff : ModItem
 	{
 		public override void SetDefaults()
 		{
@@ -19,14 +20,14 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.shootSpeed = 16f;
 			Item.UseSound = SoundID.Item41;
-			Item.useAnimation = 21;
-			Item.useTime = 21;
+			Item.useAnimation = 16;
+			Item.useTime = 16;
 			Item.noMelee = true;
 			Item.crit = 7;
 			Item.DamageType = DamageClass.Ranged;
 			Item.knockBack = 4;
-			Item.value = Item.sellPrice(gold: 4);
-			Item.rare = ItemRarityID.Green;
+			Item.value = Item.sellPrice(gold: 5);
+			Item.rare = ItemRarityID.Blue;
 			Item.useTurn = false;
 			Item.shoot = ProjectileID.Bullet;
 			Item.useAmmo = AmmoID.Bullet;
@@ -36,16 +37,23 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
         public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.FlintlockPistol)
-				.AddIngredient(ItemID.Revolver)
-				.AddIngredient(ItemID.AntlionMandible, 5)
+				.AddIngredient(ModContent.ItemType<Desperado.Desperado>())
+				.AddIngredient(ItemID.TissueSample, 5)
+				.AddIngredient(ItemID.Obsidian, 20)
+				.AddTile(TileID.Anvils)
+				.Register();
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<Desperado.Desperado>())
+				.AddIngredient(ItemID.ShadowScale, 5)
+				.AddIngredient(ItemID.Obsidian, 20)
 				.AddTile(TileID.Anvils)
 				.Register();
 		}
-
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+		
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Vector2 muzzleOffset = new Vector2(32, -2 * player.direction).RotatedBy(velocity.ToRotation());
+			int oldType = type;
+			Vector2 muzzleOffset = new Vector2(32, -2 * player.direction).RotatedBy(velocity.ToRotation());
 			foreach (var npc in Main.ActiveNPCs)
 			{
 				if (!npc.friendly && player.CanNPCBeHitByPlayerOrPlayerProjectile(npc) && player.CanHit(npc) && npc.Hitbox.IntersectsConeFastInaccurate(player.Center, 16 * 6, velocity.ToRotation(), (float)Math.PI * 0.06125f))
@@ -55,17 +63,13 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 					break;
 				}
 			}
-        }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
 			Projectile.NewProjectile(
-				source, position, velocity, type, damage, knockback, player.whoAmI, type == ModContent.ProjectileType<DesperadoExplosion>() ? ModContent.ProjectileType<DesperadoShrapnel>() : 0
+				source, position, velocity, type, damage, knockback, player.whoAmI, type == ModContent.ProjectileType<DesperadoExplosion>() ? oldType : 0
 			);
-			return false;
+            return false;
         }
 
-        public override Vector2? HoldoutOffset()
+		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2, 4);
 		}

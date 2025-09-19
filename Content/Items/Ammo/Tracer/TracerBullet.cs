@@ -49,14 +49,29 @@ namespace SuperfluityTwo.Content.Items.Ammo.Tracer
 
         public override bool PreAI()
         {
-			Dust.NewDustPerfect(
-				Projectile.position + Main.rand.NextFloat() * Projectile.velocity,
-				DustID.Firework_Blue,
-				Projectile.velocity * 0.1f,
-				Projectile.alpha,
-				Color.White,
-				0.75f
-			).noGravity = true;
+			if (Projectile.Opacity >= 0.12)
+			{
+				Dust.NewDustPerfect(
+					Projectile.position + Main.rand.NextFloat() * Projectile.velocity,
+					DustID.Firework_Blue,
+					Projectile.velocity * 0.1f * (0.75f + Main.rand.NextFloat() * 0.5f),
+					Projectile.alpha,
+					Color.White,
+					0.75f
+				).noGravity = true;
+				for (int i = 0; i < 6; i++)
+				{
+					float delta = (float)i / 6f;
+					Dust.NewDustPerfect(
+						Projectile.oldPos[0] + delta * Projectile.velocity,
+						DustID.BlueFlare,
+						Projectile.velocity * 0.1f,
+						Projectile.alpha,
+						Color.White,
+						1f
+					).noGravity = true;
+				}
+			}
             return true;
         }
 

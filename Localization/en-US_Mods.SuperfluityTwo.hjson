@@ -480,6 +480,11 @@ Items: {
 		DisplayName: Tracer Round
 		Tooltip: A very fast bullet that causes attacks to critically strike
 	}
+
+	Standoff: {
+		DisplayName: Standoff
+		Tooltip: ""
+	}
 }
 
 Buffs: {

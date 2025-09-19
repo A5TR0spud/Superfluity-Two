@@ -54,7 +54,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 			Projectile.minionSlots = 1f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
 			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
 			Projectile.usesLocalNPCImmunity = true;
-			Projectile.localNPCHitCooldown = 48;
+			Projectile.localNPCHitCooldown = 30;
 			Projectile.netImportant = true;
 		}
 
@@ -114,11 +114,11 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
 		{
 			target.AddBuff(BuffID.Bleeding, 60 * 5);
-			if (target.life <= 200)
+			if (target.life <= 250)
 			{
 				modifiers.SetInstantKill();
 			}
-			damageCooldown = 48;
+			damageCooldown = 30;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

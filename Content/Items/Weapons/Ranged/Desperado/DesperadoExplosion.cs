@@ -12,6 +12,17 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 	public class DesperadoExplosion : ModProjectile
 	{
 		private readonly static int LIFETIME = 9;
+        int ProjIDShrapnel
+		{
+			get
+			{
+				return (int)Projectile.ai[0];
+			}
+			set
+			{
+				Projectile.ai[0] = value;
+			}
+		}
 
 		public override void SetStaticDefaults()
 		{
@@ -50,6 +61,16 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 			modifiers.FinalDamage /= 3;
         }
 
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+			hitbox.Inflate(16 * 6, 16 * 6);
+        }
+
+        public override bool? CanHitNPC(NPC target)
+		{
+			return target.Hitbox.IntersectsConeSlowMoreAccurate(Main.player[Projectile.owner].Center, 16 * 6, Projectile.velocity.ToRotation(), (float)Math.PI * 0.06125f);
+		}
+
 		public override void OnSpawn(IEntitySource source)
 		{
 			Projectile.position += (Projectile.width / 2 + 4) * Projectile.velocity.SafeNormalize(Vector2.Zero);
@@ -63,23 +84,14 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 
 			if (Projectile.owner == Main.myPlayer)
 			{
-				int type = ModContent.ProjectileType<DesperadoShrapnel>();
-				Vector2 pos = Projectile.Center - 24 * Projectile.velocity.SafeNormalize(Vector2.Zero);
-				Vector2 position;
-				if (Collision.CanHit(Main.player[Projectile.owner].Center, 0, 0, pos, 0, 0))
-				{
-					position = pos;
-				}
-				else
-				{
-					position = Main.player[Projectile.owner].Center;
-				}
+				int type = ProjIDShrapnel;
+				Vector2 position = Main.player[Projectile.owner].Center;
 				for (int i = 0; i < 6; i++)
 				{
 					float d = i / 5f;
 					Vector2 newVel = Projectile.velocity.RotatedBy((d - 0.5f) * Math.PI * 0.25f).RotatedByRandom(Math.PI * 0.06125f) * (0.75f + 0.5f * Main.rand.NextFloat());
 
-					Projectile.NewProjectile(
+					Projectile.NewProjectileDirect(
 						source,
 						position,
 						newVel,
@@ -87,7 +99,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 						Projectile.damage,
 						Projectile.knockBack * 1.5f,
 						Projectile.owner
-					);
+					).timeLeft = 12;
 				}
 			}
 
