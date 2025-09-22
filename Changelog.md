@@ -31,6 +31,17 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.35.1
+
+### 0.35.1 Changes
+
+- Safety Lamp now has scaling armor penetration that gets better with more summons
+
+### 0.35.1 Fixes
+
+- Safety Lamp can again be triggered by NPC-projectiles
+- Safety Lamp no longer damages friendly NPCs
+
 ## 0.35.0
 
 ### 0.35.0 Additions

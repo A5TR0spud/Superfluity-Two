@@ -79,12 +79,14 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 		{
 			Player owner = Main.player[Projectile.owner];
 			modifiers.HitDirectionOverride = target.Center.X > owner.Center.X ? 1 : -1;
+			modifiers.ScalingArmorPenetration += 0.2f * Strength;
 		}
 
 		public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
 		{
 			Player owner = Main.player[Projectile.owner];
 			modifiers.HitDirectionOverride = target.Center.X > owner.Center.X ? 1 : -1;
+			modifiers.ScalingArmorPenetration += 0.2f * Strength;
 		}
 
 		public override void ModifyDamageHitbox(ref Rectangle hitbox)
@@ -97,26 +99,20 @@ namespace SuperfluityTwo.Content.Items.Weapons.Summon.SafetyLamp
 
 		public override bool? CanHitNPC(NPC target)
 		{
-			bool lineOfSightMinion = Collision.CanHitLine(LineOfSightRect().TopLeft(), LineOfSightRect().Width, LineOfSightRect().Height, target.position, target.width, target.height);
+			bool lineOfSightMinion = Collision.CanHitLine(Projectile.Center, 0, 0, target.position, target.width, target.height);
 			bool inRange = Projectile.Center.Distance(target.Hitbox.ClosestPointInRect(Projectile.Center)) < Range;
-			return lineOfSightMinion && inRange;
+			if (!lineOfSightMinion || !inRange)
+			{
+				return false;
+			}
+			return null;
 		}
 
 		public override bool CanHitPlayer(Player target)
 		{
-			bool lineOfSightMinion = Collision.CanHitLine(LineOfSightRect().TopLeft(), LineOfSightRect().Width, LineOfSightRect().Height, target.position, target.width, target.height);
+			bool lineOfSightMinion = Collision.CanHitLine(Projectile.Center, 0, 0, target.position, target.width, target.height);
 			bool inRange = Projectile.Center.Distance(target.Hitbox.ClosestPointInRect(Projectile.Center)) < Range;
 			return lineOfSightMinion && inRange;
-		}
-
-		private Rectangle LineOfSightRect()
-		{
-			int i = Projectile.GetByUUID(Projectile.owner, OwnerUUID);
-			if (i >= 0)
-			{
-				return Main.projectile[i].Hitbox;
-			}
-			return Projectile.Hitbox;
 		}
 
 		private Vector2 GetIdlePos()
