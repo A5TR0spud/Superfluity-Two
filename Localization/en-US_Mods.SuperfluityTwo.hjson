@@ -483,7 +483,7 @@ Items: {
 
 	Standoff: {
 		DisplayName: Standoff
-		Tooltip: ""
+		Tooltip: "'A damn good reason for some mutiny'"
 	}
 }
 
@@ -610,6 +610,7 @@ Projectiles: {
 	DesperadoShrapnel.DisplayName: Desperado Shrapnel
 	DesperadoExplosion.DisplayName: Desperado Explosion
 	TracerBullet.DisplayName: Tracer Bullet
+	StandoffExplosion.DisplayName: Standoff Explosion
 }
 
 DeathMessages: {

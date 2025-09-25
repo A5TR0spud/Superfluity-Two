@@ -34,7 +34,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 		public override void OnSpawn(IEntitySource source)
 		{
 			Dust.NewDustPerfect(
-				Projectile.Center,
+				Projectile.Center + Projectile.velocity * (2f + 2f * Main.rand.NextFloat()),
 				DustID.GoldFlame,
 				Projectile.velocity * 0.1f
 			);

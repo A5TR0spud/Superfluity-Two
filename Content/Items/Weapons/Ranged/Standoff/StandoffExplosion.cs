@@ -7,21 +7,21 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
+namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Standoff
 {
-	public class DesperadoExplosion : ModProjectile
+	public class StandoffExplosion : ModProjectile
 	{
 		private readonly static int LIFETIME = 9;
 
 		public override void SetStaticDefaults()
 		{
-			Main.projFrames[Type] = 4;
+			Main.projFrames[Type] = 5;
 		}
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 42;
-			Projectile.height = 42;
+			Projectile.width = 50;
+			Projectile.height = 50;
 			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.penetrate = -1;
@@ -83,7 +83,7 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Desperado
 						source,
 						position,
 						newVel,
-						ModContent.ProjectileType<DesperadoShrapnel>(),
+						ModContent.ProjectileType<Desperado.DesperadoShrapnel>(),
 						Projectile.damage,
 						Projectile.knockBack * 1.5f,
 						Projectile.owner

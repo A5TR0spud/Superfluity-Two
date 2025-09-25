@@ -14,18 +14,18 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Standoff
 	{
 		public override void SetDefaults()
 		{
-			Item.damage = 21;
+			Item.damage = 45;
 			Item.width = 36;
 			Item.height = 18;
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.shootSpeed = 16f;
+			Item.shootSpeed = 17f;
 			Item.UseSound = SoundID.Item41;
-			Item.useAnimation = 16;
-			Item.useTime = 16;
+			Item.useAnimation = 35;
+			Item.useTime = 35;
 			Item.noMelee = true;
-			Item.crit = 7;
+			Item.crit = 16;
 			Item.DamageType = DamageClass.Ranged;
-			Item.knockBack = 4;
+			Item.knockBack = 6;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.rare = ItemRarityID.Blue;
 			Item.useTurn = false;
@@ -50,23 +50,32 @@ namespace SuperfluityTwo.Content.Items.Weapons.Ranged.Standoff
 				.Register();
 		}
 		
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-			int oldType = type;
-			Vector2 muzzleOffset = new Vector2(32, -2 * player.direction).RotatedBy(velocity.ToRotation());
+            Vector2 muzzleOffset = new Vector2(32, -2 * player.direction).RotatedBy(velocity.ToRotation());
 			foreach (var npc in Main.ActiveNPCs)
 			{
 				if (!npc.friendly && player.CanNPCBeHitByPlayerOrPlayerProjectile(npc) && player.CanHit(npc) && npc.Hitbox.IntersectsConeFastInaccurate(player.Center, 16 * 6, velocity.ToRotation(), (float)Math.PI * 0.06125f))
 				{
-					type = ModContent.ProjectileType<DesperadoExplosion>();
+					type = ModContent.ProjectileType<StandoffExplosion>();
 					position += muzzleOffset;
 					break;
 				}
 			}
-			Projectile.NewProjectile(
-				source, position, velocity, type, damage, knockback, player.whoAmI, type == ModContent.ProjectileType<DesperadoExplosion>() ? oldType : 0
-			);
-            return false;
+        }
+
+		public override void UseStyle(Player player, Rectangle heldItemFrame)
+		{
+			float m = player.itemAnimationMax;
+			float d = 1.0f - player.itemAnimation / m;
+			if (d > 0.5f)
+			{
+				float d1 = 2.0f * (d - 1.0f);
+				d1 = 0.5f - 0.5f * (float)Math.Cos(Math.PI * d1);
+				player.itemRotation = d1 * player.direction * 2.0f * (float)Math.PI;
+				player.itemLocation -= player.direction * 20f * new Vector2((float)Math.Cos(player.itemRotation), (float)Math.Sin(player.itemRotation));
+				player.itemLocation.X += 8f * player.direction;
+			}
         }
 
 		public override Vector2? HoldoutOffset()

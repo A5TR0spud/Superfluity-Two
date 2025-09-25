@@ -31,6 +31,15 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.35.2
+
+### 0.35.2 Changes
+
+- Added a description for Standoff
+- Standoff now "reloads" between shots
+- Standoff is slower-firing but deals more damage
+- Standoff has a unique VFX, and no longer shoots like a shotgun, instead opting for its own shrapnel like Desperado
+
 ## 0.35.1
 
 ### 0.35.1 Changes
