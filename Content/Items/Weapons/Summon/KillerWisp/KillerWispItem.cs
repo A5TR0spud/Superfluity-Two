@@ -7,9 +7,10 @@ using Terraria.ModLoader;
 
 namespace SuperfluityTwo.Content.Items.Weapons.Summon.KillerWisp
 {
-	public class KillerWispItem : GlowItem
+	public class KillerWispItem : ModItem
 	{
-        public override void SetStaticDefaults() {
+        public override void SetStaticDefaults()
+		{
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 

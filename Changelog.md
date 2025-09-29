@@ -31,6 +31,12 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.35.3
+
+### 0.35.3 Fixes
+
+- Fixed Midnight Sun crash
+
 ## 0.35.2
 
 ### 0.35.2 Changes
