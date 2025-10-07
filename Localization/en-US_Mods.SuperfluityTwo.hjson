@@ -485,6 +485,20 @@ Items: {
 		DisplayName: Standoff
 		Tooltip: "'A damn good reason for some mutiny'"
 	}
+
+	MarkOfHonor: {
+		DisplayName: Mark of Honor
+		Tooltip:
+			'''
+			30% increased melee damage
+			30% reduced damage taken from contacting an enemy
+			10% increased size and speed of melee weapons
+			Grants immunity to knockback
+			[c/FF8888:Most of your projectiles start 50% slower]
+			[c/FF8888:Your projectiles expire if they move too far away]
+			[c/FF8888:The further an attack lands, the less damage it does]
+			'''
+	}
 }
 
 Buffs: {

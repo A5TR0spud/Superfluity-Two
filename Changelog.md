@@ -31,6 +31,17 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.36.0
+
+### 0.36.0 Additions
+
+- Added Mark of Honor, a melee accessory focused on making certain "melee" weapons less projectile-centric
+- Added Auribloom, a healing accessory
+
+### 0.36.0 Changes
+
+- Red Alert is now made of Hellstone instead of [evil] bars
+
 ## 0.35.3
 
 ### 0.35.3 Fixes
