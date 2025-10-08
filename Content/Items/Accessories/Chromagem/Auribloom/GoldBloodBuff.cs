@@ -1,6 +1,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Chromagem.Auribloom
 {
@@ -16,7 +17,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Chromagem.Auribloom
             player.lifeRegen += 5;
             if (Main.rand.NextBool(4))
             {
-                Dust.NewDust(player.position, player.width, player.height, DustID.GemAmber, Alpha: 0);
+                Dust.NewDustDirect(player.position, player.width, player.height, DustID.GemAmber, Alpha: 63, Scale: 0.5f).velocity = Vector2.Zero;
             }
         }
 
@@ -25,7 +26,7 @@ namespace SuperfluityTwo.Content.Items.Accessories.Chromagem.Auribloom
             npc.lifeRegen += 5;
             if (Main.rand.NextBool(4))
             {
-                Dust.NewDust(npc.position, npc.width, npc.height, DustID.GemAmber, Alpha: 0);
+                Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.GemAmber, Alpha: 63, Scale: 0.5f).velocity = Vector2.Zero;;
             }
         }
     }

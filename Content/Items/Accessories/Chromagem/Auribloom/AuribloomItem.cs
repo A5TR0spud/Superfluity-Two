@@ -1,13 +1,17 @@
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using SuperfluityTwo.Common.Players;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
 namespace SuperfluityTwo.Content.Items.Accessories.Chromagem.Auribloom
 {
     [AutoloadEquip(EquipType.Face)]
-	public class AuribloomItem : ModItem
-	{
+    public class AuribloomItem : ModItem
+    {
         public override void SetStaticDefaults()
         {
             ArmorIDs.Face.Sets.DrawInFaceFlowerLayer[EquipLoader.GetEquipSlot(Mod, this.Name, EquipType.Face)] = true;
@@ -42,12 +46,88 @@ namespace SuperfluityTwo.Content.Items.Accessories.Chromagem.Auribloom
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.lifeRegen += 5;
-            player.buffImmune[ModContent.BuffType<GoldBloodBuff>()] = true;
-            if (!hideVisual && Main.rand.NextBool(4) && player.statLife < player.statLifeMax2)
+            if (player.dead) return;
+            //player.lifeRegen += 5;
+            //player.buffImmune[ModContent.BuffType<GoldBloodBuff>()] = true;
+            player.GetModPlayer<AuribloomPlayer>().hasAuri = true;
+            if (player.statLife < player.statLifeMax2)
             {
-                Dust.NewDust(player.position, player.width, player.height, DustID.GemAmber, Alpha: 0);
+                player.AddBuff(ModContent.BuffType<GoldBloodBuff>(), 5 * 60);
+            }
+
+            if (!hideVisual && Main.rand.NextBool(8))
+            {
+                Dust.NewDustDirect(player.Center + 16 * 7 * Main.rand.NextFloat(MathHelper.TwoPi).ToRotationVector2(), 0, 0, DustID.GoldFlame, Alpha: 0).noGravity = true;
+            }
+            foreach (var npc in Main.ActiveNPCs)
+            {
+                if (npc.friendly && npc.Center.Distance(player.Center) < 16 * 7)
+                {
+                    npc.AddBuff(ModContent.BuffType<GoldBloodBuff>(), 60 * 5);
+                }
+            }
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                foreach (var plr in Main.ActivePlayers)
+                {
+                    if (plr == player) continue;
+                    if (!plr.InOpposingTeam(player) && plr.Center.Distance(player.Center) < 16 * 7 && !plr.dead)
+                    {
+                        plr.AddBuff(ModContent.BuffType<GoldBloodBuff>(), 5 * 60);
+                    }
+                }
             }
         }
+    }
+
+    public class AuribloomPlayer : ModPlayer
+    {
+        public bool hasAuri = false;
+        public override void ResetEffects()
+        {
+            hasAuri = false;
+        }
+    }
+
+    
+    internal class AuriLayer : PlayerDrawLayer
+	{
+        public static Asset<Texture2D> texAsset;
+
+        public override void Load()
+        {
+            texAsset = ModContent.Request<Texture2D>($"{nameof(SuperfluityTwo)}/Content/Items/Accessories/Chromagem/Auribloom/AuribloomVisual", AssetRequestMode.AsyncLoad);
+        }
+
+		public override Position GetDefaultPosition() {
+			return PlayerDrawLayers.BeforeFirstVanillaLayer;
+		}
+
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+            if (drawInfo.shadow != 0)
+                return false;
+            AuribloomPlayer modded = drawInfo.drawPlayer.GetModPlayer<AuribloomPlayer>();
+            if (modded.hasAuri)
+                return true;
+            return false;
+		}
+
+		protected override void Draw(ref PlayerDrawSet drawInfo) {
+			if (drawInfo.drawPlayer.dead) {
+				return;
+			}
+            Texture2D texture2d = texAsset.Value;
+            DrawData glow = new DrawData(
+                texture: texture2d,
+                position: new Vector2((int)(drawInfo.Center.X - Main.screenPosition.X), (int)(drawInfo.Center.Y - Main.screenPosition.Y)),
+                sourceRect: new Rectangle(0, 0, texture2d.Width, texture2d.Height),
+                color: new Color(1f, 1f, 1f, 1f),
+                rotation: 0,
+                origin: new Vector2(texture2d.Width / 2, texture2d.Height / 2),
+                scale: 1f,
+                effect: SpriteEffects.None
+            );
+            drawInfo.DrawDataCache.Add(glow);
+		}
     }
 }

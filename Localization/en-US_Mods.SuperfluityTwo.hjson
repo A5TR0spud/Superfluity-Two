@@ -499,6 +499,15 @@ Items: {
 			[c/FF8888:The further an attack lands, the less damage it does]
 			'''
 	}
+
+	AuribloomItem: {
+		DisplayName: Auribloom
+		Tooltip:
+			'''
+			Increases life regeneration by 2.5 HP/s
+			Also affects nearby allies
+			'''
+	}
 }
 
 Buffs: {
@@ -589,6 +598,11 @@ Buffs: {
 	Marked: {
 		DisplayName: Marked
 		Description: The next damage you take is doubled
+	}
+
+	GoldBloodBuff: {
+		Description: Healing at 2.5 HP/s
+		DisplayName: Golden Blood
 	}
 }
 
