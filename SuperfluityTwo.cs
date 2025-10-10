@@ -59,7 +59,7 @@ namespace SuperfluityTwo
 				}
 				return;
 			}
-			
-        }
+
+		}
 	}
 }

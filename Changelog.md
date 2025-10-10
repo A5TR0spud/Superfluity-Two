@@ -31,6 +31,16 @@
   - static int[] trackedNPCs;
   - static int[Main.maxNPCs] trackedNPCFireTimers;
 
+## 0.36.1
+
+### 0.36.1 Changes
+
+- Improved rendering and texture of Auribloom's AoE
+
+### 0.36.1 Fixes
+
+- Auribloom should now work properly in PvP scenarios
+
 ## 0.36.0
 
 ### 0.36.0 Additions
